@@ -16,27 +16,32 @@ def get_b64(path):
         with open(path, "rb") as f: return base64.b64encode(f.read()).decode()
     except: return ""
 
-# --- REPAIRED & EXTENSIBLE CSS ---
+# --- CSS & ANIMATIONS ---
 st.markdown("""
 <style>
     body, .stApp { background-color: #050505 !important; color: white; }
     #MainMenu, footer, header {visibility: hidden;}
-    @keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    
+    /* Animations Green/General */
     @keyframes neon-text { 0%, 100% { color: white; text-shadow: none; } 50% { color: #00FF00; text-shadow: 0 0 15px #00FF00; } }
     @keyframes neon-img { 0%, 100% { filter: drop-shadow(0 0 0px transparent); } 50% { filter: drop-shadow(0 0 25px #00FF00); } }
-    
-    /* New Flashing Neon Rocket */
     @keyframes nuclear-neon { 
         0%, 100% { filter: drop-shadow(0 0 5px #00FF00); transform: translateY(0px) scale(1); } 
         50% { filter: drop-shadow(0 0 25px #00FF00); transform: translateY(-15px) scale(1.1); } 
     }
 
-    /* Title Container Fix */
+    /* NEW! Red Neon Flash Animation for Falling Price */
+    @keyframes neon-flash-red {
+        0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px #FF0000); }
+        50% { opacity: 0.4; filter: drop-shadow(0 0 30px #FF0000); }
+    }
+
+    /* Layout CSS */
     .title-container { text-align: center; margin-bottom: 30px; }
     .gme-title { font-size: 60px; line-height: 1.1; animation: neon-text 1.5s infinite; white-space: nowrap; margin: 0; }
     @media screen and (max-width: 600px) { .gme-title { font-size: 38px; } }
 
-    /* Table Fixes (Leaderboard & Data) */
+    /* Tables CSS */
     .table-wrapper { overflow-x: auto; max-width: 100%; border-radius: 10px; border: 1px solid #0259c7; margin-top: 10px; }
     .ldb-t { width: 100%; border-collapse: collapse; color: white; font-family: monospace; text-align: center; }
     .ldb-t th { background: #001f3f; color: #00FF00; padding: 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }
@@ -176,12 +181,14 @@ else:
         pct = ((price - prev) / prev) * 100 if prev > 0 else 0
         diff, clr = price - prev, ("#00FF00" if price >= prev else "#FF0000")
         
-        # PRICE SLICING ($ symbol reduced by half)
+        # PRICE SLICING & ANIMATION SELECTION
         price_str = f"{price:.2f}"
         p_int, p_dec = price_str.split('.')
         
         sz = min(100 + (abs(pct) * 10), 180)
-        icn = f"<div style='animation: nuclear-neon 1.5s infinite;'><div style='font-size:{sz}px;'>🚀</div></div>" if pct >= 0 else f"<img src='data:image/jpeg;base64,{get_b64('Screenshot_20260216_163106_Discord.jpg')}' style='height:{sz}px; animation:flash 1s infinite;'>"
+        # Use neon-flash-red if price is down
+        anim_class = "nuclear-neon" if pct >= 0 else "neon-flash-red"
+        icn = f"<div style='animation: {anim_class} 1.5s infinite;'><div style='font-size:{sz}px;'>🚀</div></div>" if pct >= 0 else f"<img src='data:image/jpeg;base64,{get_b64('Screenshot_20260216_163106_Discord.jpg')}' style='height:{sz}px; animation:{anim_class} 1s infinite;'>"
         
         st.markdown(f"""
         <div style='display:flex; justify-content:center; align-items:center; gap:20px; margin-top:30px;'>
@@ -196,14 +203,14 @@ else:
         if not chart.empty:
             fig, ax = plt.subplots(figsize=(10, 2.5), facecolor='black'); ax.set_facecolor('black')
             v = chart.dropna().values
-            ax.bar(np.arange(len(v)), v - np.min(v)*0.99, bottom=np.min(v)*0.99, color=clr, width=0.8); ax.axis('off'); st.pyplot(fig)
+            ax.bar(np.arange(len(v)), v - np.min(v)*0.99, bottom=np.min(v)*0.99, color=clr, width=0.8); ax.axis('off'); st.pyplot(fig); plt.close(fig) # Fix duplication
 
     @st.fragment(run_every="30s")
     def render_content():
         with tab1: draw_live(p_nsy, pr_nsy, ch_gme)
         with tab2: draw_live(p_wt, pr_wt, ch_wt)
         with tab3:
-            # --- PERFECT US PIE CHART (V44 IMAGE DESIGN) ---
+            # --- PERFECT US PIE CHART ---
             s_c = qn * gp
             w_c = qw * pw
             s_pl = v_s_u - s_c
@@ -217,7 +224,6 @@ else:
             fig4 = plt.figure(figsize=(32, 12)); fig4.patch.set_facecolor("#0f172a")
             gs = GridSpec(1, 3, width_ratios=[1.2, 1.5, 1.2])
             
-            # LEFT : GME SHARES
             al = fig4.add_subplot(gs[0]); al.set_facecolor("#0f172a"); al.axis('off')
             al.text(0.9, 0.85, "GameStop Shares (GME)", color="#66c2a5", fontsize=50, ha="right", weight="bold")
             al.text(0.9, 0.65, f"Val: ${v_s_u:,.2f}", color="white", fontsize=45, ha="right", weight="bold")
@@ -226,7 +232,6 @@ else:
             c_s_pl = "#00FF00" if s_pl >= 0 else "#FF0000"
             al.text(0.9, 0.05, f"P/L: {s_pl:+,.2f} ({s_pct_pl:+.2f}%)", color=c_s_pl, fontsize=45, ha="right", weight="bold")
 
-            # CENTER : TOTAL PIE CHART
             ac = fig4.add_subplot(gs[1]); ac.set_facecolor("#0f172a")
             wedges, texts, autotexts = ac.pie(
                 [v_s_u if v_s_u > 0 else 0.01, v_w_u if v_w_u > 0 else 0.01], 
@@ -242,7 +247,6 @@ else:
             c_t_pl = "#00FF00" if t_pl >= 0 else "#FF0000"
             ac.text(0, -0.3, f"{t_pl:+,.2f} ({t_pct_pl:+.2f}%)", fontsize=40, color=c_t_pl, ha="center", weight="bold")
 
-            # RIGHT : WARRANTS
             ar = fig4.add_subplot(gs[2]); ar.set_facecolor("#0f172a"); ar.axis('off')
             ar.text(0.1, 0.85, "Warrants (GME-WT)", color="#66c2a5", fontsize=50, ha="left", weight="bold")
             ar.text(0.1, 0.65, f"Val: ${v_w_u:,.2f}", color="white", fontsize=45, ha="left", weight="bold")
@@ -251,7 +255,7 @@ else:
             c_w_pl = "#00FF00" if w_pl >= 0 else "#FF0000"
             ar.text(0.1, 0.05, f"P/L: {w_pl:+,.2f} ({w_pct_pl:+.2f}%)", color=c_w_pl, fontsize=45, ha="left", weight="bold")
 
-            st.pyplot(fig4, bbox_inches='tight', pad_inches=0.1)
+            st.pyplot(fig4, bbox_inches='tight', pad_inches=0.1); plt.close(fig4) # Fix duplication
         
         with tab4:
             html_d = f"""<div class='table-wrapper'><table class='ldb-t'>
@@ -263,7 +267,7 @@ else:
             st.markdown(html_d, unsafe_allow_html=True)
             
         with tab5:
-            # --- WEN MOON PIE CHART (SAME PERFECT DESIGN) ---
+            # --- WEN MOON PIE CHART ---
             cw_c = c_w * c_pw_val
             cs_c = c_s * c_gp_val
             c_pl_s = c_v_s - cs_c
@@ -277,7 +281,6 @@ else:
             fig_c4 = plt.figure(figsize=(32, 12)); fig_c4.patch.set_facecolor("#0f172a")
             gs_c = GridSpec(1, 3, width_ratios=[1.2, 1.5, 1.2])
             
-            # LEFT WEN
             al_c = fig_c4.add_subplot(gs_c[0]); al_c.set_facecolor("#0f172a"); al_c.axis('off')
             al_c.text(0.9, 0.85, "Community Shares (GME)", color="#66c2a5", fontsize=50, ha="right", weight="bold")
             al_c.text(0.9, 0.65, f"Val: ${c_v_s:,.2f}", color="white", fontsize=45, ha="right", weight="bold")
@@ -286,7 +289,6 @@ else:
             cc_s_pl = "#00FF00" if c_pl_s >= 0 else "#FF0000"
             al_c.text(0.9, 0.05, f"P/L: {c_pl_s:+,.2f} ({c_s_pct:+.2f}%)", color=cc_s_pl, fontsize=45, ha="right", weight="bold")
 
-            # CENTER WEN
             ac_c = fig_c4.add_subplot(gs_c[1]); ac_c.set_facecolor("#0f172a")
             wedges_c, texts_c, autotexts_c = ac_c.pie(
                 [c_v_s if c_v_s > 0 else 0.01, c_v_w if c_v_w > 0 else 0.01], 
@@ -302,7 +304,6 @@ else:
             cc_t_pl = "#00FF00" if ct_pl >= 0 else "#FF0000"
             ac_c.text(0, -0.3, f"{ct_pl:+,.2f} ({ct_pct:+.2f}%)", fontsize=40, color=cc_t_pl, ha="center", weight="bold")
 
-            # RIGHT WEN
             ar_c = fig_c4.add_subplot(gs_c[2]); ar_c.set_facecolor("#0f172a"); ar_c.axis('off')
             ar_c.text(0.1, 0.85, "Community Warrants", color="#66c2a5", fontsize=50, ha="left", weight="bold")
             ar_c.text(0.1, 0.65, f"Val: ${c_v_w:,.2f}", color="white", fontsize=45, ha="left", weight="bold")
@@ -311,7 +312,7 @@ else:
             cc_w_pl = "#00FF00" if c_pl_w >= 0 else "#FF0000"
             ar_c.text(0.1, 0.05, f"P/L: {c_pl_w:+,.2f} ({c_w_pct:+.2f}%)", color=cc_w_pl, fontsize=45, ha="left", weight="bold")
 
-            st.pyplot(fig_c4, bbox_inches='tight', pad_inches=0.1)
+            st.pyplot(fig_c4, bbox_inches='tight', pad_inches=0.1); plt.close(fig_c4) # Fix duplication
             
         with tab6:
             html_w = f"""<div class='table-wrapper'><table class='ldb-t'>
