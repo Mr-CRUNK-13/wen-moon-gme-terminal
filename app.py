@@ -231,6 +231,7 @@ else:
             fig4 = plt.figure(figsize=(32, 12)); fig4.patch.set_facecolor("#0f172a")
             gs = GridSpec(1, 3, width_ratios=[1.2, 1.5, 1.2])
             
+            # LEFT DATA BLOCK (Neon Green #4ade80)
             al = fig4.add_subplot(gs[0]); al.set_facecolor("#0f172a"); al.axis('off')
             al.text(0.9, 0.85, "GameStop Shares (GME)", color="#4ade80", fontsize=50, ha="right", weight="bold")
             al.text(0.9, 0.65, f"Val: ${v_s_u:,.2f}", color="white", fontsize=45, ha="right", weight="bold")
@@ -239,6 +240,7 @@ else:
             c_s_pl = "#00FF00" if s_pl >= 0 else "#FF0000"
             al.text(0.9, 0.05, f"P/L: {s_pl:+,.2f} ({s_pct_pl:+.2f}%)", color=c_s_pl, fontsize=45, ha="right", weight="bold")
 
+            # CENTER PIE CHART
             ac = fig4.add_subplot(gs[1]); ac.set_facecolor("#0f172a"); ac.axis('equal')
             wedges, texts, autotexts = ac.pie(
                 [v_s_u if v_s_u > 0 else 0.01, v_w_u if v_w_u > 0 else 0.01], 
@@ -254,9 +256,11 @@ else:
             c_t_pl = "#00FF00" if t_pl >= 0 else "#FF0000"
             ac.text(0, -0.3, f"{t_pl:+,.2f} ({t_pct_pl:+.2f}%)", fontsize=35, color=c_t_pl, ha="center", weight="bold")
 
-            ac.annotate("", xy=(-1.45, 0), xytext=(-2.3, 0), arrowprops=dict(arrowstyle="-", color="#4ade80", lw=5))
-            ac.annotate("", xy=(1.45, 0), xytext=(2.3, 0), arrowprops=dict(arrowstyle="-", color="#0f5132", lw=5))
+            # PERFECT CONNECTING ARROWS (MATCHING COLORS)
+            ac.annotate("", xy=(-1.45, 0), xytext=(-2.35, 0), arrowprops=dict(arrowstyle="-", color="#4ade80", lw=6))
+            ac.annotate("", xy=(1.45, 0), xytext=(2.35, 0), arrowprops=dict(arrowstyle="-", color="#0f5132", lw=6))
 
+            # RIGHT DATA BLOCK (Dark Green #0f5132)
             ar = fig4.add_subplot(gs[2]); ar.set_facecolor("#0f172a"); ar.axis('off')
             ar.text(0.1, 0.85, "Warrants (GME-WT)", color="#0f5132", fontsize=50, ha="left", weight="bold")
             ar.text(0.1, 0.65, f"Val: ${v_w_u:,.2f}", color="white", fontsize=45, ha="left", weight="bold")
@@ -290,6 +294,7 @@ else:
             fig_c4 = plt.figure(figsize=(32, 12)); fig_c4.patch.set_facecolor("#0f172a")
             gs_c = GridSpec(1, 3, width_ratios=[1.2, 1.5, 1.2])
             
+            # LEFT COMMUNITY BLOCK (#4ade80)
             al_c = fig_c4.add_subplot(gs_c[0]); al_c.set_facecolor("#0f172a"); al_c.axis('off')
             al_c.text(0.9, 0.85, "Community Shares (GME)", color="#4ade80", fontsize=50, ha="right", weight="bold")
             al_c.text(0.9, 0.65, f"Val: ${c_v_s:,.2f}", color="white", fontsize=45, ha="right", weight="bold")
@@ -298,6 +303,7 @@ else:
             cc_s_pl = "#00FF00" if c_pl_s >= 0 else "#FF0000"
             al_c.text(0.9, 0.05, f"P/L: {c_pl_s:+,.2f} ({c_s_pct:+.2f}%)", color=cc_s_pl, fontsize=45, ha="right", weight="bold")
 
+            # CENTER COMMUNITY PIE
             ac_c = fig_c4.add_subplot(gs_c[1]); ac_c.set_facecolor("#0f172a"); ac_c.axis('equal')
             wedges_c, texts_c, autotexts_c = ac_c.pie(
                 [c_v_s if c_v_s > 0 else 0.01, c_v_w if c_v_w > 0 else 0.01], 
@@ -313,9 +319,11 @@ else:
             cc_t_pl = "#00FF00" if ct_pl >= 0 else "#FF0000"
             ac_c.text(0, -0.3, f"{ct_pl:+,.2f} ({ct_pct:+.2f}%)", fontsize=35, color=cc_t_pl, ha="center", weight="bold")
 
-            ac_c.annotate("", xy=(-1.45, 0), xytext=(-2.3, 0), arrowprops=dict(arrowstyle="-", color="#4ade80", lw=5))
-            ac_c.annotate("", xy=(1.45, 0), xytext=(2.3, 0), arrowprops=dict(arrowstyle="-", color="#0f5132", lw=5))
+            # PERFECT COMMUNITY ARROWS
+            ac_c.annotate("", xy=(-1.45, 0), xytext=(-2.35, 0), arrowprops=dict(arrowstyle="-", color="#4ade80", lw=6))
+            ac_c.annotate("", xy=(1.45, 0), xytext=(2.35, 0), arrowprops=dict(arrowstyle="-", color="#0f5132", lw=6))
 
+            # RIGHT COMMUNITY BLOCK (#0f5132)
             ar_c = fig_c4.add_subplot(gs_c[2]); ar_c.set_facecolor("#0f172a"); ar_c.axis('off')
             ar_c.text(0.1, 0.85, "Community Warrants", color="#0f5132", fontsize=50, ha="left", weight="bold")
             ar_c.text(0.1, 0.65, f"Val: ${c_v_w:,.2f}", color="white", fontsize=45, ha="left", weight="bold")
@@ -363,31 +371,54 @@ else:
             avg_w_per_person = c_w / total_holders if total_holders > 0 else 0
 
             html_summary = f"""
-            <div style="background-color: #0f172a; padding: 20px; border-radius: 10px; border: 1px solid #0259c7;">
-                <h2 style="text-align: center; color: #00FF00; margin-bottom: 30px; animation: neon-text 1.5s infinite;">🌍 WEN MOON COMMUNITY SUMMARY</h2>
+            <!DOCTYPE html>
+            <html>
+            <head>
+            <style>
+                @keyframes neon-text {{ 0%, 100% {{ color: white; text-shadow: none; }} 50% {{ color: #00FF00; text-shadow: 0 0 15px #00FF00; }} }}
+                body {{ background-color: #050505; color: white; font-family: sans-serif; }}
+                .summary-container {{ background-color: #0f172a; padding: 20px; border-radius: 10px; border: 1px solid #0259c7; max-width: 1200px; margin: 0 auto; }}
+                .summary-title {{ text-align: center; color: #00FF00; margin-bottom: 30px; animation: neon-text 1.5s infinite; font-size: 32px; }}
+                .total-holders {{ text-align: center; margin-bottom: 30px; }}
+                .total-holders h3 {{ color: #66c2a5; margin: 0; font-size: 24px; }}
+                .total-holders p {{ font-size: 48px; color: white; font-weight: bold; margin: 10px 0 0 0; }}
+                .stats-grid {{ display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 30px; gap: 20px; }}
+                .stat-box {{ background-color: #001f3f; padding: 20px; border-radius: 8px; border: 1px solid #0259c7; flex: 1 1 300px; text-align: center; }}
+                .stat-box h4 {{ margin-top: 0; font-size: 22px; }}
+                .stat-box p {{ margin: 10px 0; font-size: 18px; }}
+                .stat-box strong {{ font-size: 24px; }}
+                .recent-title {{ text-align: center; color: #66c2a5; margin-bottom: 20px; font-size: 24px; }}
+                .ldb-t {{ width: 100%; border-collapse: collapse; color: white; font-family: monospace; text-align: center; }}
+                .ldb-t th {{ background: #001f3f; color: #00FF00; padding: 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }}
+                .ldb-t td {{ background: #0f172a; padding: 12px; border-bottom: 1px solid #0259c7; white-space: nowrap; }}
+            </style>
+            </head>
+            <body>
+            <div class="summary-container">
+                <h2 class="summary-title">🌍 WEN MOON COMMUNITY SUMMARY</h2>
                 
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <h3 style="color: #66c2a5; margin: 0;">TOTAL HOLDERS</h3>
-                    <p style="font-size: 40px; color: white; font-weight: bold; margin: 0;">{total_holders:,}</p>
+                <div class="total-holders">
+                    <h3>TOTAL HOLDERS</h3>
+                    <p>{total_holders:,}</p>
                 </div>
 
-                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 30px;">
-                    <div style="background-color: #001f3f; padding: 15px; border-radius: 8px; border: 1px solid #0259c7; min-width: 300px; margin: 10px; text-align: center;">
-                        <h4 style="color: #4ade80; margin-top: 0;">GME SHARES</h4>
-                        <p style="margin: 5px; font-size: 18px;">Total Shares: <strong style="color: white; font-size: 24px;">{c_s:,}</strong></p>
-                        <p style="margin: 5px; font-size: 18px;">Avg Purchase Price: <strong style="color: white;">${c_gp_val:.2f}</strong></p>
-                        <p style="margin: 5px; font-size: 18px;">Avg Shares / Person: <strong style="color: white;">{avg_s_per_person:,.0f}</strong></p>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h4 style="color: #4ade80;">GME SHARES</h4>
+                        <p>Total Shares: <strong style="color: white;">{c_s:,}</strong></p>
+                        <p>Avg Purchase Price: <strong style="color: white;">${c_gp_val:.2f}</strong></p>
+                        <p>Avg Shares / Person: <strong style="color: white;">{avg_s_per_person:,.0f}</strong></p>
                     </div>
-                    <div style="background-color: #001f3f; padding: 15px; border-radius: 8px; border: 1px solid #0259c7; min-width: 300px; margin: 10px; text-align: center;">
-                        <h4 style="color: #0f5132; margin-top: 0;">GME WARRANTS</h4>
-                        <p style="margin: 5px; font-size: 18px;">Total Warrants: <strong style="color: white; font-size: 24px;">{c_w:,}</strong></p>
-                        <p style="margin: 5px; font-size: 18px;">Avg Purchase Price: <strong style="color: white;">${c_pw_val:.3f}</strong></p>
-                        <p style="margin: 5px; font-size: 18px;">Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
+                    <div class="stat-box">
+                        <h4 style="color: #0f5132;">GME WARRANTS</h4>
+                        <p>Total Warrants: <strong style="color: white;">{c_w:,}</strong></p>
+                        <p>Avg Purchase Price: <strong style="color: white;">${c_pw_val:.3f}</strong></p>
+                        <p>Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
                     </div>
                 </div>
 
-                <h3 style="text-align: center; color: #66c2a5; margin-bottom: 20px;">📅 RECENT ACTIVITY (COMMUNITY)</h3>
-                <div class='table-wrapper'>
+                <h3 class="recent-title">📅 RECENT ACTIVITY (COMMUNITY)</h3>
+                <div style="overflow-x: auto;">
                     <table class='ldb-t' style="margin: 0 auto; width: 100%;">
                         <tr>
                             <th>Asset</th>
@@ -407,7 +438,11 @@ else:
                     </table>
                 </div>
             </div>
+            </body>
+            </html>
             """
-            st.markdown(html_summary, unsafe_allow_html=True)
+            # UTILISATION DE COMPONENTS.HTML POUR FORCER LE RENDU
+            components.html(html_summary, height=900, scrolling=True)
 
     render_content()
+                    
