@@ -12,7 +12,6 @@ from datetime import datetime
 st.set_page_config(page_title="GME TERMINAL", page_icon="Screenshot_20260216_163106_Discord.jpg", layout="wide", initial_sidebar_state="collapsed")
 
 if 'osq' not in st.session_state: 
-    # AJOUT DE RECENT_S et RECENT_W POUR LE TRACKING LOCAL
     st.session_state.update(osq=0, osp=0.0, owq=0, owp=0.0, ape_name="", launched=False, show_leaderboard=False, recent_s=0, recent_w=0)
 if 'in_nsq' not in st.session_state:
     st.session_state.update(in_nsq=0, in_nsp=0.0, in_nwq=0, in_nwp=0.0)
@@ -105,12 +104,12 @@ def update_portfolio_logic():
         fq = st.session_state.osq + nsq
         if fq > 0: st.session_state.osp = ((st.session_state.osq * st.session_state.osp) + (nsq * nsp)) / fq
         st.session_state.osq = fq
-        st.session_state.recent_s += nsq # TRACK NEW SHARES
+        st.session_state.recent_s += nsq 
         
         fwq = st.session_state.owq + nwq
         if fwq > 0: st.session_state.owp = ((st.session_state.owq * st.session_state.owp) + (nwq * nwp)) / fwq
         st.session_state.owq = fwq
-        st.session_state.recent_w += nwq # TRACK NEW WARRANTS
+        st.session_state.recent_w += nwq 
         
         st.session_state.in_nsq, st.session_state.in_nsp = 0, 0.0
         st.session_state.in_nwq, st.session_state.in_nwp = 0, 0.0
@@ -181,7 +180,17 @@ else:
             return p_n, p_w, prev_n, prev_w, data['GME'], data['GME-WT']
         except: return 24.50, 4.30, 24.0, 4.0, pd.Series(), pd.Series()
 
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["📊 GME", "📈 WARRANT", "💎 PORTFOLIO", "📋 DATA", "🌘 WEN MOON", "🗃️ WEN MOON DATA", "🏆 LEADERBOARD", "📊 WEN MOON SUMMARY"])
+    # --- NOUVEAU MOTEUR DONNÉES PRO (Cache 30 minutes) ---
+    @st.cache_data(ttl=1800)
+    def fetch_advanced_pro_data():
+        try:
+            gme_info = yf.Ticker("GME").info
+            return gme_info
+        except:
+            return {}
+
+    # --- AJOUT DU 9ÈME ONGLET ---
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["📊 GME", "📈 WARRANT", "💎 PORTFOLIO", "📋 DATA", "🌘 WEN MOON", "🗃️ WEN MOON DATA", "🏆 LEADERBOARD", "📊 WEN MOON SUMMARY", "🧬 GME PRO"])
     
     with tab1: ph1 = st.empty()
     with tab2: ph2 = st.empty()
@@ -191,6 +200,7 @@ else:
     with tab6: ph6 = st.empty()
     with tab7: ph7 = st.empty()
     with tab8: ph8 = st.empty()
+    with tab9: ph9 = st.empty() # LE NOUVEAU CONTENEUR
 
     def draw_live(price, prev, chart):
         pct = ((price - prev) / prev) * 100 if prev > 0 else 0
@@ -223,6 +233,7 @@ else:
     def render_content():
         plt.close('all') 
         p_nsy, p_wt, pr_nsy, pr_wt, ch_gme, ch_wt = fetch_terminal_data()
+        adv_info = fetch_advanced_pro_data() # RÉCUPÉRATION DES DONNÉES PRO
         
         qn, pn = st.session_state.osq, st.session_state.osp
         qw, pw = st.session_state.owq, st.session_state.owp
@@ -384,7 +395,6 @@ else:
             avg_s_per_person = c_s / total_holders if total_holders > 0 else 0
             avg_w_per_person = c_w / total_holders if total_holders > 0 else 0
             
-            # --- RÉCUPÉRATION DU TRAQUEUR D'ACTIVITÉ LOCAL ---
             rec_s = st.session_state.get("recent_s", 0)
             rec_w = st.session_state.get("recent_w", 0)
 
@@ -445,5 +455,52 @@ else:
             </html>
             """
             components.html(html_summary, height=900, scrolling=True)
+
+        # --- LE NOUVEAU DASHBOARD INSTITUTIONNEL INTÉGRÉ SANS TOUCHER AU RESTE ---
+        with ph9.container():
+            def fmt(val, is_pct=False, is_dollar=False):
+                if val == 'N/A' or val is None: return "N/A"
+                if is_pct: return f"{val*100:.2f}%"
+                if is_dollar: return f"${val:,.2f}"
+                return f"{val:,}"
+
+            mcap = adv_info.get('marketCap', 'N/A')
+            shares_out = adv_info.get('sharesOutstanding', 'N/A')
+            float_shares = adv_info.get('floatShares', 'N/A')
+            short_pct = adv_info.get('shortPercentOfFloat', 'N/A')
+            dtc = adv_info.get('shortRatio', 'N/A')
+            insiders = adv_info.get('heldPercentInsiders', 'N/A')
+            institutions = adv_info.get('heldPercentInstitutions', 'N/A')
+            high52 = adv_info.get('fiftyTwoWeekHigh', 'N/A')
+            low52 = adv_info.get('fiftyTwoWeekLow', 'N/A')
+            ma50 = adv_info.get('fiftyDayAverage', 'N/A')
+            ma200 = adv_info.get('twoHundredDayAverage', 'N/A')
+            avg_vol = adv_info.get('averageVolume', 'N/A')
+
+            html_pro = f"""
+            <style>
+                .pro-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px; }}
+                .pro-box {{ background: #0e1621; border: 1px solid #0259c7; border-radius: 8px; padding: 15px; text-align: center; box-shadow: 0 0 10px rgba(2, 89, 199, 0.5); }}
+                .pro-box h4 {{ color: #00FF00; margin: 0 0 10px 0; font-size: 18px; font-family: monospace; text-transform: uppercase; }}
+                .pro-box p {{ color: white; font-size: 24px; font-weight: bold; margin: 0; }}
+                .pro-header {{ text-align: center; color: #00FF00; text-shadow: 0 0 10px #00FF00; font-family: monospace; margin-bottom: 20px; }}
+            </style>
+            <h2 class="pro-header">🧬 GME INSTITUTIONAL DATA</h2>
+            <div class="pro-grid">
+                <div class="pro-box"><h4>Market Cap</h4><p>{fmt(mcap, is_dollar=True)}</p></div>
+                <div class="pro-box"><h4>Shares Outstanding</h4><p>{fmt(shares_out)}</p></div>
+                <div class="pro-box"><h4>Float</h4><p>{fmt(float_shares)}</p></div>
+                <div class="pro-box"><h4>Short % of Float</h4><p>{fmt(short_pct, is_pct=True)}</p></div>
+                <div class="pro-box"><h4>Days to Cover</h4><p>{fmt(dtc)}</p></div>
+                <div class="pro-box"><h4>Held by Insiders</h4><p>{fmt(insiders, is_pct=True)}</p></div>
+                <div class="pro-box"><h4>Held by Institutions</h4><p>{fmt(institutions, is_pct=True)}</p></div>
+                <div class="pro-box"><h4>52 Week High</h4><p>{fmt(high52, is_dollar=True)}</p></div>
+                <div class="pro-box"><h4>52 Week Low</h4><p>{fmt(low52, is_dollar=True)}</p></div>
+                <div class="pro-box"><h4>50 Day MA</h4><p>{fmt(ma50, is_dollar=True)}</p></div>
+                <div class="pro-box"><h4>200 Day MA</h4><p>{fmt(ma200, is_dollar=True)}</p></div>
+                <div class="pro-box"><h4>Avg Volume</h4><p>{fmt(avg_vol)}</p></div>
+            </div>
+            """
+            st.markdown(html_pro, unsafe_allow_html=True)
 
     render_content()
