@@ -190,7 +190,7 @@ else:
     def fetch_advanced_pro_data():
         try:
             gme, wt = yf.Ticker("GME"), yf.Ticker("GME-WT")
-            return gme.info, wt.fast_info, gme.news[:5] if gme.news else []
+            return dict(gme.info), dict(wt.fast_info), gme.news[:5] if gme.news else []
         except: return {}, {}, []
 
     @st.cache_data(ttl=3600)
