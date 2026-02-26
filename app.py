@@ -186,7 +186,7 @@ else:
             return p_n, p_w, prev_n, prev_w, vol_n, vol_w, data['GME'], data['GME-WT']
         except: return 24.50, 4.30, 24.0, 4.0, 0, 0, pd.Series(), pd.Series()
 
-        @st.cache_data(ttl=1800)
+    @st.cache_data(ttl=1800)
     def fetch_advanced_pro_data():
         gme, wt = yf.Ticker("GME"), yf.Ticker("GME-WT")
         try: info_dict = dict(gme.info)
