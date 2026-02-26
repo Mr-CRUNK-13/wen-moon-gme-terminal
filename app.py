@@ -34,7 +34,6 @@ components.html(
     const parent = window.parent.document;
     const head = parent.querySelector('head');
     
-    // Add Neon Blink Animation
     if (!parent.getElementById('neon-style')) {
         const style = parent.createElement('style');
         style.id = 'neon-style';
@@ -42,11 +41,9 @@ components.html(
         head.appendChild(style);
     }
     
-    // Hide the secret Python button visually
     const ps = parent.querySelectorAll('p');
     ps.forEach(p => { if(p.innerText === 'BACK_HOME_SECRET') p.closest('div[data-testid="stButton"]').style.display = 'none'; });
 
-    // PWA Manifest
     if (!parent.querySelector('#pwa-manifest')) {
         head.insertAdjacentHTML('beforeend', '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">');
         const manifest = {"name": "GME TERMINAL", "short_name": "GME", "display": "fullscreen", "background_color": "#050505", "theme_color": "#050505"};
@@ -54,7 +51,6 @@ components.html(
         head.insertAdjacentHTML('beforeend', '<link id="pwa-manifest" rel="manifest" href="' + URL.createObjectURL(blob) + '">');
     }
 
-    // Fullscreen Button
     if (!parent.getElementById('btn-fs')) {
         const btn = parent.createElement('button');
         btn.id = 'btn-fs'; btn.innerText = '⛶';
@@ -66,7 +62,6 @@ components.html(
         parent.body.appendChild(btn);
     }
     
-    // Home Button
     if (!parent.getElementById('btn-home')) {
         const btnHome = parent.createElement('button');
         btnHome.id = 'btn-home'; btnHome.innerText = '🏠';
@@ -181,7 +176,6 @@ else:
             return p_n, p_w, prev_n, prev_w, data['GME'], data['GME-WT']
         except: return 24.50, 4.30, 24.0, 4.0, pd.Series(), pd.Series()
 
-    # TABS RE-NAMED
     tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["📊 GME", "📈 WARRANT", "💎 PORTFOLIO", "📋 DATA", "🌘 WEN MOON", "🗃️ WEN MOON DATA", "🏆 LEADERBOARD", "📊 WEN MOON SUMMARY"])
     
     with tab1: ph1 = st.empty()
@@ -205,7 +199,6 @@ else:
         anim_class = "nuclear-neon" if pct >= 0 else "neon-flash-red"
         icn = f"<div style='animation: {anim_class} 1.5s infinite;'><div style='font-size:{sz}px;'>🚀</div></div>" if pct >= 0 else f"<img src='data:image/jpeg;base64,{get_b64('Screenshot_20260216_163106_Discord.jpg')}' style='height:{sz}px; animation:{anim_class} 1.5s infinite;'>"
         
-        # REMOVED $ SYMBOL FROM SUB-PRICE
         st.markdown(f"""
         <div style='display:flex; justify-content:center; align-items:center; gap:20px; margin-top:30px;'>
             <div style='text-align:right; white-space:nowrap;'>
@@ -223,7 +216,7 @@ else:
 
     @st.fragment(run_every="30s")
     def render_content():
-        plt.close('all') # ULTIMATE CACHE KILLER
+        plt.close('all') 
         p_nsy, p_wt, pr_nsy, pr_wt, ch_gme, ch_wt = fetch_terminal_data()
         
         qn, pn = st.session_state.osq, st.session_state.osp
@@ -262,52 +255,38 @@ else:
             w_pct_pl = (w_pl / w_c * 100) if w_c > 0 else 0
             t_pct_pl = (t_pl / t_c_u * 100) if t_c_u > 0 else 0
 
-            # CALCUL DU CENTRAGE HORIZONTAL (Warrants à droite à 0°, Actions à gauche à 180°)
+            # CALCUL EXACT DU CENTRAGE HORIZONTAL (Warrants à droite, Actions à gauche)
             w_deg = (pct_w / 100) * 360
             start_angle = -(w_deg / 2)
 
-            fig4 = plt.figure(figsize=(32, 12)); fig4.patch.set_facecolor("#0f172a")
-            gs = GridSpec(1, 3, width_ratios=[1.2, 1.5, 1.2])
+            # --- LE CAMEMBERT PARFAIT DE LA TABLETTE ---
+            fig4 = plt.figure(figsize=(32, 18)); fig4.patch.set_facecolor("#0e1621")
+            gs = GridSpec(1, 3, width_ratios=[1, 2.5, 1])
+            plt.subplots_adjust(left=0.05, right=0.95, top=0.9, bottom=0.1)
             
-            # LEFT BLOCK (SHARES -> #00FF00)
-            al = fig4.add_subplot(gs[0]); al.set_facecolor("#0f172a"); al.axis('off')
-            al.text(0.9, 0.85, "GameStop Shares (GME)", color="#00FF00", fontsize=50, ha="right", weight="bold")
-            al.text(0.9, 0.65, f"Val: ${v_s_u:,.2f}", color="white", fontsize=45, ha="right", weight="bold")
-            al.text(0.9, 0.45, f"Qty: {qn:,} | Price: ${p_nsy:.2f}", color="#00FF00", fontsize=45, ha="right", weight="bold")
-            al.text(0.9, 0.25, f"Avg Cost: ${gp:.2f}", color="white", fontsize=45, ha="right", weight="bold")
-            c_s_pl = "#00FF00" if s_pl >= 0 else "#FF0000"
-            al.text(0.9, 0.05, f"P/L: {s_pl:+,.2f} ({s_pct_pl:+.2f}%)", color=c_s_pl, fontsize=45, ha="right", weight="bold")
+            al = fig4.add_subplot(gs[0]); al.set_facecolor("#0e1621"); al.axis('off')
+            al.text(0.9, 0.85, "GameStop Shares (GME)", color="#00FF00", fontsize=84, ha="right", weight="bold")
+            al.text(0.9, 0.70, f"Val: ${v_s_u:,.2f}", color="white", fontsize=63, ha="right", weight="bold")
+            al.text(0.9, 0.55, f"Qty: {qn:,} | Price: ${p_nsy:.2f}", color="#00FF00", fontsize=84, ha="right", weight="bold")
+            al.text(0.9, 0.40, f"Avg Cost: ${gp:.2f}", color="white", fontsize=63, ha="right", weight="bold")
+            al.text(0.9, 0.25, f"P/L: ${s_pl:+,.2f} ({s_pct_pl:+.2f}%)", color="#00FF00" if s_pl>=0 else "#FF0000", fontsize=84, ha="right", weight="bold")
+            al.annotate("", xy=(0.95, 0.5), xytext=(1.28, 0.5), arrowprops=dict(arrowstyle="->", color="#00FF00", lw=20))
 
-            # CENTER PERFECT GIANT PIE (RADIUS DOUBLED TO 5.0)
-            ac = fig4.add_subplot(gs[1]); ac.set_facecolor("#0f172a"); ac.axis('equal')
-            wedges, texts = ac.pie(
-                [val_warrants, val_shares], 
-                colors=["#006400", "#00FF00"], radius=5.0, 
-                wedgeprops=dict(width=1.5, edgecolor="#0f172a"), startangle=start_angle
-            )
-            
-            # TEXTE CENTRAL AJUSTÉ
-            ac.text(0, 0.5, "Total Value:", fontsize=35, color="white", ha="center", va="center")
-            ac.text(0, -0.1, f"${t_v_u:,.2f}", fontsize=65, color="white", ha="center", va="center", weight="bold")
-            c_t_pl = "#00FF00" if t_pl >= 0 else "#FF0000"
-            ac.text(0, -0.8, f"{t_pl:+,.2f} ({t_pct_pl:+.2f}%)", fontsize=40, color=c_t_pl, ha="center", va="center", weight="bold")
+            ac = fig4.add_subplot(gs[1]); ac.set_facecolor("#0e1621"); ac.axis('equal')
+            ac.pie([val_warrants, val_shares], colors=["#006400", "#00FF00"], radius=1.35, wedgeprops=dict(width=0.45, edgecolor="#0e1621"), startangle=start_angle)
+            ac.text(-1.1, 0, f"{pct_s:.0f}%", fontsize=75, color="black", ha="center", va="center", weight="bold")
+            ac.text(1.1, 0, f"{pct_w:.0f}%", fontsize=75, color="black", ha="center", va="center", weight="bold")
+            ac.text(0, 0.15, "Total Value:", fontsize=45, color="white", ha="center", va="center", weight="bold")
+            ac.text(0, -0.05, f"${t_v_u:,.2f}", fontsize=85, color="white", ha="center", va="center", weight="bold")
+            ac.text(0, -0.25, f"${t_pl:+,.2f} ({t_pct_pl:+.2f}%)", fontsize=48, color="#00FF00" if t_pl>=0 else "#FF0000", ha="center", va="center", weight="bold")
 
-            # FLÈCHES ET POURCENTAGES PARFAITEMENT ALIGNÉS
-            ac.text(-6.2, 0.5, f"{pct_s:.0f}%", color="#00FF00", fontsize=55, weight="bold", ha="center", va="bottom")
-            ac.plot([-5.0, -7.5], [0, 0], color="#00FF00", lw=8)
-            
-            ac.text(6.2, 0.5, f"{pct_w:.0f}%", color="#006400", fontsize=55, weight="bold", ha="center", va="bottom")
-            ac.plot([5.0, 7.5], [0, 0], color="#006400", lw=8)
-            ac.set_xlim(-8, 8) # LIMITE ÉLARGIE POUR LE CAMEMBERT GÉANT
-
-            # RIGHT BLOCK (WARRANTS -> #006400)
-            ar = fig4.add_subplot(gs[2]); ar.set_facecolor("#0f172a"); ar.axis('off')
-            ar.text(0.1, 0.85, "Warrants (GME-WT)", color="#006400", fontsize=50, ha="left", weight="bold")
-            ar.text(0.1, 0.65, f"Val: ${v_w_u:,.2f}", color="white", fontsize=45, ha="left", weight="bold")
-            ar.text(0.1, 0.45, f"Qty: {qw:,} | Price: ${p_wt:.2f}", color="#006400", fontsize=45, ha="left", weight="bold")
-            ar.text(0.1, 0.25, f"Avg Cost: ${pw:.3f}", color="white", fontsize=45, ha="left", weight="bold")
-            c_w_pl = "#00FF00" if w_pl >= 0 else "#FF0000"
-            ar.text(0.1, 0.05, f"P/L: {w_pl:+,.2f} ({w_pct_pl:+.2f}%)", color=c_w_pl, fontsize=45, ha="left", weight="bold")
+            ar = fig4.add_subplot(gs[2]); ar.set_facecolor("#0e1621"); ar.axis('off')
+            ar.text(0.1, 0.85, "Warrants (GME-WT)", color="#006400", fontsize=84, ha="left", weight="bold")
+            ar.text(0.1, 0.70, f"Val: ${v_w_u:,.2f}", color="white", fontsize=63, ha="left", weight="bold")
+            ar.text(0.1, 0.55, f"Qty: {qw:,} | Price: ${p_wt:.2f}", color="#006400", fontsize=84, ha="left", weight="bold")
+            ar.text(0.1, 0.40, f"Avg Cost: ${pw:.3f}", color="white", fontsize=63, ha="left", weight="bold")
+            ar.text(0.1, 0.25, f"P/L: ${w_pl:+,.2f} ({w_pct_pl:+.2f}%)", color="#00FF00" if w_pl>=0 else "#FF0000", fontsize=84, ha="left", weight="bold")
+            ar.annotate("", xy=(0.08, 0.5), xytext=(-0.19, 0.5), arrowprops=dict(arrowstyle="->", color="#006400", lw=20))
 
             st.pyplot(fig4, bbox_inches='tight', pad_inches=0.1); plt.close(fig4)
         
@@ -338,47 +317,33 @@ else:
             cw_deg = (cpct_w / 100) * 360
             c_start_angle = -(cw_deg / 2)
 
-            fig_c4 = plt.figure(figsize=(32, 12)); fig_c4.patch.set_facecolor("#0f172a")
-            gs_c = GridSpec(1, 3, width_ratios=[1.2, 1.5, 1.2])
+            fig_c4 = plt.figure(figsize=(32, 18)); fig_c4.patch.set_facecolor("#0e1621")
+            gs_c = GridSpec(1, 3, width_ratios=[1, 2.5, 1])
+            plt.subplots_adjust(left=0.05, right=0.95, top=0.9, bottom=0.1)
             
-            # LEFT COMMUNITY BLOCK (#00FF00)
-            al_c = fig_c4.add_subplot(gs_c[0]); al_c.set_facecolor("#0f172a"); al_c.axis('off')
-            al_c.text(0.9, 0.85, "Community Shares (GME)", color="#00FF00", fontsize=50, ha="right", weight="bold")
-            al_c.text(0.9, 0.65, f"Val: ${c_v_s:,.2f}", color="white", fontsize=45, ha="right", weight="bold")
-            al_c.text(0.9, 0.45, f"Qty: {c_s:,} | Price: ${p_nsy:.2f}", color="#00FF00", fontsize=45, ha="right", weight="bold")
-            al_c.text(0.9, 0.25, f"Avg Cost: ${c_gp_val:.2f}", color="white", fontsize=45, ha="right", weight="bold")
-            cc_s_pl = "#00FF00" if c_pl_s >= 0 else "#FF0000"
-            al_c.text(0.9, 0.05, f"P/L: {c_pl_s:+,.2f} ({c_s_pct:+.2f}%)", color=cc_s_pl, fontsize=45, ha="right", weight="bold")
+            al_c = fig_c4.add_subplot(gs_c[0]); al_c.set_facecolor("#0e1621"); al_c.axis('off')
+            al_c.text(0.9, 0.85, "Community Shares (GME)", color="#00FF00", fontsize=84, ha="right", weight="bold")
+            al_c.text(0.9, 0.70, f"Val: ${c_v_s:,.2f}", color="white", fontsize=63, ha="right", weight="bold")
+            al_c.text(0.9, 0.55, f"Qty: {c_s:,} | Price: ${p_nsy:.2f}", color="#00FF00", fontsize=84, ha="right", weight="bold")
+            al_c.text(0.9, 0.40, f"Avg Cost: ${c_gp_val:.2f}", color="white", fontsize=63, ha="right", weight="bold")
+            al_c.text(0.9, 0.25, f"P/L: ${c_pl_s:+,.2f} ({c_s_pct:+.2f}%)", color="#00FF00" if c_pl_s>=0 else "#FF0000", fontsize=84, ha="right", weight="bold")
+            al_c.annotate("", xy=(0.95, 0.5), xytext=(1.28, 0.5), arrowprops=dict(arrowstyle="->", color="#00FF00", lw=20))
 
-            # CENTER COMMUNITY GIANT PIE
-            ac_c = fig_c4.add_subplot(gs_c[1]); ac_c.set_facecolor("#0f172a"); ac_c.axis('equal')
-            wedges_c, texts_c = ac_c.pie(
-                [cval_w, cval_s], 
-                colors=["#006400", "#00FF00"], radius=5.0, 
-                wedgeprops=dict(width=1.5, edgecolor="#0f172a"), startangle=c_start_angle
-            )
-            
-            ac_c.text(0, 0.5, "WEN MOON Value:", fontsize=35, color="white", ha="center", va="center")
-            ac_c.text(0, -0.1, f"${c_t_v:,.2f}", fontsize=65, color="white", ha="center", va="center", weight="bold")
-            cc_t_pl = "#00FF00" if ct_pl >= 0 else "#FF0000"
-            ac_c.text(0, -0.8, f"{ct_pl:+,.2f} ({ct_pct:+.2f}%)", fontsize=40, color=cc_t_pl, ha="center", va="center", weight="bold")
+            ac_c = fig_c4.add_subplot(gs_c[1]); ac_c.set_facecolor("#0e1621"); ac_c.axis('equal')
+            ac_c.pie([cval_w, cval_s], colors=["#006400", "#00FF00"], radius=1.35, wedgeprops=dict(width=0.45, edgecolor="#0e1621"), startangle=c_start_angle)
+            ac_c.text(-1.1, 0, f"{cpct_s:.0f}%", fontsize=75, color="black", ha="center", va="center", weight="bold")
+            ac_c.text(1.1, 0, f"{cpct_w:.0f}%", fontsize=75, color="black", ha="center", va="center", weight="bold")
+            ac_c.text(0, 0.15, "WEN MOON Value:", fontsize=45, color="white", ha="center", va="center", weight="bold")
+            ac_c.text(0, -0.05, f"${c_t_v:,.2f}", fontsize=85, color="white", ha="center", va="center", weight="bold")
+            ac_c.text(0, -0.25, f"${ct_pl:+,.2f} ({ct_pct:+.2f}%)", fontsize=48, color="#00FF00" if ct_pl>=0 else "#FF0000", ha="center", va="center", weight="bold")
 
-            # PERFECT ALIGNED PERCENTAGES & ARROWS
-            ac_c.text(-6.2, 0.5, f"{cpct_s:.0f}%", color="#00FF00", fontsize=55, weight="bold", ha="center", va="bottom")
-            ac_c.plot([-5.0, -7.5], [0, 0], color="#00FF00", lw=8)
-            
-            ac_c.text(6.2, 0.5, f"{cpct_w:.0f}%", color="#006400", fontsize=55, weight="bold", ha="center", va="bottom")
-            ac_c.plot([5.0, 7.5], [0, 0], color="#006400", lw=8)
-            ac_c.set_xlim(-8, 8)
-
-            # RIGHT COMMUNITY BLOCK (#006400)
-            ar_c = fig_c4.add_subplot(gs_c[2]); ar_c.set_facecolor("#0f172a"); ar_c.axis('off')
-            ar_c.text(0.1, 0.85, "Community Warrants", color="#006400", fontsize=50, ha="left", weight="bold")
-            ar_c.text(0.1, 0.65, f"Val: ${c_v_w:,.2f}", color="white", fontsize=45, ha="left", weight="bold")
-            ar_c.text(0.1, 0.45, f"Qty: {c_w:,} | Price: ${p_wt:.2f}", color="#006400", fontsize=45, ha="left", weight="bold")
-            ar_c.text(0.1, 0.25, f"Avg Cost: ${c_pw_val:.3f}", color="white", fontsize=45, ha="left", weight="bold")
-            cc_w_pl = "#00FF00" if c_pl_w >= 0 else "#FF0000"
-            ar_c.text(0.1, 0.05, f"P/L: {c_pl_w:+,.2f} ({c_w_pct:+.2f}%)", color=cc_w_pl, fontsize=45, ha="left", weight="bold")
+            ar_c = fig_c4.add_subplot(gs_c[2]); ar_c.set_facecolor("#0e1621"); ar_c.axis('off')
+            ar_c.text(0.1, 0.85, "Community Warrants", color="#006400", fontsize=84, ha="left", weight="bold")
+            ar_c.text(0.1, 0.70, f"Val: ${c_v_w:,.2f}", color="white", fontsize=63, ha="left", weight="bold")
+            ar_c.text(0.1, 0.55, f"Qty: {c_w:,} | Price: ${p_wt:.2f}", color="#006400", fontsize=84, ha="left", weight="bold")
+            ar_c.text(0.1, 0.40, f"Avg Cost: ${c_pw_val:.3f}", color="white", fontsize=63, ha="left", weight="bold")
+            ar_c.text(0.1, 0.25, f"P/L: ${c_pl_w:+,.2f} ({c_w_pct:+.2f}%)", color="#00FF00" if c_pl_w>=0 else "#FF0000", fontsize=84, ha="left", weight="bold")
+            ar_c.annotate("", xy=(0.08, 0.5), xytext=(-0.19, 0.5), arrowprops=dict(arrowstyle="->", color="#006400", lw=20))
 
             st.pyplot(fig_c4, bbox_inches='tight', pad_inches=0.1); plt.close(fig_c4)
                 
@@ -416,7 +381,7 @@ else:
             avg_s_per_person = c_s / total_holders if total_holders > 0 else 0
             avg_w_per_person = c_w / total_holders if total_holders > 0 else 0
 
-            # COULEURS SYNCHRONISÉES AVEC LE CAMEMBERT GÉANT
+            # COULEURS PARFAITEMENT SYNCHRONISÉES (GME = #00FF00, Warrants = #006400)
             html_summary = f"""
             <!DOCTYPE html>
             <html>
@@ -430,14 +395,14 @@ else:
                 .total-holders h3 {{ color: #66c2a5; margin: 0; font-size: 24px; }}
                 .total-holders p {{ font-size: 48px; color: white; font-weight: bold; margin: 10px 0 0 0; }}
                 .stats-grid {{ display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 30px; gap: 20px; }}
-                .stat-box {{ background-color: #001f3f; padding: 20px; border-radius: 8px; border: 1px solid #0259c7; flex: 1 1 300px; text-align: center; }}
-                .stat-box h4 {{ margin-top: 0; font-size: 22px; }}
+                .stat-box {{ background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid; flex: 1 1 300px; text-align: center; }}
+                .stat-box h4 {{ margin-top: 0; font-size: 24px; font-weight: bold; }}
                 .stat-box p {{ margin: 10px 0; font-size: 18px; }}
                 .stat-box strong {{ font-size: 24px; }}
                 .recent-title {{ text-align: center; color: #66c2a5; margin-bottom: 20px; font-size: 24px; }}
                 table {{ width: 100%; border-collapse: collapse; font-family: monospace; text-align: center; }}
                 th {{ background: #001f3f; color: #00FF00; padding: 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }}
-                td {{ background: #0f172a; padding: 12px; border-bottom: 1px solid #0259c7; white-space: nowrap; }}
+                td {{ background: #0e1621; padding: 12px; border-bottom: 1px solid #0259c7; white-space: nowrap; font-size: 18px; }}
             </style>
             </head>
             <body>
