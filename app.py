@@ -214,12 +214,11 @@ else:
         earn_dates = safe_get('earnings_dates', pd.DataFrame())
         return opts, fin, bs, cf, ins, earn_dates
 
-        except: return (), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
-
     tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12, tab13, tab14, tab15 = st.tabs([
         "📊 GME", "📈 WARRANT", "💎 PORTFOLIO", "📋 DATA", "🌘 WEN MOON", "🗃️ WM DATA", "🏆 LEADERBOARD", "📊 SUMMARY", 
         "🧬 GME PRO", "⛓️ OPTIONS CHAIN", "🏦 FINANCIALS", "🕵️ INSIDERS", "📈 PRO CHARTS", "🌐 WEB PORTALS", "🐦 LIVE ALERTS"
     ])
+
     
     with tab1: ph1 = st.empty()
     with tab2: ph2 = st.empty()
