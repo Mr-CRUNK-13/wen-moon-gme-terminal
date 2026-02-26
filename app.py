@@ -545,7 +545,7 @@ else:
 
             ptab1, ptab2, ptab3 = st.tabs(["🏛️ GME FUNDAMENTALS", "📜 WARRANTS DATA", "📰 LATEST NEWS"])
             
-            with ptab1:
+                        with ptab1:
                 html_gme = f"""
                 <style>
                     .pro-g {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px; }}
@@ -556,12 +556,19 @@ else:
                 <div class="pro-g">
                     <div class="pb"><h4>Market Cap</h4><p>{fmt(adv_info.get('marketCap'), is_dol=True)}</p></div>
                     <div class="pb"><h4>Shares Outstanding</h4><p>{fmt(adv_info.get('sharesOutstanding'))}</p></div>
+                    <div class="pb"><h4>Total Revenue</h4><p>{fmt(adv_info.get('totalRevenue'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Revenue Per Share</h4><p>{fmt(adv_info.get('revenuePerShare'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Trailing EPS</h4><p>{fmt(adv_info.get('trailingEps'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Forward EPS</h4><p>{fmt(adv_info.get('forwardEps'), is_dol=True)}</p></div>
                     <div class="pb"><h4>Short % of Float</h4><p>{fmt(adv_info.get('shortPercentOfFloat'), is_pct=True)}</p></div>
                     <div class="pb"><h4>Days to Cover</h4><p>{fmt(adv_info.get('shortRatio'))}</p></div>
                     <div class="pb"><h4>Held by Insiders</h4><p>{fmt(adv_info.get('heldPercentInsiders'), is_pct=True)}</p></div>
                     <div class="pb"><h4>Held by Institutions</h4><p>{fmt(adv_info.get('heldPercentInstitutions'), is_pct=True)}</p></div>
+                    <div class="pb"><h4>52 Week High</h4><p>{fmt(adv_info.get('fiftyTwoWeekHigh'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>52 Week Low</h4><p>{fmt(adv_info.get('fiftyTwoWeekLow'), is_dol=True)}</p></div>
                 </div>"""
                 st.markdown(html_gme, unsafe_allow_html=True)
+
                 
             with ptab2:
                 wt_vol = wt_info.get('lastVolume', wt_info.get('volume', 'N/A'))
