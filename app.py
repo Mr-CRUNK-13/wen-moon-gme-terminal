@@ -113,7 +113,6 @@ def update_portfolio_logic():
         
         st.session_state.in_nsq, st.session_state.in_nsp = 0, 0.0
         st.session_state.in_nwq, st.session_state.in_nwp = 0, 0.0
-
 # --- 2. HOME SCREEN ---
 if not st.session_state.launched and not st.session_state.show_leaderboard:
     wen_b64 = get_b64('Screenshot_20260216_163106_Discord.jpg')
@@ -150,21 +149,21 @@ elif st.session_state.get('show_leaderboard', False):
     lb_tabs = st.tabs(["🌍 GENERAL", "📅 MONTHLY", "📆 WEEKLY"])
     try:
         data = yf.download(["GME", "GME-WT"], period="1d", interval="2m", prepost=True, progress=False)['Close']
-        live_p_n, live_p_w = float(data['GME'].dropna().iloc[-1]), float(data['GME-WT'].dropna().iloc[-1])
+        live_p_n = float(data['GME'].dropna().iloc[-1]) if not data['GME'].dropna().empty else 24.50
+        live_p_w = float(data['GME-WT'].dropna().iloc[-1]) if not data['GME-WT'].dropna().empty else 4.30
     except: live_p_n, live_p_w = 24.50, 4.30
     u_name, u_sq, u_wq = st.session_state.get("ape_name", "Anonymous"), st.session_state.get("osq", 0), st.session_state.get("owq", 0)
-    u_spru, u_wpru = st.session_state.get("osp", 0.0), st.session_state.get("owp", 0.0)
     u_tv = (u_sq * live_p_n) + (u_wq * live_p_w)
-    real_db = [{"name": u_name, "tv": u_tv, "sq": u_sq, "wq": u_wq, "spru": u_spru, "wpru": u_wpru}]
+    real_db = [{"name": u_name, "tv": u_tv, "sq": u_sq, "wq": u_wq, "spru": st.session_state.get("osp", 0.0), "wpru": st.session_state.get("owp", 0.0)}]
     for t in lb_tabs:
         with t:
             html = """<div class='table-wrapper'><table class='ldb-t'><tr><th class='col-rank'>Rank</th><th class='col-name'>Nickname</th><th class='col-val'>Total Value</th><th class='col-qty'>Shares</th><th class='col-qty'>Warrants</th><th>Avg S</th><th>Avg W</th><th>S%</th><th>W%</th></tr>"""
             for i, r in enumerate(real_db):
                 rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else f"{i+1}"
-                rc, s_pct, w_pct = ("podium" if i < 3 else ""), (r["sq"]*live_p_n / r["tv"] * 100 if r["tv"] > 0 else 0), (r["wq"]*live_p_w / r["tv"] * 100 if r["tv"] > 0 else 0)
-                sc, wc = (f"${r['spru']:.3f}" if r['spru']>0 else "N/A"), (f"${r['wpru']:.3f}" if r['wpru']>0 else "N/A")
-                html += f"<tr class='{rc}'><td>{rank_str}</td><td>{r['name']}</td><td>${r['tv']:,.2f}</td><td>{r['sq']:,}</td><td>{r['wq']:,}</td><td>{sc}</td><td>{wc}</td><td>{s_pct:.1f}%</td><td>{w_pct:.1f}%</td></tr>"
-            html += "</table></div>"; st.markdown(html, unsafe_allow_html=True)
+                s_pct = (r["sq"]*live_p_n / r["tv"] * 100 if r["tv"] > 0 else 0)
+                w_pct = (r["wq"]*live_p_w / r["tv"] * 100 if r["tv"] > 0 else 0)
+                html += f"<tr class='{'podium' if i<3 else ''}'><td>{rank_str}</td><td>{r['name']}</td><td>${r['tv']:,.2f}</td><td>{r['sq']:,}</td><td>{r['wq']:,}</td><td>${r['spru']:.3f}</td><td>${r['wpru']:.3f}</td><td>{s_pct:.1f}%</td><td>{w_pct:.1f}%</td></tr>"
+            st.markdown(html + "</table></div>", unsafe_allow_html=True)
 
 # --- 3. TERMINAL & LIVE ENGINE ---
 else:
@@ -173,24 +172,44 @@ else:
         try:
             ts = ["GME", "GME-WT"]
             data = yf.download(ts, period="1d", interval="2m", prepost=True, progress=False)['Close']
-            p_n = float(data['GME'].dropna().iloc[-1])
-            p_w = float(data['GME-WT'].dropna().iloc[-1])
-            prev_n = float(yf.Ticker("GME").fast_info['previousClose'])
-            prev_w = float(yf.Ticker("GME-WT").fast_info['previousClose'])
-            return p_n, p_w, prev_n, prev_w, data['GME'], data['GME-WT']
-        except: return 24.50, 4.30, 24.0, 4.0, pd.Series(), pd.Series()
+            p_n = float(data['GME'].dropna().iloc[-1]) if not data['GME'].dropna().empty else 24.50
+            p_w = float(data['GME-WT'].dropna().iloc[-1]) if not data['GME-WT'].dropna().empty else 4.30
+            
+            t_n, t_w = yf.Ticker("GME"), yf.Ticker("GME-WT")
+            prev_n = float(t_n.fast_info.get('previousClose', p_n))
+            prev_w = float(t_w.fast_info.get('previousClose', p_w))
+            
+            # --- FETCHING DAILY VOLUME HERE ---
+            vol_n = int(t_n.fast_info.get('lastVolume', 0))
+            vol_w = int(t_w.fast_info.get('lastVolume', 0))
+            
+            return p_n, p_w, prev_n, prev_w, vol_n, vol_w, data['GME'], data['GME-WT']
+        except: return 24.50, 4.30, 24.0, 4.0, 0, 0, pd.Series(), pd.Series()
 
-    # --- NOUVEAU MOTEUR DONNÉES PRO (Cache 30 minutes) ---
     @st.cache_data(ttl=1800)
     def fetch_advanced_pro_data():
         try:
-            gme_info = yf.Ticker("GME").info
-            return gme_info
-        except:
-            return {}
+            gme, wt = yf.Ticker("GME"), yf.Ticker("GME-WT")
+            return gme.info, wt.fast_info, gme.news[:5] if gme.news else []
+        except: return {}, {}, []
 
-    # --- AJOUT DU 9ÈME ONGLET ---
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["📊 GME", "📈 WARRANT", "💎 PORTFOLIO", "📋 DATA", "🌘 WEN MOON", "🗃️ WEN MOON DATA", "🏆 LEADERBOARD", "📊 WEN MOON SUMMARY", "🧬 GME PRO"])
+    @st.cache_data(ttl=3600)
+    def fetch_financials_and_options():
+        try:
+            tk = yf.Ticker("GME")
+            opts = tk.options
+            fin = tk.financials
+            bs = tk.balance_sheet
+            cf = tk.cashflow
+            ins = tk.insider_transactions
+            return opts, fin, bs, cf, ins
+        except: return (), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
+
+    # THE 15 TITAN TABS
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12, tab13, tab14, tab15 = st.tabs([
+        "📊 GME", "📈 WARRANT", "💎 PORTFOLIO", "📋 DATA", "🌘 WEN MOON", "🗃️ WM DATA", "🏆 LEADERBOARD", "📊 SUMMARY", 
+        "🧬 GME PRO", "⛓️ OPTIONS CHAIN", "🏦 FINANCIALS", "🕵️ INSIDERS", "📈 PRO CHARTS", "🌐 WEB PORTALS", "🐦 LIVE ALERTS"
+    ])
     
     with tab1: ph1 = st.empty()
     with tab2: ph2 = st.empty()
@@ -200,9 +219,66 @@ else:
     with tab6: ph6 = st.empty()
     with tab7: ph7 = st.empty()
     with tab8: ph8 = st.empty()
-    with tab9: ph9 = st.empty() # LE NOUVEAU CONTENEUR
+    with tab9: ph9 = st.empty()
+    with tab10: ph10 = st.empty()
+    with tab11: ph11 = st.empty()
+    with tab12: ph12 = st.empty()
 
-    def draw_live(price, prev, chart):
+    # --- TAB 13 : PRO CHARTS (Static) ---
+    with tab13:
+        st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>📈 ADVANCED CHARTS TERMINAL</h2>", unsafe_allow_html=True)
+        t_chart1, t_chart2 = st.tabs(["🇺🇸 GME (TradingView Pro)", "📜 GME-WT (Live Tracker)"])
+        with t_chart1:
+            tv_html = """
+            <div class="tradingview-widget-container" style="height: 700px; width: 100%;">
+              <div id="tradingview_gme" style="height: 100%; width: 100%;"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+              <script type="text/javascript">
+              new TradingView.widget({
+                "autosize": true, "symbol": "NYSE:GME", "interval": "D", "timezone": "Etc/UTC",
+                "theme": "dark", "style": "1", "locale": "en", "enable_publishing": false,
+                "backgroundColor": "#050505", "gridColor": "#1f2937", "hide_top_toolbar": false,
+                "hide_legend": false, "save_image": false, "container_id": "tradingview_gme",
+                "toolbar_bg": "#0f172a"
+              });
+              </script>
+            </div>"""
+            components.html(tv_html, height=720)
+        with t_chart2:
+            ph13_wt = st.empty()
+
+    # --- TAB 14 : WEB PORTALS (Static) ---
+    with tab14:
+        st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🌐 INVESTOR PORTALS</h2>", unsafe_allow_html=True)
+        w_tab1, w_tab2, w_tab3, w_tab4, w_tab5 = st.tabs(["👔 GameStop Investors", "📊 ChartExchange", "🎀 RedStripeTie", "🐋 Unusual Whales", "🦍 r/Superstonk"])
+        with w_tab1:
+            st.components.v1.iframe("https://investor.gamestop.com/", height=700, scrolling=True)
+            st.markdown("<a href='https://investor.gamestop.com/' target='_blank' style='color:#00FF00; display:block; text-align:center; margin-top:10px; font-weight:bold;'>👉 OPEN GAMESTOP INVESTORS</a>", unsafe_allow_html=True)
+        with w_tab2:
+            st.components.v1.iframe("https://chartexchange.com/symbol/nyse-gme/borrow-fee/", height=700, scrolling=True)
+            st.markdown("<a href='https://chartexchange.com/symbol/nyse-gme/borrow-fee/' target='_blank' style='color:#00FF00; display:block; text-align:center; margin-top:10px; font-weight:bold;'>👉 OPEN CHARTEXCHANGE (BORROW FEE)</a>", unsafe_allow_html=True)
+        with w_tab3:
+            st.markdown("<div style='text-align:center; padding:50px; background:#0f172a; border:1px solid #00FF00; border-radius:10px;'><h3 style='color:white;'>🎀 RED STRIPE TIE</h3><p style='color:#ccc; font-size:18px;'>Direct access to community data.</p><a href='https://redstripetie.com/' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN SITE</a></div>", unsafe_allow_html=True)
+        with w_tab4:
+            st.markdown("<div style='text-align:center; padding:50px; background:#0f172a; border:1px solid #00FF00; border-radius:10px;'><h3 style='color:white;'>🐋 UNUSUAL WHALES (OPTIONS FLOW)</h3><p style='color:#ccc; font-size:18px;'>Track options market activity.</p><a href='https://unusualwhales.com/stock/GME' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN SITE</a></div>", unsafe_allow_html=True)
+        with w_tab5:
+            st.markdown("<div style='text-align:center; padding:50px; background:#0f172a; border:1px solid #00FF00; border-radius:10px;'><h3 style='color:white;'>🦍 r/SUPERSTONK</h3><p style='color:#ccc; font-size:18px;'>The heart of the GME community.</p><a href='https://www.reddit.com/r/Superstonk/' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN REDDIT</a></div>", unsafe_allow_html=True)
+
+    # --- TAB 15 : LIVE ALERTS (Twitter X - Static) ---
+    with tab15:
+        st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🐦 X LIVE ALERTS</h2>", unsafe_allow_html=True)
+        x_tab1, x_tab2, x_tab3, x_tab4, x_tab5, x_tab6 = st.tabs(["👑 Ryan Cohen", "🐱 Roaring Kitty", "📉 Michael Burry", "🎮 GameStop", "🐰 Buck", "🃏 PowerPacks"])
+        
+        def x_widget(handle):
+            return f"""<div style="background:#000; overflow-y:scroll; height:700px;"><a class="twitter-timeline" data-theme="dark" href="https://twitter.com/{handle}?ref_src=twsrc%5Etfw">Tweets by {handle}</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>"""
+        
+        with x_tab1: components.html(x_widget("ryancohen"), height=720)
+        with x_tab2: components.html(x_widget("TheRoaringKitty"), height=720)
+        with x_tab3: components.html(x_widget("michaeljburry"), height=720)
+        with x_tab4: components.html(x_widget("GameStop"), height=720)
+        with x_tab5: components.html(x_widget("buckthebunny"), height=720)
+        with x_tab6: components.html(x_widget("PowerPacks"), height=720)
+    def draw_live(price, prev, chart, vol=0):
         pct = ((price - prev) / prev) * 100 if prev > 0 else 0
         diff, clr = price - prev, ("#00FF00" if price >= prev else "#FF0000")
         price_str = f"{price:.2f}"
@@ -227,13 +303,16 @@ else:
         if not chart.empty:
             fig, ax = plt.subplots(figsize=(10, 2.5), facecolor='black'); ax.set_facecolor('black')
             v = chart.dropna().values
-            ax.bar(np.arange(len(v)), v - np.min(v)*0.99, bottom=np.min(v)*0.99, color=clr, width=0.8); ax.axis('off'); st.pyplot(fig); plt.close(fig)
+            ax.bar(np.arange(len(v)), v - np.min(v)*0.99, bottom=np.min(v)*0.99, color=clr, width=0.8); ax.axis('off')
+            st.pyplot(fig, bbox_inches='tight', pad_inches=0); plt.close(fig)
+            st.markdown(f"<p style='text-align:center; color:#888; font-family:monospace; font-size:18px; margin-top:5px; margin-bottom:20px;'>TODAY'S VOLUME: {vol:,}</p>", unsafe_allow_html=True)
 
     @st.fragment(run_every="30s")
     def render_content():
         plt.close('all') 
-        p_nsy, p_wt, pr_nsy, pr_wt, ch_gme, ch_wt = fetch_terminal_data()
-        adv_info = fetch_advanced_pro_data() # RÉCUPÉRATION DES DONNÉES PRO
+        p_nsy, p_wt, pr_nsy, pr_wt, vol_n, vol_w, ch_gme, ch_wt = fetch_terminal_data()
+        adv_info, wt_info, gme_news = fetch_advanced_pro_data()
+        opts, fin, bs, cf, ins = fetch_financials_and_options()
         
         qn, pn = st.session_state.osq, st.session_state.osp
         qw, pw = st.session_state.owq, st.session_state.owp
@@ -245,6 +324,7 @@ else:
         t_v_u = v_s_u + v_w_u
         t_c_u = (qn * gp) + (qw * pw)
 
+        # --- COMMUNITY SIMULATION ---
         c_s, c_w = qn, qw
         c_gp_val = gp if qn > 0 else 0.0
         c_pw_val = pw if qw > 0 else 0.0
@@ -254,8 +334,9 @@ else:
         c_t_v = c_v_s + c_v_w
         c_t_c = (c_s * c_gp_val) + (c_w * c_pw_val)
 
-        with ph1.container(): draw_live(p_nsy, pr_nsy, ch_gme)
-        with ph2.container(): draw_live(p_wt, pr_wt, ch_wt)
+        with ph1.container(): draw_live(p_nsy, pr_nsy, ch_gme, vol_n)
+        with ph2.container(): draw_live(p_wt, pr_wt, ch_wt, vol_w)
+
         with ph3.container():
             s_c = qn * gp
             w_c = qw * pw
@@ -312,7 +393,6 @@ else:
             <tr class='podium'><td>TOTAL</td><td></td><td></td><td></td><td>${t_c_u:,.2f}</td><td>${t_v_u:,.2f}</td><td style="color:{'#00FF00' if t_pl>=0 else '#FF0000'};">${t_pl:+,.2f} ({t_pct_pl:+.2f}%)</td><td>100%</td></tr>
             </table></div>"""
             st.markdown(html_d, unsafe_allow_html=True)
-                
         with ph5.container():
             cw_c = c_w * c_pw_val
             cs_c = c_s * c_gp_val
@@ -394,113 +474,161 @@ else:
             total_holders = len(real_db)
             avg_s_per_person = c_s / total_holders if total_holders > 0 else 0
             avg_w_per_person = c_w / total_holders if total_holders > 0 else 0
-            
-            rec_s = st.session_state.get("recent_s", 0)
-            rec_w = st.session_state.get("recent_w", 0)
+            rec_s, rec_w = st.session_state.get("recent_s", 0), st.session_state.get("recent_w", 0)
 
             html_summary = f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-            <style>
-                @keyframes neon-text {{ 0%, 100% {{ color: white; text-shadow: none; }} 50% {{ color: #00FF00; text-shadow: 0 0 15px #00FF00; }} }}
-                body {{ background-color: #050505; color: white; font-family: sans-serif; margin: 0; padding: 0; }}
-                .summary-container {{ background-color: #0f172a; padding: 20px; border-radius: 10px; border: 1px solid #0259c7; }}
-                .summary-title {{ text-align: center; color: #00FF00; margin-bottom: 30px; animation: neon-text 1.5s infinite; font-size: 32px; }}
-                .total-holders {{ text-align: center; margin-bottom: 30px; }}
-                .total-holders h3 {{ color: #66c2a5; margin: 0; font-size: 24px; }}
-                .total-holders p {{ font-size: 48px; color: white; font-weight: bold; margin: 10px 0 0 0; }}
-                .stats-grid {{ display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 30px; gap: 20px; }}
-                .stat-box {{ background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid; flex: 1 1 300px; text-align: center; }}
-                .stat-box h4 {{ margin-top: 0; font-size: 24px; font-weight: bold; }}
-                .stat-box p {{ margin: 10px 0; font-size: 18px; }}
-                .stat-box strong {{ font-size: 24px; }}
-                .recent-title {{ text-align: center; color: #66c2a5; margin-bottom: 20px; font-size: 24px; }}
-                table {{ width: 100%; border-collapse: collapse; font-family: monospace; text-align: center; }}
-                th {{ background: #001f3f; color: #00FF00; padding: 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }}
-                td {{ background: #0e1621; padding: 12px; border-bottom: 1px solid #0259c7; white-space: nowrap; font-size: 18px; }}
-            </style>
-            </head>
-            <body>
-            <div class="summary-container">
-                <h2 class="summary-title">🌍 WEN MOON COMMUNITY SUMMARY</h2>
-                <div class="total-holders">
-                    <h3>TOTAL HOLDERS</h3>
-                    <p>{total_holders:,}</p>
+            <div style="background-color: #0f172a; padding: 20px; border-radius: 10px; border: 1px solid #0259c7;">
+                <h2 style="text-align: center; color: #00FF00; margin-bottom: 30px; animation: neon-text 1.5s infinite; font-size: 32px;">🌍 WEN MOON COMMUNITY SUMMARY</h2>
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h3 style="color: #66c2a5; margin: 0; font-size: 24px;">TOTAL HOLDERS</h3>
+                    <p style="font-size: 48px; color: white; font-weight: bold; margin: 10px 0 0 0;">{total_holders:,}</p>
                 </div>
-                <div class="stats-grid">
-                    <div class="stat-box" style="border-color: #00FF00;">
-                        <h4 style="color: #00FF00;">GME SHARES</h4>
-                        <p>Total Shares: <strong style="color: white;">{c_s:,}</strong></p>
-                        <p>Avg Purchase Price: <strong style="color: white;">${c_gp_val:.2f}</strong></p>
-                        <p>Avg Shares / Person: <strong style="color: white;">{avg_s_per_person:,.0f}</strong></p>
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 30px; gap: 20px;">
+                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #00FF00; flex: 1 1 300px; text-align: center;">
+                        <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold;">GME SHARES</h4>
+                        <p style="margin: 10px 0; font-size: 18px;">Total Shares: <strong style="color: white;">{c_s:,}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px;">Avg Purchase Price: <strong style="color: white;">${c_gp_val:.2f}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px;">Avg Shares / Person: <strong style="color: white;">{avg_s_per_person:,.0f}</strong></p>
                     </div>
-                    <div class="stat-box" style="border-color: #006400;">
-                        <h4 style="color: #006400;">GME WARRANTS</h4>
-                        <p>Total Warrants: <strong style="color: white;">{c_w:,}</strong></p>
-                        <p>Avg Purchase Price: <strong style="color: white;">${c_pw_val:.3f}</strong></p>
-                        <p>Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
+                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #006400; flex: 1 1 300px; text-align: center;">
+                        <h4 style="color: #006400; margin-top: 0; font-size: 24px; font-weight: bold;">GME WARRANTS</h4>
+                        <p style="margin: 10px 0; font-size: 18px;">Total Warrants: <strong style="color: white;">{c_w:,}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px;">Avg Purchase Price: <strong style="color: white;">${c_pw_val:.3f}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px;">Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
                     </div>
                 </div>
-                <h3 class="recent-title">📅 RECENT ACTIVITY (COMMUNITY)</h3>
-                <div style="overflow-x: auto;">
-                    <table>
-                        <tr><th>Asset</th><th>Bought (Last 7 Days)</th><th>Bought (Last 30 Days)</th></tr>
-                        <tr><td style="color: #00FF00; font-weight: bold;">GME SHARES</td><td>{rec_s:,}</td><td>{rec_s:,}</td></tr>
-                        <tr><td style="color: #006400; font-weight: bold;">GME WARRANTS</td><td>{rec_w:,}</td><td>{rec_w:,}</td></tr>
-                    </table>
-                </div>
+                <h3 style="text-align: center; color: #66c2a5; margin-bottom: 20px; font-size: 24px;">📅 RECENT ACTIVITY (COMMUNITY)</h3>
+                <div class='table-wrapper'><table class='ldb-t'>
+                    <tr><th>Asset</th><th>Bought (Last 7 Days)</th><th>Bought (Last 30 Days)</th></tr>
+                    <tr><td style="color: #00FF00; font-weight: bold;">GME SHARES</td><td>{rec_s:,}</td><td>{rec_s:,}</td></tr>
+                    <tr><td style="color: #006400; font-weight: bold;">GME WARRANTS</td><td>{rec_w:,}</td><td>{rec_w:,}</td></tr>
+                </table></div>
             </div>
-            </body>
-            </html>
             """
-            components.html(html_summary, height=900, scrolling=True)
+            st.markdown(html_summary, unsafe_allow_html=True)
 
-        # --- LE NOUVEAU DASHBOARD INSTITUTIONNEL INTÉGRÉ SANS TOUCHER AU RESTE ---
+        with ph13_wt.container():
+            if not ch_wt.empty:
+                fig_wt, ax_wt = plt.subplots(figsize=(16, 7), facecolor='#050505')
+                ax_wt.set_facecolor('#0f172a')
+                v_wt = ch_wt.dropna().values
+                ax_wt.plot(np.arange(len(v_wt)), v_wt, color='#006400', linewidth=4)
+                ax_wt.fill_between(np.arange(len(v_wt)), v_wt, min(v_wt)*0.98, color='#006400', alpha=0.3)
+                ax_wt.set_title("GME-WT INTRADAY PRICE ACTION", color="#006400", fontsize=24, weight='bold', pad=20)
+                ax_wt.tick_params(colors='white', labelsize=14)
+                ax_wt.grid(color='#1f2937', linestyle='--', alpha=0.5)
+                st.pyplot(fig_wt); plt.close(fig_wt)
         with ph9.container():
-            def fmt(val, is_pct=False, is_dollar=False):
-                if val == 'N/A' or val is None: return "N/A"
-                if is_pct: return f"{val*100:.2f}%"
-                if is_dollar: return f"${val:,.2f}"
-                return f"{val:,}"
+            def fmt(val, is_pct=False, is_dol=False):
+                if val == 'N/A' or pd.isna(val) or val is None: return "N/A"
+                try:
+                    v = float(val)
+                    if is_pct: return f"{v*100:.2f}%"
+                    if is_dol: return f"${v:,.2f}"
+                    return f"{v:,.0f}"
+                except: return str(val)
 
-            mcap = adv_info.get('marketCap', 'N/A')
-            shares_out = adv_info.get('sharesOutstanding', 'N/A')
-            float_shares = adv_info.get('floatShares', 'N/A')
-            short_pct = adv_info.get('shortPercentOfFloat', 'N/A')
-            dtc = adv_info.get('shortRatio', 'N/A')
-            insiders = adv_info.get('heldPercentInsiders', 'N/A')
-            institutions = adv_info.get('heldPercentInstitutions', 'N/A')
-            high52 = adv_info.get('fiftyTwoWeekHigh', 'N/A')
-            low52 = adv_info.get('fiftyTwoWeekLow', 'N/A')
-            ma50 = adv_info.get('fiftyDayAverage', 'N/A')
-            ma200 = adv_info.get('twoHundredDayAverage', 'N/A')
-            avg_vol = adv_info.get('averageVolume', 'N/A')
+            ptab1, ptab2, ptab3 = st.tabs(["🏛️ GME FUNDAMENTALS", "📜 WARRANTS DATA", "📰 LATEST NEWS"])
+            
+            with ptab1:
+                html_gme = f"""
+                <style>
+                    .pro-g {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px; }}
+                    .pb {{ background: #0e1621; border: 1px solid #00FF00; border-radius: 8px; padding: 15px; text-align: center; }}
+                    .pb h4 {{ color: #00FF00; margin: 0 0 5px 0; font-size: 16px; font-family: monospace; }}
+                    .pb p {{ color: white; font-size: 22px; font-weight: bold; margin: 0; }}
+                </style>
+                <div class="pro-g">
+                    <div class="pb"><h4>Market Cap</h4><p>{fmt(adv_info.get('marketCap'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Total Cash</h4><p>{fmt(adv_info.get('totalCash'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Total Debt</h4><p>{fmt(adv_info.get('totalDebt'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Shares Outstanding</h4><p>{fmt(adv_info.get('sharesOutstanding'))}</p></div>
+                    <div class="pb"><h4>Short % of Float</h4><p>{fmt(adv_info.get('shortPercentOfFloat'), is_pct=True)}</p></div>
+                    <div class="pb"><h4>Days to Cover</h4><p>{fmt(adv_info.get('shortRatio'))}</p></div>
+                    <div class="pb"><h4>Held by Insiders</h4><p>{fmt(adv_info.get('heldPercentInsiders'), is_pct=True)}</p></div>
+                    <div class="pb"><h4>Held by Institutions</h4><p>{fmt(adv_info.get('heldPercentInstitutions'), is_pct=True)}</p></div>
+                    <div class="pb"><h4>Avg Volume (10 Days)</h4><p>{fmt(adv_info.get('averageVolume10days'))}</p></div>
+                    <div class="pb"><h4>Avg Volume (3 Months)</h4><p>{fmt(adv_info.get('averageVolume'))}</p></div>
+                    <div class="pb"><h4>Trailing P/E</h4><p>{fmt(adv_info.get('trailingPE'))}</p></div>
+                    <div class="pb"><h4>Beta (Volatility)</h4><p>{fmt(adv_info.get('beta'))}</p></div>
+                </div>"""
+                st.markdown(html_gme, unsafe_allow_html=True)
+                
+            with ptab2:
+                wt_vol = getattr(wt_info, 'lastVolume', 'N/A')
+                wt_open = getattr(wt_info, 'regularMarketOpen', 'N/A')
+                wt_high = getattr(wt_info, 'dayHigh', 'N/A')
+                wt_low = getattr(wt_info, 'dayLow', 'N/A')
+                wt_prev = getattr(wt_info, 'previousClose', 'N/A')
+                html_wt = f"""
+                <div class="pro-g">
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Contract Name</h4><p>GME-WT (Warrant)</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Today's Volume</h4><p>{fmt(wt_vol)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Market Open</h4><p>{fmt(wt_open, is_dol=True)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Day High</h4><p>{fmt(wt_high, is_dol=True)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Day Low</h4><p>{fmt(wt_low, is_dol=True)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Previous Close</h4><p>{fmt(wt_prev, is_dol=True)}</p></div>
+                </div>"""
+                st.markdown(html_wt, unsafe_allow_html=True)
 
-            html_pro = f"""
-            <style>
-                .pro-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px; }}
-                .pro-box {{ background: #0e1621; border: 1px solid #0259c7; border-radius: 8px; padding: 15px; text-align: center; box-shadow: 0 0 10px rgba(2, 89, 199, 0.5); }}
-                .pro-box h4 {{ color: #00FF00; margin: 0 0 10px 0; font-size: 18px; font-family: monospace; text-transform: uppercase; }}
-                .pro-box p {{ color: white; font-size: 24px; font-weight: bold; margin: 0; }}
-                .pro-header {{ text-align: center; color: #00FF00; text-shadow: 0 0 10px #00FF00; font-family: monospace; margin-bottom: 20px; }}
-            </style>
-            <h2 class="pro-header">🧬 GME INSTITUTIONAL DATA</h2>
-            <div class="pro-grid">
-                <div class="pro-box"><h4>Market Cap</h4><p>{fmt(mcap, is_dollar=True)}</p></div>
-                <div class="pro-box"><h4>Shares Outstanding</h4><p>{fmt(shares_out)}</p></div>
-                <div class="pro-box"><h4>Float</h4><p>{fmt(float_shares)}</p></div>
-                <div class="pro-box"><h4>Short % of Float</h4><p>{fmt(short_pct, is_pct=True)}</p></div>
-                <div class="pro-box"><h4>Days to Cover</h4><p>{fmt(dtc)}</p></div>
-                <div class="pro-box"><h4>Held by Insiders</h4><p>{fmt(insiders, is_pct=True)}</p></div>
-                <div class="pro-box"><h4>Held by Institutions</h4><p>{fmt(institutions, is_pct=True)}</p></div>
-                <div class="pro-box"><h4>52 Week High</h4><p>{fmt(high52, is_dollar=True)}</p></div>
-                <div class="pro-box"><h4>52 Week Low</h4><p>{fmt(low52, is_dollar=True)}</p></div>
-                <div class="pro-box"><h4>50 Day MA</h4><p>{fmt(ma50, is_dollar=True)}</p></div>
-                <div class="pro-box"><h4>200 Day MA</h4><p>{fmt(ma200, is_dollar=True)}</p></div>
-                <div class="pro-box"><h4>Avg Volume</h4><p>{fmt(avg_vol)}</p></div>
-            </div>
-            """
-            st.markdown(html_pro, unsafe_allow_html=True)
+            with ptab3:
+                st.markdown("<h3 style='color:#00FF00; font-family:monospace; margin-top:20px;'>🗞️ LATEST FINANCIAL NEWS (LIVE)</h3>", unsafe_allow_html=True)
+                for n in gme_news:
+                    ts = datetime.fromtimestamp(n.get('providerPublishTime', 0)).strftime('%Y-%m-%d %H:%M')
+                    st.markdown(f"""
+                    <div style="background:#0f172a; border-left:4px solid #00FF00; padding:15px; margin-bottom:10px; border-radius:4px;">
+                        <small style="color:#888;">{n.get('publisher', 'News')} • {ts}</small><br>
+                        <a href="{n.get('link', '#')}" target="_blank" style="color:white; font-size:18px; text-decoration:none; font-weight:bold;">{n.get('title', 'No Title')}</a>
+                    </div>""", unsafe_allow_html=True)
 
+        with ph10.container():
+            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>⛓️ OPTIONS CHAIN SUMMARY</h2>", unsafe_allow_html=True)
+            if len(opts) > 0:
+                exp = opts[0]
+                st.markdown(f"<p style='text-align:center; color:white; font-size:18px;'>Next expiration detected: <b>{exp}</b></p>", unsafe_allow_html=True)
+                try:
+                    tk = yf.Ticker("GME")
+                    opt_chain = tk.option_chain(exp)
+                    calls = opt_chain.calls.head(8)
+                    html_opt = "<h4 style='color:#00FF00;'>🔥 Top 8 Calls (In & Out of Money)</h4><div class='table-wrapper'><table class='ldb-t'><tr><th>Strike</th><th>Last Price</th><th>Volume</th><th>Implied Volatility</th></tr>"
+                    for _, r in calls.iterrows():
+                        html_opt += f"<tr><td>${r.get('strike', 0)}</td><td>${r.get('lastPrice', 0)}</td><td>{r.get('volume', 0)}</td><td>{r.get('impliedVolatility', 0)*100:.1f}%</td></tr>"
+                    html_opt += "</table></div>"
+                    st.markdown(html_opt, unsafe_allow_html=True)
+                except:
+                    st.warning("Options chain data currently unavailable.")
+            else:
+                st.info("No expiration date found or market closed.")
+
+        with ph11.container():
+            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🏦 FINANCIALS & EARNINGS</h2>", unsafe_allow_html=True)
+            f_tab1, f_tab2, f_tab3 = st.tabs(["📈 INCOME STATEMENT", "⚖️ BALANCE SHEET", "💸 CASH FLOW"])
+            
+            def df_to_html(df, title):
+                if df.empty: return f"<p style='color:white;'>{title} data not available.</p>"
+                cols = [str(c)[:10] for c in df.columns[:3]]
+                html = f"<div class='table-wrapper'><table class='ldb-t'><tr><th>Metric</th>"
+                for c in cols: html += f"<th>{c}</th>"
+                html += "</tr>"
+                for idx, row in df.iloc[:8, :3].iterrows():
+                    html += f"<tr><td style='text-align:left; font-weight:bold; color:#00FF00;'>{idx}</td>"
+                    for val in row:
+                        try: html += f"<td>${float(val):,.0f}</td>"
+                        except: html += f"<td>{val}</td>"
+                    html += "</tr>"
+                html += "</table></div>"
+                return html
+
+            with f_tab1: st.markdown(df_to_html(fin, "Income Statement"), unsafe_allow_html=True)
+            with f_tab2: st.markdown(df_to_html(bs, "Balance Sheet"), unsafe_allow_html=True)
+            with f_tab3: st.markdown(df_to_html(cf, "Cash Flow"), unsafe_allow_html=True)
+
+        with ph12.container():
+            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🕵️ INSIDER TRACKER</h2>", unsafe_allow_html=True)
+            if not ins.empty:
+                st.dataframe(ins.astype(str), use_container_width=True)
+            else:
+                st.info("No recent insider transactions detected.")
+
+    # --- ENGINE LAUNCH (Closes the application) ---
     render_content()
