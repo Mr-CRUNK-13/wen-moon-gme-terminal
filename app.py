@@ -496,6 +496,7 @@ else:
                     st.markdown(html_ldb, unsafe_allow_html=True)
 
         with ph8.container():
+                with ph8.container():
             total_holders = len(real_db)
             avg_s_per_person = c_s / total_holders if total_holders > 0 else 0
             avg_w_per_person = c_w / total_holders if total_holders > 0 else 0
@@ -522,9 +523,15 @@ else:
                         <p style="margin: 10px 0; font-size: 18px;">Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
                     </div>
                 </div>
+                <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 1px solid #FFD700; text-align: center; margin-top: 20px;">
+                    <h4 style="color: #FFD700; margin-top: 0; font-size: 24px; font-weight: bold;">🔥 RECENT PURCHASES (WEEKLY/MONTHLY)</h4>
+                    <p style="margin: 10px 0; font-size: 20px;">New Shares Accumulated: <strong style="color: #00FF00;">+{rec_s:,}</strong></p>
+                    <p style="margin: 10px 0; font-size: 20px;">New Warrants Accumulated: <strong style="color: #00FF00;">+{rec_w:,}</strong></p>
+                </div>
             </div>
             """
             st.markdown(html_summary, unsafe_allow_html=True)
+
 
         with ph9.container():
             def fmt(val, is_pct=False, is_dol=False):
