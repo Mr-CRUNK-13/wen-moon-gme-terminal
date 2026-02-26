@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
+import plotly.graph_objects as go
 import base64
 from datetime import datetime
 
@@ -179,7 +180,6 @@ else:
             prev_n = float(t_n.fast_info.get('previousClose', p_n))
             prev_w = float(t_w.fast_info.get('previousClose', p_w))
             
-            # --- FETCHING DAILY VOLUME HERE ---
             vol_n = int(t_n.fast_info.get('lastVolume', 0))
             vol_w = int(t_w.fast_info.get('lastVolume', 0))
             
@@ -190,7 +190,10 @@ else:
     def fetch_advanced_pro_data():
         try:
             gme, wt = yf.Ticker("GME"), yf.Ticker("GME-WT")
-            return dict(gme.info), dict(wt.fast_info), gme.news[:5] if gme.news else []
+            info_dict = dict(gme.info)
+            wt_info_dict = dict(wt.fast_info) if hasattr(wt, 'fast_info') else dict(wt.info)
+            news_data = gme.news[:5] if gme.news else []
+            return info_dict, wt_info_dict, news_data
         except: return {}, {}, []
 
     @st.cache_data(ttl=3600)
@@ -202,10 +205,10 @@ else:
             bs = tk.balance_sheet
             cf = tk.cashflow
             ins = tk.insider_transactions
-            return opts, fin, bs, cf, ins
-        except: return (), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
+            earn_dates = tk.earnings_dates
+            return opts, fin, bs, cf, ins, earn_dates
+        except: return (), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
-    # THE 15 TITAN TABS
     tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12, tab13, tab14, tab15 = st.tabs([
         "📊 GME", "📈 WARRANT", "💎 PORTFOLIO", "📋 DATA", "🌘 WEN MOON", "🗃️ WM DATA", "🏆 LEADERBOARD", "📊 SUMMARY", 
         "🧬 GME PRO", "⛓️ OPTIONS CHAIN", "🏦 FINANCIALS", "🕵️ INSIDERS", "📈 PRO CHARTS", "🌐 WEB PORTALS", "🐦 LIVE ALERTS"
@@ -227,45 +230,43 @@ else:
     # --- TAB 13 : PRO CHARTS (Static) ---
     with tab13:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>📈 ADVANCED CHARTS TERMINAL</h2>", unsafe_allow_html=True)
-        t_chart1, t_chart2 = st.tabs(["🇺🇸 GME (TradingView Pro)", "📜 GME-WT (Live Tracker)"])
-        with t_chart1:
-            tv_html = """
+        t_chart1, t_chart2 = st.tabs(["🇺🇸 GME (TradingView Pro)", "📜 GME-WT (TradingView Pro)"])
+        
+        def tv_widget(symbol, cid):
+            return f"""
             <div class="tradingview-widget-container" style="height: 700px; width: 100%;">
-              <div id="tradingview_gme" style="height: 100%; width: 100%;"></div>
+              <div id="{cid}" style="height: 100%; width: 100%;"></div>
               <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
               <script type="text/javascript">
-              new TradingView.widget({
-                "autosize": true, "symbol": "NYSE:GME", "interval": "D", "timezone": "Etc/UTC",
+              new TradingView.widget({{
+                "autosize": true, "symbol": "{symbol}", "interval": "D", "timezone": "Etc/UTC",
                 "theme": "dark", "style": "1", "locale": "en", "enable_publishing": false,
                 "backgroundColor": "#050505", "gridColor": "#1f2937", "hide_top_toolbar": false,
-                "hide_legend": false, "save_image": false, "container_id": "tradingview_gme",
+                "hide_legend": false, "save_image": false, "container_id": "{cid}",
                 "toolbar_bg": "#0f172a"
-              });
+              }});
               </script>
             </div>"""
-            components.html(tv_html, height=720)
-        with t_chart2:
-            ph13_wt = st.empty()
+            
+        with t_chart1: components.html(tv_widget("NYSE:GME", "tv_gme"), height=720)
+        with t_chart2: components.html(tv_widget("NYSE:GME/W", "tv_gmewt"), height=720)
 
-        # --- TAB 14 : WEB PORTALS (Static) ---
+    # --- TAB 14 : WEB PORTALS (Static) ---
     with tab14:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🌐 INVESTOR PORTALS</h2>", unsafe_allow_html=True)
-        w_tab1, w_tab2, w_tab3, w_tab4, w_tab5, w_tab6 = st.tabs(["👔 GameStop Investors", "📊 ChartExchange", "🎀 RedStripeTie", "🐋 Unusual Whales", "🦍 r/Superstonk", "🐳 WhaleWisdom (Warrants)"])
+        w_t1, w_t2, w_t3, w_t4, w_t5, w_t6, w_t7, w_t8 = st.tabs(["👔 Investors", "📊 ChartEx", "🎀 RedStripe", "🐋 Whales", "🦍 Reddit", "🐳 WhaleWisdom", "📈 TradingView", "📰 Yahoo"])
         
-        with w_tab1:
-            st.components.v1.iframe("https://investor.gamestop.com/", height=700, scrolling=True)
-            st.markdown("<a href='https://investor.gamestop.com/' target='_blank' style='color:#00FF00; display:block; text-align:center; margin-top:10px; font-weight:bold;'>👉 OPEN GAMESTOP INVESTORS</a>", unsafe_allow_html=True)
-        with w_tab2:
-            st.components.v1.iframe("https://chartexchange.com/symbol/nyse-gme/borrow-fee/", height=700, scrolling=True)
-            st.markdown("<a href='https://chartexchange.com/symbol/nyse-gme/borrow-fee/' target='_blank' style='color:#00FF00; display:block; text-align:center; margin-top:10px; font-weight:bold;'>👉 OPEN CHARTEXCHANGE (BORROW FEE)</a>", unsafe_allow_html=True)
-        with w_tab3:
-            st.markdown("<div style='text-align:center; padding:50px; background:#0f172a; border:1px solid #00FF00; border-radius:10px;'><h3 style='color:white;'>🎀 RED STRIPE TIE</h3><p style='color:#ccc; font-size:18px;'>Direct access to community data.</p><a href='https://redstripetie.com/' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN SITE</a></div>", unsafe_allow_html=True)
-        with w_tab4:
-            st.markdown("<div style='text-align:center; padding:50px; background:#0f172a; border:1px solid #00FF00; border-radius:10px;'><h3 style='color:white;'>🐋 UNUSUAL WHALES (OPTIONS FLOW)</h3><p style='color:#ccc; font-size:18px;'>Track options market activity.</p><a href='https://unusualwhales.com/stock/GME' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN SITE</a></div>", unsafe_allow_html=True)
-        with w_tab5:
-            st.markdown("<div style='text-align:center; padding:50px; background:#0f172a; border:1px solid #00FF00; border-radius:10px;'><h3 style='color:white;'>🦍 r/SUPERSTONK</h3><p style='color:#ccc; font-size:18px;'>The heart of the GME community.</p><a href='https://www.reddit.com/r/Superstonk/' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN REDDIT</a></div>", unsafe_allow_html=True)
-        with w_tab6:
-            st.markdown("<div style='text-align:center; padding:50px; background:#0f172a; border:1px solid #00FF00; border-radius:10px;'><h3 style='color:white;'>🐳 WHALEWISDOM (WARRANT HOLDERS)</h3><p style='color:#ccc; font-size:18px;'>Track institutional holders of GME Warrants.</p><a href='https://whalewisdom.com/stock/gmews' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN WHALEWISDOM</a></div>", unsafe_allow_html=True)
+        def portal_btn(title, desc, url):
+            return f"<div style='text-align:center; padding:50px; background:#0f172a; border:1px solid #00FF00; border-radius:10px;'><h3 style='color:white;'>{title}</h3><p style='color:#ccc; font-size:18px;'>{desc}</p><a href='{url}' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN SECURE LINK</a></div>"
+            
+        with w_t1: st.markdown(portal_btn("GAMESTOP INVESTORS", "Official corporate and SEC filings.", "https://investor.gamestop.com/"), unsafe_allow_html=True)
+        with w_t2: st.markdown(portal_btn("CHARTEXCHANGE", "Live Borrow Fee and Dark Pool data.", "https://chartexchange.com/symbol/nyse-gme/borrow-fee/"), unsafe_allow_html=True)
+        with w_t3: st.markdown(portal_btn("RED STRIPE TIE", "Direct access to community data.", "https://redstripetie.com/"), unsafe_allow_html=True)
+        with w_t4: st.markdown(portal_btn("UNUSUAL WHALES", "Track options market activity.", "https://unusualwhales.com/stock/GME"), unsafe_allow_html=True)
+        with w_t5: st.markdown(portal_btn("r/SUPERSTONK", "The heart of the GME community.", "https://www.reddit.com/r/Superstonk/"), unsafe_allow_html=True)
+        with w_t6: st.markdown(portal_btn("WHALEWISDOM (WARRANTS)", "Track institutional holders of GME Warrants.", "https://whalewisdom.com/stock/gmews"), unsafe_allow_html=True)
+        with w_t7: st.markdown(portal_btn("TRADINGVIEW", "Advanced technical analysis platform.", "https://www.tradingview.com/symbols/NYSE-GME/"), unsafe_allow_html=True)
+        with w_t8: st.markdown(portal_btn("YAHOO FINANCE", "Comprehensive financial overview.", "https://finance.yahoo.com/quote/GME/"), unsafe_allow_html=True)
 
     # --- TAB 15 : LIVE ALERTS (Twitter X - Static) ---
     with tab15:
@@ -273,7 +274,14 @@ else:
         x_tab1, x_tab2, x_tab3, x_tab4, x_tab5, x_tab6 = st.tabs(["👑 Ryan Cohen", "🐱 Roaring Kitty", "📉 Michael Burry", "🎮 GameStop", "🐰 Buck", "🃏 PowerPacks"])
         
         def x_widget(handle):
-            return f"""<div style="background:#000; overflow-y:scroll; height:700px;"><a class="twitter-timeline" data-theme="dark" href="https://twitter.com/{handle}?ref_src=twsrc%5Etfw">Tweets by {handle}</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>"""
+            return f"""
+            <div style="text-align:center; margin-bottom:20px;">
+                <a href="https://twitter.com/{handle}" target="_blank" style="padding:10px 20px; background:#1DA1F2; color:white; font-weight:bold; text-decoration:none; border-radius:5px;">OPEN @{handle} ON X</a>
+            </div>
+            <div style="background:#000; overflow-y:scroll; height:600px;">
+                <a class="twitter-timeline" data-theme="dark" href="https://twitter.com/{handle}?ref_src=twsrc%5Etfw">Tweets by {handle}</a>
+                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>"""
         
         with x_tab1: components.html(x_widget("ryancohen"), height=720)
         with x_tab2: components.html(x_widget("TheRoaringKitty"), height=720)
@@ -315,7 +323,7 @@ else:
         plt.close('all') 
         p_nsy, p_wt, pr_nsy, pr_wt, vol_n, vol_w, ch_gme, ch_wt = fetch_terminal_data()
         adv_info, wt_info, gme_news = fetch_advanced_pro_data()
-        opts, fin, bs, cf, ins = fetch_financials_and_options()
+        opts, fin, bs, cf, ins, earn_dates = fetch_financials_and_options()
         
         qn, pn = st.session_state.osq, st.session_state.osp
         qw, pw = st.session_state.owq, st.session_state.owp
@@ -327,7 +335,6 @@ else:
         t_v_u = v_s_u + v_w_u
         t_c_u = (qn * gp) + (qw * pw)
 
-        # --- COMMUNITY SIMULATION ---
         c_s, c_w = qn, qw
         c_gp_val = gp if qn > 0 else 0.0
         c_pw_val = pw if qw > 0 else 0.0
@@ -472,8 +479,6 @@ else:
                     st.markdown(html_ldb, unsafe_allow_html=True)
 
         with ph8.container():
-            u_name = st.session_state.get("ape_name", "Anonymous")
-            real_db = [{"name": u_name, "tv": t_v_u, "sq": qn, "wq": qw, "spru": pn, "wpru": pw}]
             total_holders = len(real_db)
             avg_s_per_person = c_s / total_holders if total_holders > 0 else 0
             avg_w_per_person = c_w / total_holders if total_holders > 0 else 0
@@ -490,37 +495,20 @@ else:
                     <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #00FF00; flex: 1 1 300px; text-align: center;">
                         <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold;">GME SHARES</h4>
                         <p style="margin: 10px 0; font-size: 18px;">Total Shares: <strong style="color: white;">{c_s:,}</strong></p>
-                        <p style="margin: 10px 0; font-size: 18px;">Avg Purchase Price: <strong style="color: white;">${c_gp_val:.2f}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px;">Avg Cost: <strong style="color: white;">${c_gp_val:.2f}</strong></p>
                         <p style="margin: 10px 0; font-size: 18px;">Avg Shares / Person: <strong style="color: white;">{avg_s_per_person:,.0f}</strong></p>
                     </div>
                     <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #006400; flex: 1 1 300px; text-align: center;">
                         <h4 style="color: #006400; margin-top: 0; font-size: 24px; font-weight: bold;">GME WARRANTS</h4>
                         <p style="margin: 10px 0; font-size: 18px;">Total Warrants: <strong style="color: white;">{c_w:,}</strong></p>
-                        <p style="margin: 10px 0; font-size: 18px;">Avg Purchase Price: <strong style="color: white;">${c_pw_val:.3f}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px;">Avg Cost: <strong style="color: white;">${c_pw_val:.3f}</strong></p>
                         <p style="margin: 10px 0; font-size: 18px;">Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
                     </div>
                 </div>
-                <h3 style="text-align: center; color: #66c2a5; margin-bottom: 20px; font-size: 24px;">📅 RECENT ACTIVITY (COMMUNITY)</h3>
-                <div class='table-wrapper'><table class='ldb-t'>
-                    <tr><th>Asset</th><th>Bought (Last 7 Days)</th><th>Bought (Last 30 Days)</th></tr>
-                    <tr><td style="color: #00FF00; font-weight: bold;">GME SHARES</td><td>{rec_s:,}</td><td>{rec_s:,}</td></tr>
-                    <tr><td style="color: #006400; font-weight: bold;">GME WARRANTS</td><td>{rec_w:,}</td><td>{rec_w:,}</td></tr>
-                </table></div>
             </div>
             """
             st.markdown(html_summary, unsafe_allow_html=True)
 
-        with ph13_wt.container():
-            if not ch_wt.empty:
-                fig_wt, ax_wt = plt.subplots(figsize=(16, 7), facecolor='#050505')
-                ax_wt.set_facecolor('#0f172a')
-                v_wt = ch_wt.dropna().values
-                ax_wt.plot(np.arange(len(v_wt)), v_wt, color='#006400', linewidth=4)
-                ax_wt.fill_between(np.arange(len(v_wt)), v_wt, min(v_wt)*0.98, color='#006400', alpha=0.3)
-                ax_wt.set_title("GME-WT INTRADAY PRICE ACTION", color="#006400", fontsize=24, weight='bold', pad=20)
-                ax_wt.tick_params(colors='white', labelsize=14)
-                ax_wt.grid(color='#1f2937', linestyle='--', alpha=0.5)
-                st.pyplot(fig_wt); plt.close(fig_wt)
         with ph9.container():
             def fmt(val, is_pct=False, is_dol=False):
                 if val == 'N/A' or pd.isna(val) or val is None: return "N/A"
@@ -543,26 +531,21 @@ else:
                 </style>
                 <div class="pro-g">
                     <div class="pb"><h4>Market Cap</h4><p>{fmt(adv_info.get('marketCap'), is_dol=True)}</p></div>
-                    <div class="pb"><h4>Total Cash</h4><p>{fmt(adv_info.get('totalCash'), is_dol=True)}</p></div>
-                    <div class="pb"><h4>Total Debt</h4><p>{fmt(adv_info.get('totalDebt'), is_dol=True)}</p></div>
                     <div class="pb"><h4>Shares Outstanding</h4><p>{fmt(adv_info.get('sharesOutstanding'))}</p></div>
                     <div class="pb"><h4>Short % of Float</h4><p>{fmt(adv_info.get('shortPercentOfFloat'), is_pct=True)}</p></div>
                     <div class="pb"><h4>Days to Cover</h4><p>{fmt(adv_info.get('shortRatio'))}</p></div>
                     <div class="pb"><h4>Held by Insiders</h4><p>{fmt(adv_info.get('heldPercentInsiders'), is_pct=True)}</p></div>
                     <div class="pb"><h4>Held by Institutions</h4><p>{fmt(adv_info.get('heldPercentInstitutions'), is_pct=True)}</p></div>
-                    <div class="pb"><h4>Avg Volume (10 Days)</h4><p>{fmt(adv_info.get('averageVolume10days'))}</p></div>
-                    <div class="pb"><h4>Avg Volume (3 Months)</h4><p>{fmt(adv_info.get('averageVolume'))}</p></div>
-                    <div class="pb"><h4>Trailing P/E</h4><p>{fmt(adv_info.get('trailingPE'))}</p></div>
-                    <div class="pb"><h4>Beta (Volatility)</h4><p>{fmt(adv_info.get('beta'))}</p></div>
                 </div>"""
                 st.markdown(html_gme, unsafe_allow_html=True)
                 
             with ptab2:
-                wt_vol = getattr(wt_info, 'lastVolume', 'N/A')
-                wt_open = getattr(wt_info, 'regularMarketOpen', 'N/A')
-                wt_high = getattr(wt_info, 'dayHigh', 'N/A')
-                wt_low = getattr(wt_info, 'dayLow', 'N/A')
-                wt_prev = getattr(wt_info, 'previousClose', 'N/A')
+                wt_vol = wt_info.get('lastVolume', wt_info.get('volume', 'N/A'))
+                wt_open = wt_info.get('regularMarketOpen', wt_info.get('open', 'N/A'))
+                wt_high = wt_info.get('dayHigh', wt_info.get('regularMarketDayHigh', 'N/A'))
+                wt_low = wt_info.get('dayLow', wt_info.get('regularMarketDayLow', 'N/A'))
+                wt_prev = wt_info.get('previousClose', wt_info.get('regularMarketPreviousClose', 'N/A'))
+                
                 html_wt = f"""
                 <div class="pro-g">
                     <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Contract Name</h4><p>GME-WT (Warrant)</p></div>
@@ -577,7 +560,8 @@ else:
             with ptab3:
                 st.markdown("<h3 style='color:#00FF00; font-family:monospace; margin-top:20px;'>🗞️ LATEST FINANCIAL NEWS (LIVE)</h3>", unsafe_allow_html=True)
                 for n in gme_news:
-                    ts = datetime.fromtimestamp(n.get('providerPublishTime', 0)).strftime('%Y-%m-%d %H:%M')
+                    pt = n.get('providerPublishTime')
+                    ts = datetime.fromtimestamp(pt).strftime('%Y-%m-%d %H:%M') if pt else "Recent"
                     st.markdown(f"""
                     <div style="background:#0f172a; border-left:4px solid #00FF00; padding:15px; margin-bottom:10px; border-radius:4px;">
                         <small style="color:#888;">{n.get('publisher', 'News')} • {ts}</small><br>
@@ -585,46 +569,71 @@ else:
                     </div>""", unsafe_allow_html=True)
 
         with ph10.container():
-            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>⛓️ OPTIONS CHAIN SUMMARY</h2>", unsafe_allow_html=True)
+            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>⛓️ OPTIONS CHAIN TERMINAL</h2>", unsafe_allow_html=True)
             if len(opts) > 0:
-                exp = opts[0]
-                st.markdown(f"<p style='text-align:center; color:white; font-size:18px;'>Next expiration detected: <b>{exp}</b></p>", unsafe_allow_html=True)
+                selected_expiry = st.selectbox("📅 SELECT EXPIRATION DATE:", opts, key="opt_exp_selector")
                 try:
                     tk = yf.Ticker("GME")
-                    opt_chain = tk.option_chain(exp)
-                    calls = opt_chain.calls.head(8)
-                    html_opt = "<h4 style='color:#00FF00;'>🔥 Top 8 Calls (In & Out of Money)</h4><div class='table-wrapper'><table class='ldb-t'><tr><th>Strike</th><th>Last Price</th><th>Volume</th><th>Implied Volatility</th></tr>"
-                    for _, r in calls.iterrows():
-                        html_opt += f"<tr><td>${r.get('strike', 0)}</td><td>${r.get('lastPrice', 0)}</td><td>{r.get('volume', 0)}</td><td>{r.get('impliedVolatility', 0)*100:.1f}%</td></tr>"
-                    html_opt += "</table></div>"
-                    st.markdown(html_opt, unsafe_allow_html=True)
+                    chain = tk.option_chain(selected_expiry)
+                    
+                    def build_opt_table(df, title, color):
+                        html = f"<h4 style='color:{color}; text-align:center;'>{title}</h4><div class='table-wrapper'><table class='ldb-t' style='font-size:14px;'><tr><th>Strike</th><th>Last Price</th><th>Volume</th><th>Open Interest</th><th>Implied Vol</th></tr>"
+                        for _, r in df.head(15).iterrows():
+                            html += f"<tr><td>${r.get('strike', 0):.2f}</td><td>${r.get('lastPrice', 0):.2f}</td><td>{r.get('volume', 0)}</td><td>{r.get('openInterest', 0)}</td><td>{r.get('impliedVolatility', 0)*100:.1f}%</td></tr>"
+                        return html + "</table></div>"
+                    
+                    c_col, p_col = st.columns(2)
+                    with c_col: st.markdown(build_opt_table(chain.calls, "🔥 TOP 15 CALLS", "#00FF00"), unsafe_allow_html=True)
+                    with p_col: st.markdown(build_opt_table(chain.puts, "🩸 TOP 15 PUTS", "#FF0000"), unsafe_allow_html=True)
                 except:
-                    st.warning("Options chain data currently unavailable.")
+                    st.warning("Options chain data currently unavailable for this date.")
             else:
-                st.info("No expiration date found or market closed.")
+                st.info("No expiration dates found or market closed.")
 
         with ph11.container():
-            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🏦 FINANCIALS & EARNINGS</h2>", unsafe_allow_html=True)
-            f_tab1, f_tab2, f_tab3 = st.tabs(["📈 INCOME STATEMENT", "⚖️ BALANCE SHEET", "💸 CASH FLOW"])
+            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🏦 FINANCIALS & CONSENSUS</h2>", unsafe_allow_html=True)
+            fin_t1, fin_t2, fin_t3 = st.tabs(["📊 REVENUE & EPS", "🔮 ANALYST CONSENSUS", "🗃️ RAW STATEMENTS"])
             
-            def df_to_html(df, title):
-                if df.empty: return f"<p style='color:white;'>{title} data not available.</p>"
-                cols = [str(c)[:10] for c in df.columns[:3]]
-                html = f"<div class='table-wrapper'><table class='ldb-t'><tr><th>Metric</th>"
-                for c in cols: html += f"<th>{c}</th>"
-                html += "</tr>"
-                for idx, row in df.iloc[:8, :3].iterrows():
-                    html += f"<tr><td style='text-align:left; font-weight:bold; color:#00FF00;'>{idx}</td>"
-                    for val in row:
-                        try: html += f"<td>${float(val):,.0f}</td>"
-                        except: html += f"<td>{val}</td>"
+            with fin_t1:
+                st.markdown("<h4 style='color:white;'>Historical Revenue & Net Income</h4>", unsafe_allow_html=True)
+                if not fin.empty and 'Total Revenue' in fin.index:
+                    try:
+                        revs = fin.loc['Total Revenue'].dropna().iloc[::-1]
+                        fig_fin = go.Figure()
+                        fig_fin.add_trace(go.Bar(x=revs.index.astype(str), y=revs.values, name='Total Revenue', marker_color='#0259c7'))
+                        if 'Net Income' in fin.index:
+                            net = fin.loc['Net Income'].dropna().iloc[::-1]
+                            fig_fin.add_trace(go.Scatter(x=net.index.astype(str), y=net.values, mode='lines+markers', name='Net Income', line=dict(color='#00FF00', width=4)))
+                        fig_fin.update_layout(template="plotly_dark", plot_bgcolor='#050505', paper_bgcolor='#050505', margin=dict(l=0, r=0, t=30, b=0))
+                        st.plotly_chart(fig_fin, use_container_width=True)
+                    except: st.info("Chart data formatting error.")
+                else: st.info("Historical visual data unavailable.")
+                
+            with fin_t2:
+                st.markdown("<h4 style='color:#00FF00;'>Upcoming Earnings & Estimates</h4>", unsafe_allow_html=True)
+                if not earn_dates.empty:
+                    st.dataframe(earn_dates.head(5).astype(str), use_container_width=True)
+                else:
+                    st.info("Analyst consensus data currently unavailable via standard feed.")
+                    
+            with fin_t3:
+                def df_to_html(df, title):
+                    if df.empty: return f"<p style='color:white;'>{title} data not available.</p>"
+                    cols = [str(c)[:10] for c in df.columns[:3]]
+                    html = f"<div class='table-wrapper'><table class='ldb-t'><tr><th>Metric</th>"
+                    for c in cols: html += f"<th>{c}</th>"
                     html += "</tr>"
-                html += "</table></div>"
-                return html
+                    for idx, row in df.iloc[:10, :3].iterrows():
+                        html += f"<tr><td style='text-align:left; font-weight:bold; color:#00FF00;'>{idx}</td>"
+                        for val in row:
+                            try: html += f"<td>${float(val):,.0f}</td>"
+                            except: html += f"<td>{val}</td>"
+                        html += "</tr>"
+                    html += "</table></div>"
+                    return html
 
-            with f_tab1: st.markdown(df_to_html(fin, "Income Statement"), unsafe_allow_html=True)
-            with f_tab2: st.markdown(df_to_html(bs, "Balance Sheet"), unsafe_allow_html=True)
-            with f_tab3: st.markdown(df_to_html(cf, "Cash Flow"), unsafe_allow_html=True)
+                st.markdown(df_to_html(fin, "Income Statement"), unsafe_allow_html=True)
+                st.markdown(df_to_html(bs, "Balance Sheet"), unsafe_allow_html=True)
 
         with ph12.container():
             st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🕵️ INSIDER TRACKER</h2>", unsafe_allow_html=True)
