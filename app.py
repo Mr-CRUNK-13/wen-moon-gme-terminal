@@ -148,7 +148,7 @@ else:
             return p_n, p_w, prev_n, prev_w, data['GME'], data['GME-WT']
         except: return 24.50, 4.30, 24.0, 4.0, pd.Series(), pd.Series()
 
-    # --- TABS AVEC NOUVEAUX NOMS ---
+    # --- TABS ---
     tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["📊 GME", "📈 WARRANT", "💎 PORTFOLIO", "📋 DATA", "🌘 WEN MOON", "🗃️ WEN MOON DATA", "🏆 LEADERBOARD", "📊 WEN MOON SUMMARY"])
     
     with tab1: ph1 = st.empty()
@@ -167,7 +167,7 @@ else:
         price_str = f"{price:.2f}"
         p_int, p_dec = price_str.split('.')
         
-        # LOGIQUE DU P/L AVEC LE PETIT $
+        # LOGIQUE DU P/L SANS LE $
         diff_sign = "+" if diff >= 0 else "-"
         abs_diff = abs(diff)
         
@@ -179,7 +179,7 @@ else:
         <div style='display:flex; justify-content:center; align-items:center; gap:20px; margin-top:30px;'>
             <div style='text-align:right; white-space:nowrap;'>
                 <span style='font-size:50px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; vertical-align:top;'>$</span><span style='font-size:100px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold;'>{p_int}.</span><span style='font-size:80px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold;'>{p_dec}</span>
-                <h3 style='color:{clr}; margin-top:0px;'>{diff_sign}<span style='font-size:0.6em; vertical-align:middle;'>$</span>{abs_diff:.2f} {pct:+.2f}%</h3>
+                <h3 style='color:{clr}; margin-top:0px;'>{diff_sign}{abs_diff:.2f} {pct:+.2f}%</h3>
             </div>
             {icn}
         </div>
@@ -247,12 +247,12 @@ else:
             c_s_pl = "#00FF00" if s_pl >= 0 else "#FF0000"
             al.text(0.9, 0.05, f"P/L: {s_pl:+,.2f} ({s_pct_pl:+.2f}%)", color=c_s_pl, fontsize=45, ha="right", weight="bold")
 
-            # CENTER PERFECT PIE (Warrants at 0°, Shares at 180°)
+            # CENTER PERFECT GIANT PIE
             ac = fig4.add_subplot(gs[1]); ac.set_facecolor("#0f172a"); ac.axis('equal')
             wedges, texts = ac.pie(
                 [val_warrants, val_shares], 
-                colors=["#006400", "#00FF00"], radius=1.45, 
-                wedgeprops=dict(width=0.45, edgecolor="#0f172a"), startangle=start_angle
+                colors=["#006400", "#00FF00"], radius=2.5, # RAYON GÉANT
+                wedgeprops=dict(width=0.8, edgecolor="#0f172a"), startangle=start_angle # ÉPAISSEUR AJUSTÉE
             )
             
             ac.text(0, 0.25, "Total Value:", fontsize=30, color="white", ha="center", va="center")
@@ -260,13 +260,13 @@ else:
             c_t_pl = "#00FF00" if t_pl >= 0 else "#FF0000"
             ac.text(0, -0.25, f"{t_pl:+,.2f} ({t_pct_pl:+.2f}%)", fontsize=35, color=c_t_pl, ha="center", va="center", weight="bold")
 
-            # PERFECT ALIGNED PERCENTAGES & ARROWS
-            ac.text(-1.7, 0, f"{pct_s:.0f}%", color="#00FF00", fontsize=45, weight="bold", ha="center", va="center")
-            ac.plot([-1.95, -2.4], [0, 0], color="#00FF00", lw=6)
+            # PERFECT ALIGNED PERCENTAGES & ARROWS (REPOUSSÉS VERS L'EXTÉRIEUR)
+            ac.text(-2.8, 0, f"{pct_s:.0f}%", color="#00FF00", fontsize=45, weight="bold", ha="center", va="center")
+            ac.plot([-3.0, -3.8], [0, 0], color="#00FF00", lw=6)
             
-            ac.text(1.7, 0, f"{pct_w:.0f}%", color="#006400", fontsize=45, weight="bold", ha="center", va="center")
-            ac.plot([1.95, 2.4], [0, 0], color="#006400", lw=6)
-            ac.set_xlim(-2.5, 2.5)
+            ac.text(2.8, 0, f"{pct_w:.0f}%", color="#006400", fontsize=45, weight="bold", ha="center", va="center")
+            ac.plot([3.0, 3.8], [0, 0], color="#006400", lw=6)
+            ac.set_xlim(-4, 4) # LIMITE ÉLARGIE
 
             # RIGHT BLOCK (WARRANTS -> #006400)
             ar = fig4.add_subplot(gs[2]); ar.set_facecolor("#0f172a"); ar.axis('off')
@@ -309,6 +309,7 @@ else:
             fig_c4 = plt.figure(figsize=(32, 12)); fig_c4.patch.set_facecolor("#0f172a")
             gs_c = GridSpec(1, 3, width_ratios=[1.2, 1.5, 1.2])
             
+            # LEFT COMMUNITY BLOCK (#4ade80)
             al_c = fig_c4.add_subplot(gs_c[0]); al_c.set_facecolor("#0f172a"); al_c.axis('off')
             al_c.text(0.9, 0.85, "Community Shares (GME)", color="#00FF00", fontsize=50, ha="right", weight="bold")
             al_c.text(0.9, 0.65, f"Val: ${c_v_s:,.2f}", color="white", fontsize=45, ha="right", weight="bold")
@@ -317,11 +318,12 @@ else:
             cc_s_pl = "#00FF00" if c_pl_s >= 0 else "#FF0000"
             al_c.text(0.9, 0.05, f"P/L: {c_pl_s:+,.2f} ({c_s_pct:+.2f}%)", color=cc_s_pl, fontsize=45, ha="right", weight="bold")
 
+            # CENTER COMMUNITY GIANT PIE
             ac_c = fig_c4.add_subplot(gs_c[1]); ac_c.set_facecolor("#0f172a"); ac_c.axis('equal')
             wedges_c, texts_c = ac_c.pie(
                 [cval_w, cval_s], 
-                colors=["#006400", "#00FF00"], radius=1.45, 
-                wedgeprops=dict(width=0.45, edgecolor="#0f172a"), startangle=c_start_angle
+                colors=["#006400", "#00FF00"], radius=2.5, # RAYON GÉANT
+                wedgeprops=dict(width=0.8, edgecolor="#0f172a"), startangle=c_start_angle # ÉPAISSEUR AJUSTÉE
             )
             
             ac_c.text(0, 0.25, "WEN MOON Value:", fontsize=30, color="white", ha="center", va="center")
@@ -329,12 +331,13 @@ else:
             cc_t_pl = "#00FF00" if ct_pl >= 0 else "#FF0000"
             ac_c.text(0, -0.25, f"{ct_pl:+,.2f} ({ct_pct:+.2f}%)", fontsize=35, color=cc_t_pl, ha="center", va="center", weight="bold")
 
-            ac_c.text(-1.7, 0, f"{cpct_s:.0f}%", color="#00FF00", fontsize=45, weight="bold", ha="center", va="center")
-            ac_c.plot([-1.95, -2.4], [0, 0], color="#00FF00", lw=6)
+            # PERFECT COMMUNITY ALIGNED PERCENTAGES & ARROWS (REPOUSSÉS)
+            ac_c.text(-2.8, 0, f"{cpct_s:.0f}%", color="#00FF00", fontsize=45, weight="bold", ha="center", va="center")
+            ac_c.plot([-3.0, -3.8], [0, 0], color="#00FF00", lw=6)
             
-            ac_c.text(1.7, 0, f"{cpct_w:.0f}%", color="#006400", fontsize=45, weight="bold", ha="center", va="center")
-            ac_c.plot([1.95, 2.4], [0, 0], color="#006400", lw=6)
-            ac_c.set_xlim(-2.5, 2.5)
+            ac_c.text(2.8, 0, f"{cpct_w:.0f}%", color="#006400", fontsize=45, weight="bold", ha="center", va="center")
+            ac_c.plot([3.0, 3.8], [0, 0], color="#006400", lw=6)
+            ac_c.set_xlim(-4, 4)
 
             ar_c = fig_c4.add_subplot(gs_c[2]); ar_c.set_facecolor("#0f172a"); ar_c.axis('off')
             ar_c.text(0.1, 0.85, "Community Warrants", color="#006400", fontsize=50, ha="left", weight="bold")
@@ -380,7 +383,6 @@ else:
             avg_s_per_person = c_s / total_holders if total_holders > 0 else 0
             avg_w_per_person = c_w / total_holders if total_holders > 0 else 0
 
-            # L'UTILISATION DE COMPONENTS.HTML GARANTIT AUCUN TEXTE BRUT AFFICHÉ
             html_summary = f"""
             <!DOCTYPE html>
             <html>
