@@ -324,7 +324,6 @@ else:
             st.pyplot(fig, bbox_inches='tight', pad_inches=0); plt.close(fig)
             st.markdown(f"<p style='text-align:center; color:#888; font-family:monospace; font-size:18px; margin-top:5px; margin-bottom:20px;'>TODAY'S VOLUME: {vol:,}</p>", unsafe_allow_html=True)
 
-    @st.fragment(run_every="30s")
     def render_content():
         plt.close('all') 
         p_nsy, p_wt, pr_nsy, pr_wt, vol_n, vol_w, ch_gme, ch_wt = fetch_terminal_data()
@@ -350,8 +349,20 @@ else:
         c_t_v = c_v_s + c_v_w
         c_t_c = (c_s * c_gp_val) + (c_w * c_pw_val)
 
-        with ph1.container(): draw_live(p_nsy, pr_nsy, ch_gme, vol_n)
-        with ph2.container(): draw_live(p_wt, pr_wt, ch_wt, vol_w)
+                with ph1.container():
+            @st.fragment(run_every="30s")
+            def live_gme_screen():
+                p_n, _, pr_n, _, v_n, _, ch_n, _ = fetch_terminal_data()
+                draw_live(p_n, pr_n, ch_n, v_n)
+            live_gme_screen()
+
+        with ph2.container():
+            @st.fragment(run_every="30s")
+            def live_wt_screen():
+                _, p_w, _, pr_w, _, v_w, _, ch_w = fetch_terminal_data()
+                draw_live(p_w, pr_w, ch_w, v_w)
+            live_wt_screen()
+
 
         with ph3.container():
             s_c = qn * gp
