@@ -22,7 +22,7 @@ def get_b64(path):
         with open(path, "rb") as f: return base64.b64encode(f.read()).decode()
     except: return ""
 
-# --- FULLSCREEN BUTTON (SMALLER, LOWER, MORE TO THE RIGHT) ---
+# --- FULLSCREEN BUTTON ---
 components.html(
     """
     <script>
@@ -48,16 +48,17 @@ components.html(
     """, height=0, width=0
 )
 
-# --- CSS ---
+# --- CSS (AVEC MARGE HAUT RÉDUITE) ---
 st.markdown("""
 <style>
+    .block-container { padding-top: 1rem !important; padding-bottom: 0rem !important; }
     body, .stApp { background-color: #050505 !important; color: white; }
     #MainMenu, footer, header {visibility: hidden;}
     @keyframes neon-text { 0%, 100% { color: white; text-shadow: none; } 50% { color: #00FF00; text-shadow: 0 0 15px #00FF00; } }
     @keyframes neon-img { 0%, 100% { filter: drop-shadow(0 0 0px transparent); } 50% { filter: drop-shadow(0 0 25px #00FF00); } }
     @keyframes nuclear-neon { 0%, 100% { filter: drop-shadow(0 0 5px #00FF00); transform: translateY(0px) scale(1); } 50% { filter: drop-shadow(0 0 25px #00FF00); transform: translateY(-15px) scale(1.1); } }
     @keyframes neon-flash-red { 0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px #FF0000); } 50% { opacity: 0.4; filter: drop-shadow(0 0 30px #FF0000); } }
-    .title-container { text-align: center; margin-bottom: 30px; }
+    .title-container { text-align: center; margin-bottom: 20px; margin-top: -10px; }
     .gme-title { font-size: 60px; line-height: 1.1; animation: neon-text 1.5s infinite; white-space: nowrap; margin: 0; }
     @media screen and (max-width: 600px) { .gme-title { font-size: 38px; } }
     .table-wrapper { overflow-x: auto; max-width: 100%; border-radius: 10px; border: 1px solid #0259c7; margin-top: 10px; }
@@ -147,8 +148,8 @@ else:
             return p_n, p_w, prev_n, prev_w, data['GME'], data['GME-WT']
         except: return 24.50, 4.30, 24.0, 4.0, pd.Series(), pd.Series()
 
-    # --- ARCHITECTURE ANTI-RESET (TABS OUTSIDE FRAGMENT) ---
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["📊 GME", "📜 WARRANTS", "🇺🇸 US", "📋 DATA", "🌕 WEN MOON US", "🗃️ WEN MOON DATA", "🏆 LEADERBOARD", "📊 WEN MOON SUMMARY"])
+    # --- TABS AVEC NOUVEAUX NOMS ---
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["📊 GME", "📈 WARRANT", "💎 PORTFOLIO", "📋 DATA", "🌘 WEN MOON", "🗃️ WEN MOON DATA", "🏆 LEADERBOARD", "📊 WEN MOON SUMMARY"])
     
     with tab1: ph1 = st.empty()
     with tab2: ph2 = st.empty()
@@ -166,6 +167,10 @@ else:
         price_str = f"{price:.2f}"
         p_int, p_dec = price_str.split('.')
         
+        # LOGIQUE DU P/L AVEC LE PETIT $
+        diff_sign = "+" if diff >= 0 else "-"
+        abs_diff = abs(diff)
+        
         sz = min(100 + (abs(pct) * 10), 180)
         anim_class = "nuclear-neon" if pct >= 0 else "neon-flash-red"
         icn = f"<div style='animation: {anim_class} 1.5s infinite;'><div style='font-size:{sz}px;'>🚀</div></div>" if pct >= 0 else f"<img src='data:image/jpeg;base64,{get_b64('Screenshot_20260216_163106_Discord.jpg')}' style='height:{sz}px; animation:{anim_class} 1.5s infinite;'>"
@@ -174,7 +179,7 @@ else:
         <div style='display:flex; justify-content:center; align-items:center; gap:20px; margin-top:30px;'>
             <div style='text-align:right; white-space:nowrap;'>
                 <span style='font-size:50px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; vertical-align:top;'>$</span><span style='font-size:100px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold;'>{p_int}.</span><span style='font-size:80px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold;'>{p_dec}</span>
-                <h3 style='color:{clr}; margin-top:0px;'>${diff:+.2f} {pct:+.2f}%</h3>
+                <h3 style='color:{clr}; margin-top:0px;'>{diff_sign}<span style='font-size:0.6em; vertical-align:middle;'>$</span>{abs_diff:.2f} {pct:+.2f}%</h3>
             </div>
             {icn}
         </div>
@@ -185,15 +190,11 @@ else:
             v = chart.dropna().values
             ax.bar(np.arange(len(v)), v - np.min(v)*0.99, bottom=np.min(v)*0.99, color=clr, width=0.8); ax.axis('off'); st.pyplot(fig); plt.close(fig)
 
-    # --- START OF LIVE FRAGMENT ---
     @st.fragment(run_every="30s")
     def render_content():
         plt.close('all') # ULTIMATE CACHE KILLER
-        
-        # 1. LIVE DATA FETCHING
         p_nsy, p_wt, pr_nsy, pr_wt, ch_gme, ch_wt = fetch_terminal_data()
         
-        # 2. PERSISTENT USER DATA
         qn, pn = st.session_state.osq, st.session_state.osp
         qw, pw = st.session_state.owq, st.session_state.owp
         gp = st.session_state.osp
@@ -204,7 +205,6 @@ else:
         t_v_u = v_s_u + v_w_u
         t_c_u = (qn * gp) + (qw * pw)
 
-        # 3. COMMUNITY DATA
         c_s, c_w = qn, qw
         c_gp_val = gp if qn > 0 else 0.0
         c_pw_val = pw if qw > 0 else 0.0
@@ -214,7 +214,6 @@ else:
         c_t_v = c_v_s + c_v_w
         c_t_c = (c_s * c_gp_val) + (c_w * c_pw_val)
 
-        # TARGETING THE EMPTY CONTAINERS DECLARED ABOVE
         with ph1.container(): draw_live(p_nsy, pr_nsy, ch_gme)
         with ph2.container(): draw_live(p_wt, pr_wt, ch_wt)
         with ph3.container():
@@ -224,47 +223,56 @@ else:
             w_pl = v_w_u - w_c
             t_pl = t_v_u - t_c_u
             
+            val_shares = v_s_u if v_s_u > 0 else 0.01
+            val_warrants = v_w_u if v_w_u > 0 else 0.01
+            pct_s = (val_shares / (val_shares + val_warrants)) * 100
+            pct_w = (val_warrants / (val_shares + val_warrants)) * 100
             s_pct_pl = (s_pl / s_c * 100) if s_c > 0 else 0
             w_pct_pl = (w_pl / w_c * 100) if w_c > 0 else 0
             t_pct_pl = (t_pl / t_c_u * 100) if t_c_u > 0 else 0
 
+            # CALCUL ABSOLU DU CENTRAGE HORIZONTAL
+            w_deg = (pct_w / 100) * 360
+            start_angle = -(w_deg / 2)
+
             fig4 = plt.figure(figsize=(32, 12)); fig4.patch.set_facecolor("#0f172a")
             gs = GridSpec(1, 3, width_ratios=[1.2, 1.5, 1.2])
             
-            # LEFT DATA BLOCK (Neon Green #4ade80)
+            # LEFT BLOCK (SHARES -> #00FF00)
             al = fig4.add_subplot(gs[0]); al.set_facecolor("#0f172a"); al.axis('off')
-            al.text(0.9, 0.85, "GameStop Shares (GME)", color="#4ade80", fontsize=50, ha="right", weight="bold")
+            al.text(0.9, 0.85, "GameStop Shares (GME)", color="#00FF00", fontsize=50, ha="right", weight="bold")
             al.text(0.9, 0.65, f"Val: ${v_s_u:,.2f}", color="white", fontsize=45, ha="right", weight="bold")
-            al.text(0.9, 0.45, f"Qty: {qn:,} | Price: ${p_nsy:.2f}", color="#4ade80", fontsize=45, ha="right", weight="bold")
+            al.text(0.9, 0.45, f"Qty: {qn:,} | Price: ${p_nsy:.2f}", color="#00FF00", fontsize=45, ha="right", weight="bold")
             al.text(0.9, 0.25, f"Avg Cost: ${gp:.2f}", color="white", fontsize=45, ha="right", weight="bold")
             c_s_pl = "#00FF00" if s_pl >= 0 else "#FF0000"
             al.text(0.9, 0.05, f"P/L: {s_pl:+,.2f} ({s_pct_pl:+.2f}%)", color=c_s_pl, fontsize=45, ha="right", weight="bold")
 
-            # CENTER PIE CHART
+            # CENTER PERFECT PIE (Warrants at 0°, Shares at 180°)
             ac = fig4.add_subplot(gs[1]); ac.set_facecolor("#0f172a"); ac.axis('equal')
-            wedges, texts, autotexts = ac.pie(
-                [v_s_u if v_s_u > 0 else 0.01, v_w_u if v_w_u > 0 else 0.01], 
-                colors=["#4ade80", "#0f5132"], radius=1.45, 
-                wedgeprops=dict(width=0.45, edgecolor="#0f172a"), startangle=90,
-                autopct='%1.0f%%', pctdistance=0.75
+            wedges, texts = ac.pie(
+                [val_warrants, val_shares], 
+                colors=["#006400", "#00FF00"], radius=1.45, 
+                wedgeprops=dict(width=0.45, edgecolor="#0f172a"), startangle=start_angle
             )
-            for autotext in autotexts:
-                autotext.set_color('white'); autotext.set_fontsize(40); autotext.set_weight('bold')
             
-            ac.text(0, 0.2, "Total Value:", fontsize=30, color="white", ha="center")
-            ac.text(0, -0.05, f"${t_v_u:,.2f}", fontsize=55, color="white", ha="center", weight="bold")
+            ac.text(0, 0.25, "Total Value:", fontsize=30, color="white", ha="center", va="center")
+            ac.text(0, 0.0, f"${t_v_u:,.2f}", fontsize=55, color="white", ha="center", va="center", weight="bold")
             c_t_pl = "#00FF00" if t_pl >= 0 else "#FF0000"
-            ac.text(0, -0.3, f"{t_pl:+,.2f} ({t_pct_pl:+.2f}%)", fontsize=35, color=c_t_pl, ha="center", weight="bold")
+            ac.text(0, -0.25, f"{t_pl:+,.2f} ({t_pct_pl:+.2f}%)", fontsize=35, color=c_t_pl, ha="center", va="center", weight="bold")
 
-            # PERFECT CONNECTING ARROWS (MATCHING COLORS)
-            ac.annotate("", xy=(-1.45, 0), xytext=(-2.35, 0), arrowprops=dict(arrowstyle="-", color="#4ade80", lw=6))
-            ac.annotate("", xy=(1.45, 0), xytext=(2.35, 0), arrowprops=dict(arrowstyle="-", color="#0f5132", lw=6))
+            # PERFECT ALIGNED PERCENTAGES & ARROWS
+            ac.text(-1.7, 0, f"{pct_s:.0f}%", color="#00FF00", fontsize=45, weight="bold", ha="center", va="center")
+            ac.plot([-1.95, -2.4], [0, 0], color="#00FF00", lw=6)
+            
+            ac.text(1.7, 0, f"{pct_w:.0f}%", color="#006400", fontsize=45, weight="bold", ha="center", va="center")
+            ac.plot([1.95, 2.4], [0, 0], color="#006400", lw=6)
+            ac.set_xlim(-2.5, 2.5)
 
-            # RIGHT DATA BLOCK (Dark Green #0f5132)
+            # RIGHT BLOCK (WARRANTS -> #006400)
             ar = fig4.add_subplot(gs[2]); ar.set_facecolor("#0f172a"); ar.axis('off')
-            ar.text(0.1, 0.85, "Warrants (GME-WT)", color="#0f5132", fontsize=50, ha="left", weight="bold")
+            ar.text(0.1, 0.85, "Warrants (GME-WT)", color="#006400", fontsize=50, ha="left", weight="bold")
             ar.text(0.1, 0.65, f"Val: ${v_w_u:,.2f}", color="white", fontsize=45, ha="left", weight="bold")
-            ar.text(0.1, 0.45, f"Qty: {qw:,} | Price: ${p_wt:.2f}", color="#0f5132", fontsize=45, ha="left", weight="bold")
+            ar.text(0.1, 0.45, f"Qty: {qw:,} | Price: ${p_wt:.2f}", color="#006400", fontsize=45, ha="left", weight="bold")
             ar.text(0.1, 0.25, f"Avg Cost: ${pw:.3f}", color="white", fontsize=45, ha="left", weight="bold")
             c_w_pl = "#00FF00" if w_pl >= 0 else "#FF0000"
             ar.text(0.1, 0.05, f"P/L: {w_pl:+,.2f} ({w_pct_pl:+.2f}%)", color=c_w_pl, fontsize=45, ha="left", weight="bold")
@@ -274,8 +282,8 @@ else:
         with ph4.container():
             html_d = f"""<div class='table-wrapper'><table class='ldb-t'>
             <tr><th>Ticker</th><th>Qty</th><th>Avg</th><th>Price</th><th>Cost</th><th>Value</th><th>P/L</th><th>%</th></tr>
-            <tr><td>GME</td><td>{qn:,}</td><td>${gp:.2f}</td><td>${p_nsy:.2f}</td><td>${s_c:,.2f}</td><td>${v_s_u:,.2f}</td><td style="color:{'#00FF00' if s_pl>=0 else '#FF0000'};">${s_pl:+,.2f} ({s_pct_pl:+.2f}%)</td><td>{v_s_u/t_v_u*100 if t_v_u>0 else 0:.1f}%</td></tr>
-            <tr><td>WARRANT</td><td>{qw:,}</td><td>${pw:.3f}</td><td>${p_wt:.2f}</td><td>${w_c:,.2f}</td><td>${v_w_u:,.2f}</td><td style="color:{'#00FF00' if w_pl>=0 else '#FF0000'};">${w_pl:+,.2f} ({w_pct_pl:+.2f}%)</td><td>{v_w_u/t_v_u*100 if t_v_u>0 else 0:.1f}%</td></tr>
+            <tr><td>GME</td><td>{qn:,}</td><td>${gp:.2f}</td><td>${p_nsy:.2f}</td><td>${s_c:,.2f}</td><td>${v_s_u:,.2f}</td><td style="color:{'#00FF00' if s_pl>=0 else '#FF0000'};">${s_pl:+,.2f} ({s_pct_pl:+.2f}%)</td><td>{pct_s:.1f}%</td></tr>
+            <tr><td>WARRANT</td><td>{qw:,}</td><td>${pw:.3f}</td><td>${p_wt:.2f}</td><td>${w_c:,.2f}</td><td>${v_w_u:,.2f}</td><td style="color:{'#00FF00' if w_pl>=0 else '#FF0000'};">${w_pl:+,.2f} ({w_pct_pl:+.2f}%)</td><td>{pct_w:.1f}%</td></tr>
             <tr class='podium'><td>TOTAL</td><td></td><td></td><td></td><td>${t_c_u:,.2f}</td><td>${t_v_u:,.2f}</td><td style="color:{'#00FF00' if t_pl>=0 else '#FF0000'};">${t_pl:+,.2f} ({t_pct_pl:+.2f}%)</td><td>100%</td></tr>
             </table></div>"""
             st.markdown(html_d, unsafe_allow_html=True)
@@ -287,47 +295,51 @@ else:
             c_pl_w = c_v_w - cw_c
             ct_pl = c_t_v - c_t_c
             
+            cval_s = c_v_s if c_v_s > 0 else 0.01
+            cval_w = c_v_w if c_v_w > 0 else 0.01
+            cpct_s = (cval_s / (cval_s + cval_w)) * 100
+            cpct_w = (cval_w / (cval_s + cval_w)) * 100
             c_s_pct = (c_pl_s / cs_c * 100) if cs_c > 0 else 0
             c_w_pct = (c_pl_w / cw_c * 100) if cw_c > 0 else 0
             ct_pct = (ct_pl / c_t_c * 100) if c_t_c > 0 else 0
 
+            cw_deg = (cpct_w / 100) * 360
+            c_start_angle = -(cw_deg / 2)
+
             fig_c4 = plt.figure(figsize=(32, 12)); fig_c4.patch.set_facecolor("#0f172a")
             gs_c = GridSpec(1, 3, width_ratios=[1.2, 1.5, 1.2])
             
-            # LEFT COMMUNITY BLOCK (#4ade80)
             al_c = fig_c4.add_subplot(gs_c[0]); al_c.set_facecolor("#0f172a"); al_c.axis('off')
-            al_c.text(0.9, 0.85, "Community Shares (GME)", color="#4ade80", fontsize=50, ha="right", weight="bold")
+            al_c.text(0.9, 0.85, "Community Shares (GME)", color="#00FF00", fontsize=50, ha="right", weight="bold")
             al_c.text(0.9, 0.65, f"Val: ${c_v_s:,.2f}", color="white", fontsize=45, ha="right", weight="bold")
-            al_c.text(0.9, 0.45, f"Qty: {c_s:,} | Price: ${p_nsy:.2f}", color="#4ade80", fontsize=45, ha="right", weight="bold")
+            al_c.text(0.9, 0.45, f"Qty: {c_s:,} | Price: ${p_nsy:.2f}", color="#00FF00", fontsize=45, ha="right", weight="bold")
             al_c.text(0.9, 0.25, f"Avg Cost: ${c_gp_val:.2f}", color="white", fontsize=45, ha="right", weight="bold")
             cc_s_pl = "#00FF00" if c_pl_s >= 0 else "#FF0000"
             al_c.text(0.9, 0.05, f"P/L: {c_pl_s:+,.2f} ({c_s_pct:+.2f}%)", color=cc_s_pl, fontsize=45, ha="right", weight="bold")
 
-            # CENTER COMMUNITY PIE
             ac_c = fig_c4.add_subplot(gs_c[1]); ac_c.set_facecolor("#0f172a"); ac_c.axis('equal')
-            wedges_c, texts_c, autotexts_c = ac_c.pie(
-                [c_v_s if c_v_s > 0 else 0.01, c_v_w if c_v_w > 0 else 0.01], 
-                colors=["#4ade80", "#0f5132"], radius=1.45, 
-                wedgeprops=dict(width=0.45, edgecolor="#0f172a"), startangle=90,
-                autopct='%1.0f%%', pctdistance=0.75
+            wedges_c, texts_c = ac_c.pie(
+                [cval_w, cval_s], 
+                colors=["#006400", "#00FF00"], radius=1.45, 
+                wedgeprops=dict(width=0.45, edgecolor="#0f172a"), startangle=c_start_angle
             )
-            for autotext in autotexts_c:
-                autotext.set_color('white'); autotext.set_fontsize(40); autotext.set_weight('bold')
             
-            ac_c.text(0, 0.2, "WEN MOON Value:", fontsize=30, color="white", ha="center")
-            ac_c.text(0, -0.05, f"${c_t_v:,.2f}", fontsize=55, color="white", ha="center", weight="bold")
+            ac_c.text(0, 0.25, "WEN MOON Value:", fontsize=30, color="white", ha="center", va="center")
+            ac_c.text(0, 0.0, f"${c_t_v:,.2f}", fontsize=55, color="white", ha="center", va="center", weight="bold")
             cc_t_pl = "#00FF00" if ct_pl >= 0 else "#FF0000"
-            ac_c.text(0, -0.3, f"{ct_pl:+,.2f} ({ct_pct:+.2f}%)", fontsize=35, color=cc_t_pl, ha="center", weight="bold")
+            ac_c.text(0, -0.25, f"{ct_pl:+,.2f} ({ct_pct:+.2f}%)", fontsize=35, color=cc_t_pl, ha="center", va="center", weight="bold")
 
-            # PERFECT COMMUNITY ARROWS
-            ac_c.annotate("", xy=(-1.45, 0), xytext=(-2.35, 0), arrowprops=dict(arrowstyle="-", color="#4ade80", lw=6))
-            ac_c.annotate("", xy=(1.45, 0), xytext=(2.35, 0), arrowprops=dict(arrowstyle="-", color="#0f5132", lw=6))
+            ac_c.text(-1.7, 0, f"{cpct_s:.0f}%", color="#00FF00", fontsize=45, weight="bold", ha="center", va="center")
+            ac_c.plot([-1.95, -2.4], [0, 0], color="#00FF00", lw=6)
+            
+            ac_c.text(1.7, 0, f"{cpct_w:.0f}%", color="#006400", fontsize=45, weight="bold", ha="center", va="center")
+            ac_c.plot([1.95, 2.4], [0, 0], color="#006400", lw=6)
+            ac_c.set_xlim(-2.5, 2.5)
 
-            # RIGHT COMMUNITY BLOCK (#0f5132)
             ar_c = fig_c4.add_subplot(gs_c[2]); ar_c.set_facecolor("#0f172a"); ar_c.axis('off')
-            ar_c.text(0.1, 0.85, "Community Warrants", color="#0f5132", fontsize=50, ha="left", weight="bold")
+            ar_c.text(0.1, 0.85, "Community Warrants", color="#006400", fontsize=50, ha="left", weight="bold")
             ar_c.text(0.1, 0.65, f"Val: ${c_v_w:,.2f}", color="white", fontsize=45, ha="left", weight="bold")
-            ar_c.text(0.1, 0.45, f"Qty: {c_w:,} | Price: ${p_wt:.2f}", color="#0f5132", fontsize=45, ha="left", weight="bold")
+            ar_c.text(0.1, 0.45, f"Qty: {c_w:,} | Price: ${p_wt:.2f}", color="#006400", fontsize=45, ha="left", weight="bold")
             ar_c.text(0.1, 0.25, f"Avg Cost: ${c_pw_val:.3f}", color="white", fontsize=45, ha="left", weight="bold")
             cc_w_pl = "#00FF00" if c_pl_w >= 0 else "#FF0000"
             ar_c.text(0.1, 0.05, f"P/L: {c_pl_w:+,.2f} ({c_w_pct:+.2f}%)", color=cc_w_pl, fontsize=45, ha="left", weight="bold")
@@ -337,8 +349,8 @@ else:
         with ph6.container():
             html_w = f"""<div class='table-wrapper'><table class='ldb-t'>
             <tr><th>Ticker</th><th>Qty</th><th>Avg</th><th>Price</th><th>Cost</th><th>Value</th><th>P/L</th><th>%</th></tr>
-            <tr><td>GME</td><td>{c_s:,}</td><td>${c_gp_val:.2f}</td><td>${p_nsy:.2f}</td><td>${cs_c:,.2f}</td><td>${c_v_s:,.2f}</td><td style="color:{'#00FF00' if c_pl_s>=0 else '#FF0000'};">${c_pl_s:+,.2f} ({c_s_pct:+.2f}%)</td><td>{c_v_s/c_t_v*100 if c_t_v>0 else 0:.1f}%</td></tr>
-            <tr><td>WARRANT</td><td>{c_w:,}</td><td>${c_pw_val:.3f}</td><td>${p_wt:.2f}</td><td>${cw_c:,.2f}</td><td>${c_v_w:,.2f}</td><td style="color:{'#00FF00' if c_pl_w>=0 else '#FF0000'};">${c_pl_w:+,.2f} ({c_w_pct:+.2f}%)</td><td>{c_v_w/c_t_v*100 if c_t_v>0 else 0:.1f}%</td></tr>
+            <tr><td>GME</td><td>{c_s:,}</td><td>${c_gp_val:.2f}</td><td>${p_nsy:.2f}</td><td>${cs_c:,.2f}</td><td>${c_v_s:,.2f}</td><td style="color:{'#00FF00' if c_pl_s>=0 else '#FF0000'};">${c_pl_s:+,.2f} ({c_s_pct:+.2f}%)</td><td>{cpct_s:.1f}%</td></tr>
+            <tr><td>WARRANT</td><td>{c_w:,}</td><td>${c_pw_val:.3f}</td><td>${p_wt:.2f}</td><td>${cw_c:,.2f}</td><td>${c_v_w:,.2f}</td><td style="color:{'#00FF00' if c_pl_w>=0 else '#FF0000'};">${c_pl_w:+,.2f} ({c_w_pct:+.2f}%)</td><td>{cpct_w:.1f}%</td></tr>
             <tr class='podium'><td>TOTAL</td><td></td><td></td><td></td><td>${c_t_c:,.2f}</td><td>${c_t_v:,.2f}</td><td style="color:{'#00FF00' if ct_pl>=0 else '#FF0000'};">${ct_pl:+,.2f} ({ct_pct:+.2f}%)</td><td>100%</td></tr>
             </table></div>"""
             st.markdown(html_w, unsafe_allow_html=True)
@@ -347,7 +359,6 @@ else:
             lb_tabs_term = st.tabs(["🌍 GENERAL", "📅 MONTHLY", "📆 WEEKLY"])
             u_name = st.session_state.get("ape_name", "Anonymous")
             real_db = [{"name": u_name, "tv": t_v_u, "sq": qn, "wq": qw, "spru": pn, "wpru": pw}]
-            
             for term_t in lb_tabs_term:
                 with term_t:
                     html_ldb = """<div class='table-wrapper'><table class='ldb-t'>
@@ -366,18 +377,18 @@ else:
             u_name = st.session_state.get("ape_name", "Anonymous")
             real_db = [{"name": u_name, "tv": t_v_u, "sq": qn, "wq": qw, "spru": pn, "wpru": pw}]
             total_holders = len(real_db)
-            
             avg_s_per_person = c_s / total_holders if total_holders > 0 else 0
             avg_w_per_person = c_w / total_holders if total_holders > 0 else 0
 
+            # L'UTILISATION DE COMPONENTS.HTML GARANTIT AUCUN TEXTE BRUT AFFICHÉ
             html_summary = f"""
             <!DOCTYPE html>
             <html>
             <head>
             <style>
                 @keyframes neon-text {{ 0%, 100% {{ color: white; text-shadow: none; }} 50% {{ color: #00FF00; text-shadow: 0 0 15px #00FF00; }} }}
-                body {{ background-color: #050505; color: white; font-family: sans-serif; }}
-                .summary-container {{ background-color: #0f172a; padding: 20px; border-radius: 10px; border: 1px solid #0259c7; max-width: 1200px; margin: 0 auto; }}
+                body {{ background-color: #050505; color: white; font-family: sans-serif; margin: 0; padding: 0; }}
+                .summary-container {{ background-color: #0f172a; padding: 20px; border-radius: 10px; border: 1px solid #0259c7; }}
                 .summary-title {{ text-align: center; color: #00FF00; margin-bottom: 30px; animation: neon-text 1.5s infinite; font-size: 32px; }}
                 .total-holders {{ text-align: center; margin-bottom: 30px; }}
                 .total-holders h3 {{ color: #66c2a5; margin: 0; font-size: 24px; }}
@@ -388,61 +399,44 @@ else:
                 .stat-box p {{ margin: 10px 0; font-size: 18px; }}
                 .stat-box strong {{ font-size: 24px; }}
                 .recent-title {{ text-align: center; color: #66c2a5; margin-bottom: 20px; font-size: 24px; }}
-                .ldb-t {{ width: 100%; border-collapse: collapse; color: white; font-family: monospace; text-align: center; }}
-                .ldb-t th {{ background: #001f3f; color: #00FF00; padding: 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }}
-                .ldb-t td {{ background: #0f172a; padding: 12px; border-bottom: 1px solid #0259c7; white-space: nowrap; }}
+                table {{ width: 100%; border-collapse: collapse; font-family: monospace; text-align: center; }}
+                th {{ background: #001f3f; color: #00FF00; padding: 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }}
+                td {{ background: #0f172a; padding: 12px; border-bottom: 1px solid #0259c7; white-space: nowrap; }}
             </style>
             </head>
             <body>
             <div class="summary-container">
                 <h2 class="summary-title">🌍 WEN MOON COMMUNITY SUMMARY</h2>
-                
                 <div class="total-holders">
                     <h3>TOTAL HOLDERS</h3>
                     <p>{total_holders:,}</p>
                 </div>
-
                 <div class="stats-grid">
                     <div class="stat-box">
-                        <h4 style="color: #4ade80;">GME SHARES</h4>
+                        <h4 style="color: #00FF00;">GME SHARES</h4>
                         <p>Total Shares: <strong style="color: white;">{c_s:,}</strong></p>
                         <p>Avg Purchase Price: <strong style="color: white;">${c_gp_val:.2f}</strong></p>
                         <p>Avg Shares / Person: <strong style="color: white;">{avg_s_per_person:,.0f}</strong></p>
                     </div>
                     <div class="stat-box">
-                        <h4 style="color: #0f5132;">GME WARRANTS</h4>
+                        <h4 style="color: #006400;">GME WARRANTS</h4>
                         <p>Total Warrants: <strong style="color: white;">{c_w:,}</strong></p>
                         <p>Avg Purchase Price: <strong style="color: white;">${c_pw_val:.3f}</strong></p>
                         <p>Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
                     </div>
                 </div>
-
                 <h3 class="recent-title">📅 RECENT ACTIVITY (COMMUNITY)</h3>
                 <div style="overflow-x: auto;">
-                    <table class='ldb-t' style="margin: 0 auto; width: 100%;">
-                        <tr>
-                            <th>Asset</th>
-                            <th>Bought (Last 7 Days)</th>
-                            <th>Bought (Last 30 Days)</th>
-                        </tr>
-                        <tr>
-                            <td style="color: #4ade80; font-weight: bold;">GME SHARES</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td style="color: #0f5132; font-weight: bold;">GME WARRANTS</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
+                    <table>
+                        <tr><th>Asset</th><th>Bought (Last 7 Days)</th><th>Bought (Last 30 Days)</th></tr>
+                        <tr><td style="color: #00FF00; font-weight: bold;">GME SHARES</td><td>0</td><td>0</td></tr>
+                        <tr><td style="color: #006400; font-weight: bold;">GME WARRANTS</td><td>0</td><td>0</td></tr>
                     </table>
                 </div>
             </div>
             </body>
             </html>
             """
-            # UTILISATION DE COMPONENTS.HTML POUR FORCER LE RENDU
             components.html(html_summary, height=900, scrolling=True)
 
     render_content()
-                    
