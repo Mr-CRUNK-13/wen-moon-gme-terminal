@@ -186,27 +186,34 @@ else:
             return p_n, p_w, prev_n, prev_w, vol_n, vol_w, data['GME'], data['GME-WT']
         except: return 24.50, 4.30, 24.0, 4.0, 0, 0, pd.Series(), pd.Series()
 
-    @st.cache_data(ttl=1800)
+        @st.cache_data(ttl=1800)
     def fetch_advanced_pro_data():
-        try:
-            gme, wt = yf.Ticker("GME"), yf.Ticker("GME-WT")
-            info_dict = dict(gme.info)
-            wt_info_dict = dict(wt.fast_info) if hasattr(wt, 'fast_info') else dict(wt.info)
-            news_data = gme.news[:5] if gme.news else []
-            return info_dict, wt_info_dict, news_data
-        except: return {}, {}, []
+        gme, wt = yf.Ticker("GME"), yf.Ticker("GME-WT")
+        try: info_dict = dict(gme.info)
+        except: info_dict = {}
+        try: wt_info_dict = dict(wt.fast_info) if hasattr(wt, 'fast_info') else dict(wt.info)
+        except: wt_info_dict = {}
+        try: news_data = gme.news[:5] if gme.news else []
+        except: news_data = []
+        return info_dict, wt_info_dict, news_data
 
     @st.cache_data(ttl=3600)
     def fetch_financials_and_options():
-        try:
-            tk = yf.Ticker("GME")
-            opts = tk.options
-            fin = tk.financials
-            bs = tk.balance_sheet
-            cf = tk.cashflow
-            ins = tk.insider_transactions
-            earn_dates = tk.earnings_dates
-            return opts, fin, bs, cf, ins, earn_dates
+        tk = yf.Ticker("GME")
+        def safe_get(attr, default):
+            try: 
+                res = getattr(tk, attr)
+                return res if res is not None else default
+            except: return default
+        
+        opts = safe_get('options', ())
+        fin = safe_get('financials', pd.DataFrame())
+        bs = safe_get('balance_sheet', pd.DataFrame())
+        cf = safe_get('cashflow', pd.DataFrame())
+        ins = safe_get('insider_transactions', pd.DataFrame())
+        earn_dates = safe_get('earnings_dates', pd.DataFrame())
+        return opts, fin, bs, cf, ins, earn_dates
+
         except: return (), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
     tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12, tab13, tab14, tab15 = st.tabs([
@@ -268,11 +275,27 @@ else:
         with w_t7: st.markdown(portal_btn("TRADINGVIEW", "Advanced technical analysis platform.", "https://www.tradingview.com/symbols/NYSE-GME/"), unsafe_allow_html=True)
         with w_t8: st.markdown(portal_btn("YAHOO FINANCE", "Comprehensive financial overview.", "https://finance.yahoo.com/quote/GME/"), unsafe_allow_html=True)
 
-    # --- TAB 15 : LIVE ALERTS (Twitter X - Static) ---
+        # --- TAB 15 : LIVE ALERTS (Twitter X - Static) ---
     with tab15:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🐦 X LIVE ALERTS</h2>", unsafe_allow_html=True)
-        x_tab1, x_tab2, x_tab3, x_tab4, x_tab5, x_tab6 = st.tabs(["👑 Ryan Cohen", "🐱 Roaring Kitty", "📉 Michael Burry", "🎮 GameStop", "🐰 Buck", "🃏 PowerPacks"])
+        st.markdown("<p style='text-align:center; color:#ccc; font-size:16px;'>Select a profile below to open their live feed securely.</p>", unsafe_allow_html=True)
         
+        def x_btn(handle, name, icon):
+            return f"""<div style='text-align:center; padding:30px; background:#0f172a; border:1px solid #1DA1F2; border-radius:10px; margin-bottom:15px;'>
+                <h3 style='color:white; margin-top:0;'>{icon} {name}</h3>
+                <a href='https://twitter.com/{handle}' target='_blank' style='display:inline-block; padding:15px 30px; background:#1DA1F2; color:white; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN @{handle} ON X</a>
+            </div>"""
+            
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown(x_btn("ryancohen", "Ryan Cohen", "👑"), unsafe_allow_html=True)
+            st.markdown(x_btn("michaeljburry", "Michael Burry", "📉"), unsafe_allow_html=True)
+            st.markdown(x_btn("buckthebunny", "Buck", "🐰"), unsafe_allow_html=True)
+        with c2:
+            st.markdown(x_btn("TheRoaringKitty", "Roaring Kitty", "🐱"), unsafe_allow_html=True)
+            st.markdown(x_btn("GameStop", "GameStop", "🎮"), unsafe_allow_html=True)
+            st.markdown(x_btn("PowerPacks", "PowerPacks", "🃏"), unsafe_allow_html=True)
+
         def x_widget(handle):
             return f"""
             <div style="text-align:center; margin-bottom:20px;">
