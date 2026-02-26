@@ -274,7 +274,7 @@ else:
         with w_t7: st.markdown(portal_btn("TRADINGVIEW", "Advanced technical analysis platform.", "https://www.tradingview.com/symbols/NYSE-GME/"), unsafe_allow_html=True)
         with w_t8: st.markdown(portal_btn("YAHOO FINANCE", "Comprehensive financial overview.", "https://finance.yahoo.com/quote/GME/"), unsafe_allow_html=True)
 
-        # --- TAB 15 : LIVE ALERTS (Twitter X - Static) ---
+            # --- TAB 15 : LIVE ALERTS (Twitter X - Static) ---
     with tab15:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🐦 X LIVE ALERTS</h2>", unsafe_allow_html=True)
         st.markdown("<p style='text-align:center; color:#ccc; font-size:16px;'>Select a profile below to open their live feed securely.</p>", unsafe_allow_html=True)
@@ -295,22 +295,6 @@ else:
             st.markdown(x_btn("GameStop", "GameStop", "🎮"), unsafe_allow_html=True)
             st.markdown(x_btn("PowerPacks", "PowerPacks", "🃏"), unsafe_allow_html=True)
 
-        def x_widget(handle):
-            return f"""
-            <div style="text-align:center; margin-bottom:20px;">
-                <a href="https://twitter.com/{handle}" target="_blank" style="padding:10px 20px; background:#1DA1F2; color:white; font-weight:bold; text-decoration:none; border-radius:5px;">OPEN @{handle} ON X</a>
-            </div>
-            <div style="background:#000; overflow-y:scroll; height:600px;">
-                <a class="twitter-timeline" data-theme="dark" href="https://twitter.com/{handle}?ref_src=twsrc%5Etfw">Tweets by {handle}</a>
-                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-            </div>"""
-        
-        with x_tab1: components.html(x_widget("ryancohen"), height=720)
-        with x_tab2: components.html(x_widget("TheRoaringKitty"), height=720)
-        with x_tab3: components.html(x_widget("michaeljburry"), height=720)
-        with x_tab4: components.html(x_widget("GameStop"), height=720)
-        with x_tab5: components.html(x_widget("buckthebunny"), height=720)
-        with x_tab6: components.html(x_widget("PowerPacks"), height=720)
     def draw_live(price, prev, chart, vol=0):
         pct = ((price - prev) / prev) * 100 if prev > 0 else 0
         diff, clr = price - prev, ("#00FF00" if price >= prev else "#FF0000")
