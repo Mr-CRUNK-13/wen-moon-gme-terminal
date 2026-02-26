@@ -496,7 +496,6 @@ else:
                     st.markdown(html_ldb, unsafe_allow_html=True)
 
         with ph8.container():
-                with ph8.container():
             total_holders = len(real_db)
             avg_s_per_person = c_s / total_holders if total_holders > 0 else 0
             avg_w_per_person = c_w / total_holders if total_holders > 0 else 0
