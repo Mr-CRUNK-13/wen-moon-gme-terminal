@@ -349,7 +349,7 @@ else:
         c_t_v = c_v_s + c_v_w
         c_t_c = (c_s * c_gp_val) + (c_w * c_pw_val)
 
-                with ph1.container():
+        with ph1.container():
             @st.fragment(run_every="30s")
             def live_gme_screen():
                 p_n, _, pr_n, _, v_n, _, ch_n, _ = fetch_terminal_data()
