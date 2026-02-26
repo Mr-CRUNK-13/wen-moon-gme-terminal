@@ -12,7 +12,8 @@ from datetime import datetime
 st.set_page_config(page_title="GME TERMINAL", page_icon="Screenshot_20260216_163106_Discord.jpg", layout="wide", initial_sidebar_state="collapsed")
 
 if 'osq' not in st.session_state: 
-    st.session_state.update(osq=0, osp=0.0, owq=0, owp=0.0, ape_name="", launched=False, show_leaderboard=False)
+    # AJOUT DE RECENT_S et RECENT_W POUR LE TRACKING LOCAL
+    st.session_state.update(osq=0, osp=0.0, owq=0, owp=0.0, ape_name="", launched=False, show_leaderboard=False, recent_s=0, recent_w=0)
 if 'in_nsq' not in st.session_state:
     st.session_state.update(in_nsq=0, in_nsp=0.0, in_nwq=0, in_nwp=0.0)
 
@@ -96,7 +97,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- UPDATE LOGIC ---
+# --- UPDATE LOGIC WITH ACTIVITY TRACKER ---
 def update_portfolio_logic():
     nsq, nsp = st.session_state.in_nsq, st.session_state.in_nsp
     nwq, nwp = st.session_state.in_nwq, st.session_state.in_nwp
@@ -104,9 +105,13 @@ def update_portfolio_logic():
         fq = st.session_state.osq + nsq
         if fq > 0: st.session_state.osp = ((st.session_state.osq * st.session_state.osp) + (nsq * nsp)) / fq
         st.session_state.osq = fq
+        st.session_state.recent_s += nsq # TRACK NEW SHARES
+        
         fwq = st.session_state.owq + nwq
         if fwq > 0: st.session_state.owp = ((st.session_state.owq * st.session_state.owp) + (nwq * nwp)) / fwq
         st.session_state.owq = fwq
+        st.session_state.recent_w += nwq # TRACK NEW WARRANTS
+        
         st.session_state.in_nsq, st.session_state.in_nsp = 0, 0.0
         st.session_state.in_nwq, st.session_state.in_nwp = 0, 0.0
 
@@ -255,11 +260,9 @@ else:
             w_pct_pl = (w_pl / w_c * 100) if w_c > 0 else 0
             t_pct_pl = (t_pl / t_c_u * 100) if t_c_u > 0 else 0
 
-            # CALCUL EXACT DU CENTRAGE HORIZONTAL (Warrants à droite, Actions à gauche)
             w_deg = (pct_w / 100) * 360
             start_angle = -(w_deg / 2)
 
-            # --- LE CAMEMBERT PARFAIT DE LA TABLETTE ---
             fig4 = plt.figure(figsize=(32, 18)); fig4.patch.set_facecolor("#0e1621")
             gs = GridSpec(1, 3, width_ratios=[1, 2.5, 1])
             plt.subplots_adjust(left=0.05, right=0.95, top=0.9, bottom=0.1)
@@ -380,8 +383,11 @@ else:
             total_holders = len(real_db)
             avg_s_per_person = c_s / total_holders if total_holders > 0 else 0
             avg_w_per_person = c_w / total_holders if total_holders > 0 else 0
+            
+            # --- RÉCUPÉRATION DU TRAQUEUR D'ACTIVITÉ LOCAL ---
+            rec_s = st.session_state.get("recent_s", 0)
+            rec_w = st.session_state.get("recent_w", 0)
 
-            # COULEURS PARFAITEMENT SYNCHRONISÉES (GME = #00FF00, Warrants = #006400)
             html_summary = f"""
             <!DOCTYPE html>
             <html>
@@ -430,8 +436,8 @@ else:
                 <div style="overflow-x: auto;">
                     <table>
                         <tr><th>Asset</th><th>Bought (Last 7 Days)</th><th>Bought (Last 30 Days)</th></tr>
-                        <tr><td style="color: #00FF00; font-weight: bold;">GME SHARES</td><td>0</td><td>0</td></tr>
-                        <tr><td style="color: #006400; font-weight: bold;">GME WARRANTS</td><td>0</td><td>0</td></tr>
+                        <tr><td style="color: #00FF00; font-weight: bold;">GME SHARES</td><td>{rec_s:,}</td><td>{rec_s:,}</td></tr>
+                        <tr><td style="color: #006400; font-weight: bold;">GME WARRANTS</td><td>{rec_w:,}</td><td>{rec_w:,}</td></tr>
                     </table>
                 </div>
             </div>
