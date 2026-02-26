@@ -544,7 +544,7 @@ else:
 
             ptab1, ptab2, ptab3 = st.tabs(["🏛️ GME FUNDAMENTALS", "📜 WARRANTS DATA", "📰 LATEST NEWS"])
             
-                        with ptab1:
+            with ptab1:
                 html_gme = f"""
                 <style>
                     .pro-g {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px; }}
