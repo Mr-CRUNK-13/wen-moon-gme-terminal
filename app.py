@@ -247,10 +247,11 @@ else:
         with t_chart2:
             ph13_wt = st.empty()
 
-    # --- TAB 14 : WEB PORTALS (Static) ---
+        # --- TAB 14 : WEB PORTALS (Static) ---
     with tab14:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🌐 INVESTOR PORTALS</h2>", unsafe_allow_html=True)
-        w_tab1, w_tab2, w_tab3, w_tab4, w_tab5 = st.tabs(["👔 GameStop Investors", "📊 ChartExchange", "🎀 RedStripeTie", "🐋 Unusual Whales", "🦍 r/Superstonk"])
+        w_tab1, w_tab2, w_tab3, w_tab4, w_tab5, w_tab6 = st.tabs(["👔 GameStop Investors", "📊 ChartExchange", "🎀 RedStripeTie", "🐋 Unusual Whales", "🦍 r/Superstonk", "🐳 WhaleWisdom (Warrants)"])
+        
         with w_tab1:
             st.components.v1.iframe("https://investor.gamestop.com/", height=700, scrolling=True)
             st.markdown("<a href='https://investor.gamestop.com/' target='_blank' style='color:#00FF00; display:block; text-align:center; margin-top:10px; font-weight:bold;'>👉 OPEN GAMESTOP INVESTORS</a>", unsafe_allow_html=True)
@@ -263,6 +264,8 @@ else:
             st.markdown("<div style='text-align:center; padding:50px; background:#0f172a; border:1px solid #00FF00; border-radius:10px;'><h3 style='color:white;'>🐋 UNUSUAL WHALES (OPTIONS FLOW)</h3><p style='color:#ccc; font-size:18px;'>Track options market activity.</p><a href='https://unusualwhales.com/stock/GME' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN SITE</a></div>", unsafe_allow_html=True)
         with w_tab5:
             st.markdown("<div style='text-align:center; padding:50px; background:#0f172a; border:1px solid #00FF00; border-radius:10px;'><h3 style='color:white;'>🦍 r/SUPERSTONK</h3><p style='color:#ccc; font-size:18px;'>The heart of the GME community.</p><a href='https://www.reddit.com/r/Superstonk/' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN REDDIT</a></div>", unsafe_allow_html=True)
+        with w_tab6:
+            st.markdown("<div style='text-align:center; padding:50px; background:#0f172a; border:1px solid #00FF00; border-radius:10px;'><h3 style='color:white;'>🐳 WHALEWISDOM (WARRANT HOLDERS)</h3><p style='color:#ccc; font-size:18px;'>Track institutional holders of GME Warrants.</p><a href='https://whalewisdom.com/stock/gmews' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN WHALEWISDOM</a></div>", unsafe_allow_html=True)
 
     # --- TAB 15 : LIVE ALERTS (Twitter X - Static) ---
     with tab15:
