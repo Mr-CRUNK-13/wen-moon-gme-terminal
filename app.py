@@ -531,90 +531,6 @@ else:
             """
             st.markdown(html_summary, unsafe_allow_html=True)
 
-
-        with ph9.container():
-            def fmt(val, is_pct=False, is_dol=False):
-                if val == 'N/A' or pd.isna(val) or val is None: return "N/A"
-                try:
-                    v = float(val)
-                    if is_pct: return f"{v*100:.2f}%"
-                    if is_dol: return f"${v:,.2f}"
-                    return f"{v:,.0f}"
-                except: return str(val)
-
-            ptab1, ptab2, ptab3 = st.tabs(["🏛️ GME FUNDAMENTALS", "📜 WARRANTS DATA", "📰 LATEST NEWS"])
-            
-            with ptab1:
-                html_gme = f"""
-                <style>
-                    .pro-g {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px; }}
-                    .pb {{ background: #0e1621; border: 1px solid #00FF00; border-radius: 8px; padding: 15px; text-align: center; }}
-                    .pb h4 {{ color: #00FF00; margin: 0 0 5px 0; font-size: 16px; font-family: monospace; }}
-                    .pb p {{ color: white; font-size: 22px; font-weight: bold; margin: 0; }}
-                </style>
-                <div class="pro-g">
-                    <div class="pb"><h4>Market Cap</h4><p>{fmt(adv_info.get('marketCap'), is_dol=True)}</p></div>
-                    <div class="pb"><h4>Shares Outstanding</h4><p>{fmt(adv_info.get('sharesOutstanding'))}</p></div>
-                    <div class="pb"><h4>Total Revenue</h4><p>{fmt(adv_info.get('totalRevenue'), is_dol=True)}</p></div>
-                    <div class="pb"><h4>Revenue Per Share</h4><p>{fmt(adv_info.get('revenuePerShare'), is_dol=True)}</p></div>
-                    <div class="pb"><h4>Trailing EPS</h4><p>{fmt(adv_info.get('trailingEps'), is_dol=True)}</p></div>
-                    <div class="pb"><h4>Forward EPS</h4><p>{fmt(adv_info.get('forwardEps'), is_dol=True)}</p></div>
-                    <div class="pb"><h4>Short % of Float</h4><p>{fmt(adv_info.get('shortPercentOfFloat'), is_pct=True)}</p></div>
-                    <div class="pb"><h4>Days to Cover</h4><p>{fmt(adv_info.get('shortRatio'))}</p></div>
-        with ph7.container():
-            lb_tabs_term = st.tabs(["🌍 GENERAL", "📅 MONTHLY", "📆 WEEKLY"])
-            u_name = st.session_state.get("ape_name", "Anonymous")
-            real_db = [{"name": u_name, "tv": t_v_u, "sq": qn, "wq": qw, "spru": pn, "wpru": pw}]
-            for term_t in lb_tabs_term:
-                with term_t:
-                    html_ldb = """<div class='table-wrapper'><table class='ldb-t'>
-                        <tr><th class='col-rank'>Rank</th><th class='col-name'>Nickname</th><th class='col-val'>Total Value</th><th class='col-qty'>Shares</th><th class='col-qty'>Warrants</th><th>Avg S</th><th>Avg W</th><th>S%</th><th>W%</th></tr>"""
-                    for i, r in enumerate(real_db):
-                        rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else f"{i+1}"
-                        rc = "podium" if i < 3 else ""
-                        s_pct = (r["sq"]*p_nsy / r["tv"] * 100) if r["tv"] > 0 else 0
-                        w_pct = (r["wq"]*p_wt / r["tv"] * 100) if r["tv"] > 0 else 0
-                        sc, wc = (f"${r['spru']:.3f}" if r['spru']>0 else "N/A"), (f"${r['wpru']:.3f}" if r['wpru']>0 else "N/A")
-                        html_ldb += f"<tr class='{rc}'><td>{rank_str}</td><td>{r['name']}</td><td>${r['tv']:,.2f}</td><td>{r['sq']:,}</td><td>{r['wq']:,}</td><td>{sc}</td><td>{wc}</td><td>{s_pct:.1f}%</td><td>{w_pct:.1f}%</td></tr>"
-                    html_ldb += "</table></div>"
-                    st.markdown(html_ldb, unsafe_allow_html=True)
-
-        with ph8.container():
-            total_holders = len(real_db)
-            avg_s_per_person = c_s / total_holders if total_holders > 0 else 0
-            avg_w_per_person = c_w / total_holders if total_holders > 0 else 0
-            rec_s, rec_w = st.session_state.get("recent_s", 0), st.session_state.get("recent_w", 0)
-
-            html_summary = f"""
-            <div style="background-color: #0f172a; padding: 20px; border-radius: 10px; border: 1px solid #0259c7;">
-                <h2 style="text-align: center; color: #00FF00; margin-bottom: 30px; animation: neon-text 1.5s infinite; font-size: 32px;">🌍 WEN MOON COMMUNITY SUMMARY</h2>
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <h3 style="color: #66c2a5; margin: 0; font-size: 24px;">TOTAL HOLDERS</h3>
-                    <p style="font-size: 48px; color: white; font-weight: bold; margin: 10px 0 0 0;">{total_holders:,}</p>
-                </div>
-                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 30px; gap: 20px;">
-                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #00FF00; flex: 1 1 300px; text-align: center;">
-                        <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold;">GME SHARES</h4>
-                        <p style="margin: 10px 0; font-size: 18px;">Total Shares: <strong style="color: white;">{c_s:,}</strong></p>
-                        <p style="margin: 10px 0; font-size: 18px;">Avg Cost: <strong style="color: white;">${c_gp_val:.2f}</strong></p>
-                        <p style="margin: 10px 0; font-size: 18px;">Avg Shares / Person: <strong style="color: white;">{avg_s_per_person:,.0f}</strong></p>
-                    </div>
-                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #006400; flex: 1 1 300px; text-align: center;">
-                        <h4 style="color: #006400; margin-top: 0; font-size: 24px; font-weight: bold;">GME WARRANTS</h4>
-                        <p style="margin: 10px 0; font-size: 18px;">Total Warrants: <strong style="color: white;">{c_w:,}</strong></p>
-                        <p style="margin: 10px 0; font-size: 18px;">Avg Cost: <strong style="color: white;">${c_pw_val:.3f}</strong></p>
-                        <p style="margin: 10px 0; font-size: 18px;">Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
-                    </div>
-                </div>
-                <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 1px solid #FFD700; text-align: center; margin-top: 20px;">
-                    <h4 style="color: #FFD700; margin-top: 0; font-size: 24px; font-weight: bold;">🔥 RECENT PURCHASES (WEEKLY/MONTHLY)</h4>
-                    <p style="margin: 10px 0; font-size: 20px;">New Shares Accumulated: <strong style="color: #00FF00;">+{rec_s:,}</strong></p>
-                    <p style="margin: 10px 0; font-size: 20px;">New Warrants Accumulated: <strong style="color: #00FF00;">+{rec_w:,}</strong></p>
-                </div>
-            </div>
-            """
-            st.markdown(html_summary, unsafe_allow_html=True)
-
         with ph9.container():
             def fmt(val, is_pct=False, is_dol=False):
                 if val == 'N/A' or pd.isna(val) or val is None: return "N/A"
@@ -756,4 +672,3 @@ else:
 
     # --- ENGINE LAUNCH (Closes the application) ---
     render_content()
-
