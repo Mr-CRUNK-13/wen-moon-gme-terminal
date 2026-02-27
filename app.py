@@ -109,35 +109,52 @@ st.markdown("""
 def update_portfolio_logic():
     tx_type = st.session_state.get("in_tx_type", "BUY")
     
-    # Transaction Additions / Subtractions
-    sq, sp = st.session_state.get("in_t_sq", 0), st.session_state.get("in_t_sp", 0.0)
-    wq, wp = st.session_state.get("in_t_wq", 0), st.session_state.get("in_t_wp", 0.0)
+    sq = st.session_state.get("in_t_sq", 0)
+    sp = st.session_state.get("in_t_sp", 0.0)
+    wq = st.session_state.get("in_t_wq", 0)
+    wp = st.session_state.get("in_t_wp", 0.0)
     
+    # Load from shielded core memory
+    new_osq = st.session_state.osq
+    new_osp = st.session_state.osp
+    new_owq = st.session_state.owq
+    new_owp = st.session_state.owp
+
     if sq > 0:
         if tx_type == "BUY":
-            fq = st.session_state.osq + sq
+            fq = new_osq + sq
             if fq > 0:
-                st.session_state.osp = ((st.session_state.osq * st.session_state.osp) + (sq * sp)) / fq
-            st.session_state.osq = fq
+                new_osp = ((new_osq * new_osp) + (sq * sp)) / fq
+            new_osq = fq
             st.session_state.weekly_s += sq
             st.session_state.monthly_s += sq
         elif tx_type == "SELL":
-            st.session_state.osq = max(0, st.session_state.osq - sq)
-            # Average cost (osp) remains unchanged during a sale
+            new_osq = max(0, new_osq - sq)
             
     if wq > 0:
         if tx_type == "BUY":
-            fwq = st.session_state.owq + wq
+            fwq = new_owq + wq
             if fwq > 0:
-                st.session_state.owp = ((st.session_state.owq * st.session_state.owp) + (wq * wp)) / fwq
-            st.session_state.owq = fwq
+                new_owp = ((new_owq * new_owp) + (wq * wp)) / fwq
+            new_owq = fwq
             st.session_state.weekly_w += wq
             st.session_state.monthly_w += wq
         elif tx_type == "SELL":
-            st.session_state.owq = max(0, st.session_state.owq - wq)
-            # Average cost (owp) remains unchanged during a sale
-            
-    # Reset Inputs after transaction
+            new_owq = max(0, new_owq - wq)
+
+    # Save to shielded core memory
+    st.session_state.osq = new_osq
+    st.session_state.osp = new_osp
+    st.session_state.owq = new_owq
+    st.session_state.owp = new_owp
+    
+    # Force UI widgets to sync with new math
+    st.session_state.ui_osq = new_osq
+    st.session_state.ui_osp = new_osp
+    st.session_state.ui_owq = new_owq
+    st.session_state.ui_owp = new_owp
+    
+    # Reset transaction panel
     st.session_state.in_t_sq = 0
     st.session_state.in_t_sp = 0.0
     st.session_state.in_t_wq = 0
@@ -145,19 +162,31 @@ def update_portfolio_logic():
 
 # --- 2. HOME SCREEN ---
 if not st.session_state.launched and not st.session_state.show_leaderboard:
+    # Recover UI states from shielded memory if returning from Terminal
+    if "ui_osq" not in st.session_state: st.session_state.ui_osq = st.session_state.osq
+    if "ui_osp" not in st.session_state: st.session_state.ui_osp = st.session_state.osp
+    if "ui_owq" not in st.session_state: st.session_state.ui_owq = st.session_state.owq
+    if "ui_owp" not in st.session_state: st.session_state.ui_owp = st.session_state.owp
+
     wen_b64 = get_b64('Screenshot_20260216_163106_Discord.jpg')
     st.markdown(f"""<div class="title-container"><img src='data:image/jpeg;base64,{wen_b64}' style='height:80px; vertical-align:middle; animation: neon-img 1.5s infinite; margin-right:10px;'><h1 class='gme-title' style='display:inline-block; vertical-align:middle;'>GME&nbsp;TERMINAL</h1><div style='display:inline-block; font-size:60px; vertical-align:middle; animation: nuclear-neon 1.5s infinite; margin-left:10px;'>🚀</div></div>""", unsafe_allow_html=True)
     
     with st.expander("⚙️ PORTFOLIO CONFIGURATION"):
-        st.text_input("Nickname (Optional)", key="ape_name")
+        st.session_state.ape_name = st.text_input("Nickname (Optional)", value=st.session_state.ape_name)
         st.markdown("### 🏦 CURRENT HOLDINGS")
         col1, col2 = st.columns(2)
         with col1:
-            st.number_input("Current Shares", min_value=0, key="osq")
-            st.number_input("Avg Cost ($)", format="%.3f", key="osp")
+            st.number_input("Current Shares", min_value=0, key="ui_osq")
+            st.number_input("Avg Cost ($)", format="%.3f", key="ui_osp")
         with col2:
-            st.number_input("Current Warrants", min_value=0, key="owq")
-            st.number_input("Warrant Avg ($)", format="%.3f", key="owp")
+            st.number_input("Current Warrants", min_value=0, key="ui_owq")
+            st.number_input("Warrant Avg ($)", format="%.3f", key="ui_owp")
+            
+        # Immediately copy manual UI edits to shielded memory
+        st.session_state.osq = st.session_state.ui_osq
+        st.session_state.osp = st.session_state.ui_osp
+        st.session_state.owq = st.session_state.ui_owq
+        st.session_state.owp = st.session_state.ui_owp
             
         st.markdown("---")
         st.markdown("### 🛒 NEW TRANSACTION")
@@ -206,11 +235,11 @@ elif st.session_state.get('show_leaderboard', False):
         live_p_n, live_p_w = 24.50, 4.30
         
     u_name = st.session_state.get("ape_name", "Anonymous")
-    u_sq = st.session_state.get("osq", 0)
-    u_wq = st.session_state.get("owq", 0)
+    u_sq = st.session_state.osq
+    u_wq = st.session_state.owq
     u_tv = (u_sq * live_p_n) + (u_wq * live_p_w)
     
-    real_db = [{"name": u_name, "tv": u_tv, "sq": u_sq, "wq": u_wq, "spru": st.session_state.get("osp", 0.0), "wpru": st.session_state.get("owp", 0.0)}]
+    real_db = [{"name": u_name, "tv": u_tv, "sq": u_sq, "wq": u_wq, "spru": st.session_state.osp, "wpru": st.session_state.owp}]
     
     for t in lb_tabs:
         with t:
@@ -221,6 +250,7 @@ elif st.session_state.get('show_leaderboard', False):
                 w_pct = (r["wq"]*live_p_w / r["tv"] * 100 if r["tv"] > 0 else 0)
                 html += f"<tr class='{'podium' if i<3 else ''}'><td>{rank_str}</td><td>{r['name']}</td><td>${r['tv']:,.2f}</td><td>{r['sq']:,}</td><td>{r['wq']:,}</td><td>${r['spru']:.3f}</td><td>${r['wpru']:.3f}</td><td>{s_pct:.1f}%</td><td>{w_pct:.1f}%</td></tr>"
             st.markdown(html + "</table></div>", unsafe_allow_html=True)
+
 
 # --- 3. TERMINAL & LIVE ENGINE ---
 else:
