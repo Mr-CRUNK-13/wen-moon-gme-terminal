@@ -104,47 +104,44 @@ st.markdown("""
     .podium td { font-size: 18px !important; color: #00FF00 !important; font-weight: bold; }
 </style>
 """, unsafe_allow_html=True)
-# --- UPDATE LOGIC WITH ACTIVITY TRACKER ---
+
+# --- UPDATE LOGIC WITH SMART TRANSACTION TRACKER ---
 def update_portfolio_logic():
-    # Weekly Additions
-    w_sq, w_sp = st.session_state.in_w_sq, st.session_state.in_w_sp
-    w_wq, w_wp = st.session_state.in_w_wq, st.session_state.in_w_wp
+    tx_type = st.session_state.get("in_tx_type", "BUY")
     
-    # Monthly Additions
-    m_sq, m_sp = st.session_state.in_m_sq, st.session_state.in_m_sp
-    m_wq, m_wp = st.session_state.in_m_wq, st.session_state.in_m_wp
+    # Transaction Additions / Subtractions
+    sq, sp = st.session_state.get("in_t_sq", 0), st.session_state.get("in_t_sp", 0.0)
+    wq, wp = st.session_state.get("in_t_wq", 0), st.session_state.get("in_t_wp", 0.0)
     
-    total_new_s = w_sq + m_sq
-    total_new_w = w_wq + m_wq
-    
-    if total_new_s > 0 or total_new_w > 0:
-        # Shares Calculation
-        fq = st.session_state.osq + total_new_s
-        if fq > 0:
-            current_s_val = st.session_state.osq * st.session_state.osp
-            new_w_s_val = w_sq * w_sp
-            new_m_s_val = m_sq * m_sp
-            st.session_state.osp = (current_s_val + new_w_s_val + new_m_s_val) / fq
-        st.session_state.osq = fq
-        st.session_state.weekly_s += w_sq
-        st.session_state.monthly_s += m_sq
-        
-        # Warrants Calculation
-        fwq = st.session_state.owq + total_new_w
-        if fwq > 0:
-            current_w_val = st.session_state.owq * st.session_state.owp
-            new_w_w_val = w_wq * w_wp
-            new_m_w_val = m_wq * m_wp
-            st.session_state.owp = (current_w_val + new_w_w_val + new_m_w_val) / fwq
-        st.session_state.owq = fwq
-        st.session_state.weekly_w += w_wq
-        st.session_state.monthly_w += m_wq
-        
-        # Reset Inputs
-        st.session_state.in_w_sq, st.session_state.in_w_sp = 0, 0.0
-        st.session_state.in_w_wq, st.session_state.in_w_wp = 0, 0.0
-        st.session_state.in_m_sq, st.session_state.in_m_sp = 0, 0.0
-        st.session_state.in_m_wq, st.session_state.in_m_wp = 0, 0.0
+    if sq > 0:
+        if tx_type == "BUY":
+            fq = st.session_state.osq + sq
+            if fq > 0:
+                st.session_state.osp = ((st.session_state.osq * st.session_state.osp) + (sq * sp)) / fq
+            st.session_state.osq = fq
+            st.session_state.weekly_s += sq
+            st.session_state.monthly_s += sq
+        elif tx_type == "SELL":
+            st.session_state.osq = max(0, st.session_state.osq - sq)
+            # Average cost (osp) remains unchanged during a sale
+            
+    if wq > 0:
+        if tx_type == "BUY":
+            fwq = st.session_state.owq + wq
+            if fwq > 0:
+                st.session_state.owp = ((st.session_state.owq * st.session_state.owp) + (wq * wp)) / fwq
+            st.session_state.owq = fwq
+            st.session_state.weekly_w += wq
+            st.session_state.monthly_w += wq
+        elif tx_type == "SELL":
+            st.session_state.owq = max(0, st.session_state.owq - wq)
+            # Average cost (owp) remains unchanged during a sale
+            
+    # Reset Inputs after transaction
+    st.session_state.in_t_sq = 0
+    st.session_state.in_t_sp = 0.0
+    st.session_state.in_t_wq = 0
+    st.session_state.in_t_wp = 0.0
 
 # --- 2. HOME SCREEN ---
 if not st.session_state.launched and not st.session_state.show_leaderboard:
@@ -152,15 +149,15 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
     st.markdown(f"""<div class="title-container"><img src='data:image/jpeg;base64,{wen_b64}' style='height:80px; vertical-align:middle; animation: neon-img 1.5s infinite; margin-right:10px;'><h1 class='gme-title' style='display:inline-block; vertical-align:middle;'>GME&nbsp;TERMINAL</h1><div style='display:inline-block; font-size:60px; vertical-align:middle; animation: nuclear-neon 1.5s infinite; margin-left:10px;'>🚀</div></div>""", unsafe_allow_html=True)
     
     with st.expander("⚙️ PORTFOLIO CONFIGURATION"):
-        st.session_state.ape_name = st.text_input("Nickname (Optional)", value=st.session_state.ape_name)
+        st.text_input("Nickname (Optional)", key="ape_name")
         st.markdown("### 🏦 CURRENT HOLDINGS")
         col1, col2 = st.columns(2)
         with col1:
-            st.session_state.osq = st.number_input("Current Shares", value=st.session_state.osq, min_value=0)
-            st.session_state.osp = st.number_input("Avg Cost ($)", value=st.session_state.osp, format="%.3f")
+            st.number_input("Current Shares", min_value=0, key="osq")
+            st.number_input("Avg Cost ($)", format="%.3f", key="osp")
         with col2:
-            st.session_state.owq = st.number_input("Current Warrants", value=st.session_state.owq, min_value=0)
-            st.session_state.owp = st.number_input("Warrant Avg ($)", value=st.session_state.owp, format="%.3f")
+            st.number_input("Current Warrants", min_value=0, key="owq")
+            st.number_input("Warrant Avg ($)", format="%.3f", key="owp")
             
         st.markdown("---")
         st.markdown("### 🛒 NEW TRANSACTION")
