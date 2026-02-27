@@ -217,6 +217,50 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
     with st.expander("⚙️ PORTFOLIO CONFIGURATION"):
         st.session_state.ape_name = st.text_input("Nickname (Optional)", value=st.session_state.ape_name)
         st.markdown("### 🏦 CURRENT HOLDINGS")
+# --- UPDATE LOGIC WITH SMART TRANSACTION TRACKER ---
+def update_portfolio_logic():
+    tx_type = st.session_state.get("in_tx_type", "BUY")
+    
+    # Transaction Additions / Subtractions
+    sq, sp = st.session_state.get("in_t_sq", 0), st.session_state.get("in_t_sp", 0.0)
+    wq, wp = st.session_state.get("in_t_wq", 0), st.session_state.get("in_t_wp", 0.0)
+    
+    if sq > 0:
+        if tx_type == "BUY":
+            fq = st.session_state.osq + sq
+            if fq > 0:
+                st.session_state.osp = ((st.session_state.osq * st.session_state.osp) + (sq * sp)) / fq
+            st.session_state.osq = fq
+            st.session_state.weekly_s += sq
+            st.session_state.monthly_s += sq
+        elif tx_type == "SELL":
+            st.session_state.osq = max(0, st.session_state.osq - sq)
+            # Average cost (osp) remains unchanged during a sale
+            
+    if wq > 0:
+        if tx_type == "BUY":
+            fwq = st.session_state.owq + wq
+            if fwq > 0:
+                st.session_state.owp = ((st.session_state.owq * st.session_state.owp) + (wq * wp)) / fwq
+            st.session_state.owq = fwq
+            st.session_state.weekly_w += wq
+            st.session_state.monthly_w += wq
+        elif tx_type == "SELL":
+            st.session_state.owq = max(0, st.session_state.owq - wq)
+            # Average cost (owp) remains unchanged during a sale
+            
+    # Reset Inputs after transaction
+    st.session_state.in_t_sq, st.session_state.in_t_sp = 0, 0.0
+    st.session_state.in_t_wq, st.session_state.in_t_wp = 0, 0.0
+
+# --- 2. HOME SCREEN ---
+if not st.session_state.launched and not st.session_state.show_leaderboard:
+    wen_b64 = get_b64('Screenshot_20260216_163106_Discord.jpg')
+    st.markdown(f"""<div class="title-container"><img src='data:image/jpeg;base64,{wen_b64}' style='height:80px; vertical-align:middle; animation: neon-img 1.5s infinite; margin-right:10px;'><h1 class='gme-title' style='display:inline-block; vertical-align:middle;'>GME&nbsp;TERMINAL</h1><div style='display:inline-block; font-size:60px; vertical-align:middle; animation: nuclear-neon 1.5s infinite; margin-left:10px;'>🚀</div></div>""", unsafe_allow_html=True)
+    
+    with st.expander("⚙️ PORTFOLIO CONFIGURATION"):
+        st.session_state.ape_name = st.text_input("Nickname (Optional)", value=st.session_state.ape_name)
+        st.markdown("### 🏦 CURRENT HOLDINGS")
         col1, col2 = st.columns(2)
         with col1:
             st.session_state.osq = st.number_input("Current Shares", value=st.session_state.osq, min_value=0)
