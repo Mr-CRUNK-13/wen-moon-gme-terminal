@@ -668,23 +668,48 @@ else:
                 </div>"""
                 st.markdown(html_gme, unsafe_allow_html=True)
                 
-            with ptab2:
+             with ptab2:
+                @st.cache_data(ttl=3600)
+                def get_wt_52w_close():
+                    try:
+                        h = yf.Ticker("GME-WT").history(period="1y")['Close']
+                        if not h.empty: return float(h.max()), float(h.min())
+                    except: pass
+                    return "N/A", "N/A"
+                
+                wt_52hc, wt_52lc = get_wt_52w_close()
+                
+                def fmt_w(val, is_vol=False):
+                    if val == 'N/A' or pd.isna(val) or val is None: return "N/A"
+                    try: return f"{float(val):,.0f}" if is_vol else f"${float(val):,.3f}"
+                    except: return str(val)
+                
                 wt_vol = wt_info.get('lastVolume', wt_info.get('volume', 'N/A'))
+                wt_avg_vol = wt_info.get('averageVolume', wt_info.get('averageDailyVolume10Day', 'N/A'))
                 wt_open = wt_info.get('regularMarketOpen', wt_info.get('open', 'N/A'))
                 wt_high = wt_info.get('dayHigh', wt_info.get('regularMarketDayHigh', 'N/A'))
                 wt_low = wt_info.get('dayLow', wt_info.get('regularMarketDayLow', 'N/A'))
                 wt_prev = wt_info.get('previousClose', wt_info.get('regularMarketPreviousClose', 'N/A'))
+                wt_52h = wt_info.get('fiftyTwoWeekHigh', 'N/A')
+                wt_52l = wt_info.get('fiftyTwoWeekLow', 'N/A')
                 
                 html_wt = f"""
                 <div class="pro-g">
                     <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Contract Name</h4><p>GME-WT (Warrant)</p></div>
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Today's Volume</h4><p>{fmt(wt_vol)}</p></div>
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Market Open</h4><p>{fmt(wt_open, is_dol=True)}</p></div>
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Day High</h4><p>{fmt(wt_high, is_dol=True)}</p></div>
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Day Low</h4><p>{fmt(wt_low, is_dol=True)}</p></div>
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Previous Close</h4><p>{fmt(wt_prev, is_dol=True)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Live Price</h4><p>{fmt_w(p_wt)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Today's Volume</h4><p>{fmt_w(wt_vol, True)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Avg Monthly Volume</h4><p>{fmt_w(wt_avg_vol, True)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Market Open</h4><p>{fmt_w(wt_open)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Day High</h4><p>{fmt_w(wt_high)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Day Low</h4><p>{fmt_w(wt_low)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Previous Close</h4><p>{fmt_w(wt_prev)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">52 Week High</h4><p>{fmt_w(wt_52h)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">52 Week Low</h4><p>{fmt_w(wt_52l)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">52W High Close</h4><p>{fmt_w(wt_52hc)}</p></div>
+                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">52W Low Close</h4><p>{fmt_w(wt_52lc)}</p></div>
                 </div>"""
                 st.markdown(html_wt, unsafe_allow_html=True)
+
 
             with ptab3:
                 st.markdown("<h4 style='color:white; text-align:center;'>GameStop Net Income per Fiscal Quarter (M$)</h4>", unsafe_allow_html=True)
