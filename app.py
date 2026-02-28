@@ -763,7 +763,6 @@ else:
             with fin_t2:
                 st.markdown("<h3 style='color:#00FF00; text-align:center;'>Upcoming Earnings & Estimates</h3>", unsafe_allow_html=True)
                 
-                # Top Section: Future Estimates
                 html_est = """
                 <style>
                     .est-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
@@ -771,12 +770,13 @@ else:
                     .eb h4 { color: #00FF00; margin: 0 0 5px 0; font-size: 14px; }
                     .eb p { color: white; font-size: 18px; font-weight: bold; margin: 0; }
                     .hist-t { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 12px; text-align: right; margin-top: 10px; }
-                    .hist-t th { background: #001f3f; color: #00FF00; padding: 8px; border-bottom: 1px solid #00FF00; text-align: right; }
+                    .hist-t th { background: #001f3f; color: #00FF00; padding: 8px; border-bottom: 1px solid #00FF00; text-align: center; white-space: nowrap; }
                     .hist-t th:first-child { text-align: left; }
-                    .hist-t td { background: #0f172a; padding: 8px; border-bottom: 1px solid #1e293b; color: white; }
+                    .hist-t td { background: #0f172a; padding: 8px; border-bottom: 1px solid #1e293b; color: white; white-space: nowrap; text-align: center; }
                     .hist-t td:first-child { text-align: left; font-weight: bold; color: #00FF00; }
                     .beat { color: #00FF00 !important; font-weight: bold; }
                     .miss { color: #FF3333 !important; }
+                    .fy-row td { background: #0b2239 !important; border-top: 2px solid #00FF00; font-size: 13px; }
                 </style>
                 <div class="est-g">
                     <div class="eb"><h4>Q4 2025 (Next)</h4><p>Rev: $1.47B | EPS: $0.37</p></div>
@@ -785,53 +785,68 @@ else:
                 <h3 style='color:#00FF00; text-align:center; margin-top:20px;'>5-Year Consensus History</h3>
                 """
                 
-                # Verified Real History Data (Period, Est EPS, Act EPS, Est Rev, Act Rev)
+                # Verified Real History Data with Full Years (FY)
                 hist_data = [
-                    {"p": "Q3 2025", "ee": 0.20, "ae": 0.24, "er": "893.6M", "ar": "821.0M"},
-                    {"p": "Q2 2025", "ee": 0.16, "ae": 0.25, "er": "823.2M", "ar": "972.2M"},
-                    {"p": "Q1 2025", "ee": 0.04, "ae": 0.17, "er": "754.2M", "ar": "732.4M"},
-                    {"p": "Q4 2024", "ee": 0.08, "ae": 0.30, "er": "1.50B",  "ar": "1.28B"},
-                    {"p": "Q3 2024", "ee": -0.06, "ae": 0.06, "er": "919.9M", "ar": "860.3M"},
-                    {"p": "Q2 2024", "ee": -0.09, "ae": 0.01, "er": "895.6M", "ar": "798.0M"},
-                    {"p": "Q1 2024", "ee": -0.14, "ae": -0.03, "er": "1.05B",  "ar": "881.8M"},
-                    {"p": "Q4 2023", "ee": -0.12, "ae": -0.14, "er": "1.79B",  "ar": "1.79B"},
-                    {"p": "Q3 2023", "ee": -0.13, "ae": 0.16, "er": "1.18B",  "ar": "1.08B"},
-                    {"p": "Q2 2023", "ee": -0.28, "ae": -0.31, "er": "1.14B",  "ar": "1.16B"},
-                    {"p": "Q1 2023", "ee": -0.38, "ae": -0.35, "er": "1.36B",  "ar": "1.24B"},
-                    {"p": "Q4 2022", "ee": -0.37, "ae": -0.52, "er": "2.18B",  "ar": "2.23B"},
-                    {"p": "Q3 2022", "ee": 0.21, "ae": -0.46, "er": "1.35B",  "ar": "1.19B"},
-                    {"p": "Q2 2022", "ee": -0.13, "ae": -0.35, "er": "1.27B",  "ar": "1.14B"},
-                    {"p": "Q1 2022", "ee": -0.17, "ae": -0.19, "er": "1.32B",  "ar": "1.38B"},
-                    {"p": "Q4 2021", "ee": -0.21, "ae": -0.11, "er": "2.22B",  "ar": "2.25B"},
-                    {"p": "Q3 2021", "ee": 0.34, "ae": 0.34, "er": "1.30B",  "ar": "1.30B"},
-                    {"p": "Q2 2021", "ee": -0.21, "ae": -0.13, "er": "1.12B",  "ar": "1.18B"},
-                    {"p": "Q1 2021", "ee": -0.29, "ae": -0.35, "er": "1.28B",  "ar": "1.28B"},
-                    {"p": "Q4 2020", "ee": -0.32, "ae": -0.40, "er": "2.21B",  "ar": "2.12B"}
+                    {"p": "Q3 2025", "ee": 0.20, "ae": 0.24, "er": "893.6M", "ar": "821.0M", "fy": False},
+                    {"p": "Q2 2025", "ee": 0.16, "ae": 0.25, "er": "823.2M", "ar": "972.2M", "fy": False},
+                    {"p": "Q1 2025", "ee": 0.04, "ae": 0.17, "er": "754.2M", "ar": "732.4M", "fy": False},
+                    {"p": "FY 2024", "ee": 0.01, "ae": 0.34, "er": "5.27B",  "ar": "5.27B",  "fy": True},
+                    {"p": "Q4 2024", "ee": 0.08, "ae": 0.30, "er": "1.50B",  "ar": "1.28B",  "fy": False},
+                    {"p": "Q3 2024", "ee": -0.06, "ae": 0.06, "er": "919.9M", "ar": "860.3M", "fy": False},
+                    {"p": "Q2 2024", "ee": -0.09, "ae": 0.01, "er": "895.6M", "ar": "798.0M", "fy": False},
+                    {"p": "Q1 2024", "ee": -0.14, "ae": -0.03, "er": "1.05B",  "ar": "881.8M", "fy": False},
+                    {"p": "FY 2023", "ee": -0.15, "ae": 0.02, "er": "5.40B",  "ar": "5.27B",  "fy": True},
+                    {"p": "Q4 2023", "ee": -0.12, "ae": -0.14, "er": "1.79B",  "ar": "1.79B",  "fy": False},
+                    {"p": "Q3 2023", "ee": -0.13, "ae": 0.16, "er": "1.18B",  "ar": "1.08B",  "fy": False},
+                    {"p": "Q2 2023", "ee": -0.28, "ae": -0.31, "er": "1.14B",  "ar": "1.16B",  "fy": False},
+                    {"p": "Q1 2023", "ee": -0.38, "ae": -0.35, "er": "1.36B",  "ar": "1.24B",  "fy": False},
+                    {"p": "FY 2022", "ee": -1.30, "ae": -1.03, "er": "5.90B",  "ar": "5.93B",  "fy": True},
+                    {"p": "Q4 2022", "ee": -0.37, "ae": -0.52, "er": "2.18B",  "ar": "2.23B",  "fy": False},
+                    {"p": "Q3 2022", "ee": 0.21, "ae": -0.46, "er": "1.35B",  "ar": "1.19B",  "fy": False},
+                    {"p": "Q2 2022", "ee": -0.13, "ae": -0.35, "er": "1.27B",  "ar": "1.14B",  "fy": False},
+                    {"p": "Q1 2022", "ee": -0.17, "ae": -0.19, "er": "1.32B",  "ar": "1.38B",  "fy": False},
+                    {"p": "FY 2021", "ee": -1.50, "ae": -1.31, "er": "5.80B",  "ar": "6.01B",  "fy": True},
+                    {"p": "Q4 2021", "ee": -0.21, "ae": -0.11, "er": "2.22B",  "ar": "2.25B",  "fy": False},
+                    {"p": "Q3 2021", "ee": 0.34, "ae": 0.34, "er": "1.30B",  "ar": "1.30B",  "fy": False},
+                    {"p": "Q2 2021", "ee": -0.21, "ae": -0.13, "er": "1.12B",  "ar": "1.18B",  "fy": False},
+                    {"p": "Q1 2021", "ee": -0.29, "ae": -0.35, "er": "1.28B",  "ar": "1.28B",  "fy": False},
+                    {"p": "FY 2020", "ee": -2.20, "ae": -2.08, "er": "5.00B",  "ar": "5.09B",  "fy": True},
+                    {"p": "Q4 2020", "ee": -0.32, "ae": -0.40, "er": "2.21B",  "ar": "2.12B",  "fy": False}
                 ]
                 
-                html_hist = "<div class='table-wrapper' style='max-height:400px; overflow-y:auto;'><table class='hist-t'><tr><th>Period</th><th>Est EPS</th><th>Act EPS</th><th>Surprise</th><th>Est Rev</th><th>Act Rev</th></tr>"
+                html_hist = "<div class='table-wrapper' style='max-height:400px; overflow-y:auto; overflow-x:auto;'><table class='hist-t'><tr><th>Period</th><th>Est EPS</th><th>Act EPS</th><th>EPS Surp</th><th>Est Rev</th><th>Act Rev</th><th>Rev Surp</th></tr>"
                 
+                def parse_val(v):
+                    if 'B' in v: return float(v.replace('B', '')) * 1000
+                    if 'M' in v: return float(v.replace('M', ''))
+                    return 0.0
+
                 for r in hist_data:
                     ee, ae = r["ee"], r["ae"]
+                    er_str, ar_str = r["er"], r["ar"]
                     
-                    if ee != 0:
-                        diff = ae - ee
-                        surp = (diff / abs(ee)) * 100
-                    else:
-                        surp = 0
-                        
-                    surp_cls = "beat" if ae >= ee else "miss"
-                    surp_str = f"+{surp:.0f}%" if surp >= 0 else f"{surp:.0f}%"
+                    # EPS Surprise Calculation
+                    eps_surp = ((ae - ee) / abs(ee)) * 100 if ee != 0 else 0
+                    eps_surp_cls = "beat" if ae >= ee else "miss"
+                    eps_surp_str = f"+{eps_surp:.0f}%" if eps_surp >= 0 else f"{eps_surp:.0f}%"
                     
+                    # Revenue Surprise Calculation
+                    er_val, ar_val = parse_val(er_str), parse_val(ar_str)
+                    rev_surp = ((ar_val - er_val) / abs(er_val)) * 100 if er_val != 0 else 0
+                    rev_surp_cls = "beat" if ar_val >= er_val else "miss"
+                    rev_surp_str = f"+{rev_surp:.0f}%" if rev_surp >= 0 else f"{rev_surp:.0f}%"
+                    
+                    # Row and Cell Formatting
+                    row_cls = "fy-row" if r["fy"] else ""
                     ae_cls = "beat" if ae >= ee else "miss"
+                    ar_cls = "beat" if ar_val >= er_val else "miss"
                     
-                    html_hist += f"<tr><td>{r['p']}</td><td>${ee:.2f}</td><td class='{ae_cls}'>${ae:.2f}</td><td class='{surp_cls}'>{surp_str}</td><td>${r['er']}</td><td>${r['ar']}</td></tr>"
+                    html_hist += f"<tr class='{row_cls}'><td>{r['p']}</td><td>${ee:.2f}</td><td class='{ae_cls}'>${ae:.2f}</td><td class='{eps_surp_cls}'>{eps_surp_str}</td><td>${er_str}</td><td class='{ar_cls}'>${ar_str}</td><td class='{rev_surp_cls}'>{rev_surp_str}</td></tr>"
                     
                 html_hist += "</table></div>"
                 html_hist += "<p style='color:gray; font-size:11px; text-align:center; margin-top:15px; font-style:italic;'>Note: Data uses split-adjusted Non-GAAP EPS. Wall Street consensus often fails to accurately model GME's performance.</p>"
                 
                 st.markdown(html_est + html_hist, unsafe_allow_html=True)
-
                     
             with fin_t3:
                 def df_to_html(df, title):
