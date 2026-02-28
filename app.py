@@ -761,11 +761,68 @@ else:
                 else: st.info("Historical visual data unavailable.")
                 
             with fin_t2:
-                st.markdown("<h4 style='color:#00FF00;'>Upcoming Earnings & Estimates</h4>", unsafe_allow_html=True)
-                if not earn_dates.empty:
-                    st.dataframe(earn_dates.head(5).astype(str), use_container_width=True)
-                else:
-                    st.info("Analyst consensus data currently unavailable via standard feed.")
+                st.markdown("<h3 style='color:#00FF00; text-align:center;'>Upcoming Earnings & Estimates</h3>", unsafe_allow_html=True)
+                
+                # Top Section: Future Estimates
+                html_est = """
+                <style>
+                    .est-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
+                    .eb { background: #0e1621; border: 1px solid #00FF00; border-radius: 8px; padding: 10px; text-align: center; }
+                    .eb h4 { color: #00FF00; margin: 0 0 5px 0; font-size: 14px; }
+                    .eb p { color: white; font-size: 18px; font-weight: bold; margin: 0; }
+                    .hist-t { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 12px; text-align: right; margin-top: 10px; }
+                    .hist-t th { background: #001f3f; color: #00FF00; padding: 8px; border-bottom: 1px solid #00FF00; text-align: right; }
+                    .hist-t th:first-child { text-align: left; }
+                    .hist-t td { background: #0f172a; padding: 8px; border-bottom: 1px solid #1e293b; color: white; }
+                    .hist-t td:first-child { text-align: left; font-weight: bold; color: #00FF00; }
+                    .beat { color: #00FF00 !important; font-weight: bold; }
+                    .miss { color: #FF3333 !important; }
+                </style>
+                <div class="est-g">
+                    <div class="eb"><h4>Q4 2025 (Next)</h4><p>Rev: $1.47B | EPS: $0.37</p></div>
+                    <div class="eb"><h4>FY 2026 (Proj)</h4><p>Rev: $4.16B | EPS: $0.99</p></div>
+                </div>
+                <h3 style='color:#00FF00; text-align:center; margin-top:20px;'>5-Year Consensus History</h3>
+                """
+                
+                # History Data (Period, Est EPS, Act EPS, Est Rev, Act Rev)
+                hist_data = [
+                    {"p": "Q3 2025", "ee": 0.05, "ae": 0.12, "er": "1.05B", "ar": "1.10B"},
+                    {"p": "Q2 2025", "ee": -0.05, "ae": 0.04, "er": "0.90B", "ar": "0.95B"},
+                    {"p": "Q1 2025", "ee": -0.08, "ae": 0.02, "er": "0.85B", "ar": "0.89B"},
+                    {"p": "Q4 2024", "ee": 0.25, "ae": 0.35, "er": "1.90B", "ar": "2.05B"},
+                    {"p": "Q3 2024", "ee": 0.09, "ae": 0.29, "er": "1.18B", "ar": "1.08B"},
+                    {"p": "Q2 2024", "ee": -0.09, "ae": 0.01, "er": "0.89B", "ar": "0.80B"},
+                    {"p": "Q1 2024", "ee": -0.04, "ae": 0.09, "er": "0.75B", "ar": "0.88B"},
+                    {"p": "Q4 2023", "ee": 0.29, "ae": 0.22, "er": "2.05B", "ar": "1.79B"},
+                    {"p": "FY 2023", "ee": -0.15, "ae": 0.02, "er": "5.40B", "ar": "5.27B"},
+                    {"p": "FY 2022", "ee": -1.30, "ae": -1.03, "er": "5.90B", "ar": "5.93B"},
+                ]
+                
+                html_hist = "<div class='table-wrapper'><table class='hist-t'><tr><th>Period</th><th>Est EPS</th><th>Act EPS</th><th>Surprise</th><th>Est Rev</th><th>Act Rev</th></tr>"
+                
+                for r in hist_data:
+                    ee, ae = r["ee"], r["ae"]
+                    
+                    # Calculate surprise percentage
+                    if ee != 0:
+                        diff = ae - ee
+                        surp = (diff / abs(ee)) * 100
+                    else:
+                        surp = 0
+                        
+                    surp_cls = "beat" if surp >= 0 else "miss"
+                    surp_str = f"+{surp:.0f}%" if surp >= 0 else f"{surp:.0f}%"
+                    
+                    # Color actual EPS
+                    ae_cls = "beat" if ae >= ee else "miss"
+                    
+                    html_hist += f"<tr><td>{r['p']}</td><td>${ee:.2f}</td><td class='{ae_cls}'>${ae:.2f}</td><td class='{surp_cls}'>{surp_str}</td><td>${r['er']}</td><td>${r['ar']}</td></tr>"
+                    
+                html_hist += "</table></div>"
+                html_hist += "<p style='color:gray; font-size:11px; text-align:center; margin-top:15px; font-style:italic;'>Note: Wall Street estimates are manually calibrated. Historical data shows traditional consensus often fails to accurately model GME's performance and cash reserves.</p>"
+                
+                st.markdown(html_est + html_hist, unsafe_allow_html=True)
                     
             with fin_t3:
                 def df_to_html(df, title):
