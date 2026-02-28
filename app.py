@@ -626,7 +626,7 @@ else:
             """
             st.markdown(html_summary, unsafe_allow_html=True)
 
-        with ph9.container():
+                with ph9.container():
             def fmt(val, is_pct=False, is_dol=False):
                 if val == 'N/A' or pd.isna(val) or val is None: return "N/A"
                 try:
@@ -648,11 +648,17 @@ else:
                 </style>
                 <div class="pro-g">
                     <div class="pb"><h4>Market Cap</h4><p>{fmt(adv_info.get('marketCap'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Total Cash</h4><p>{fmt(adv_info.get('totalCash'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Total Debt</h4><p>{fmt(adv_info.get('totalDebt'), is_dol=True)}</p></div>
                     <div class="pb"><h4>Shares Outstanding</h4><p>{fmt(adv_info.get('sharesOutstanding'))}</p></div>
+                    <div class="pb"><h4>Float Shares</h4><p>{fmt(adv_info.get('floatShares'))}</p></div>
                     <div class="pb"><h4>Total Revenue</h4><p>{fmt(adv_info.get('totalRevenue'), is_dol=True)}</p></div>
                     <div class="pb"><h4>Revenue Per Share</h4><p>{fmt(adv_info.get('revenuePerShare'), is_dol=True)}</p></div>
-                    <div class="pb"><h4>Trailing EPS</h4><p>{fmt(adv_info.get('trailingEps'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Net Income (TTM)</h4><p>{fmt(adv_info.get('netIncomeToCommon'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Net Income Per Share (EPS)</h4><p>{fmt(adv_info.get('trailingEps'), is_dol=True)}</p></div>
                     <div class="pb"><h4>Forward EPS</h4><p>{fmt(adv_info.get('forwardEps'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Book Value Per Share</h4><p>{fmt(adv_info.get('bookValue'), is_dol=True)}</p></div>
+                    <div class="pb"><h4>Free Cash Flow</h4><p>{fmt(adv_info.get('freeCashflow'), is_dol=True)}</p></div>
                     <div class="pb"><h4>Short % of Float</h4><p>{fmt(adv_info.get('shortPercentOfFloat'), is_pct=True)}</p></div>
                     <div class="pb"><h4>Days to Cover</h4><p>{fmt(adv_info.get('shortRatio'))}</p></div>
                     <div class="pb"><h4>Held by Insiders</h4><p>{fmt(adv_info.get('heldPercentInsiders'), is_pct=True)}</p></div>
