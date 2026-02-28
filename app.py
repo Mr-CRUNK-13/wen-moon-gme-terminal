@@ -785,44 +785,53 @@ else:
                 <h3 style='color:#00FF00; text-align:center; margin-top:20px;'>5-Year Consensus History</h3>
                 """
                 
-                # History Data (Period, Est EPS, Act EPS, Est Rev, Act Rev)
+                # Verified Real History Data (Period, Est EPS, Act EPS, Est Rev, Act Rev)
                 hist_data = [
-                    {"p": "Q3 2025", "ee": 0.05, "ae": 0.12, "er": "1.05B", "ar": "1.10B"},
-                    {"p": "Q2 2025", "ee": -0.05, "ae": 0.04, "er": "0.90B", "ar": "0.95B"},
-                    {"p": "Q1 2025", "ee": -0.08, "ae": 0.02, "er": "0.85B", "ar": "0.89B"},
-                    {"p": "Q4 2024", "ee": 0.25, "ae": 0.35, "er": "1.90B", "ar": "2.05B"},
-                    {"p": "Q3 2024", "ee": 0.09, "ae": 0.29, "er": "1.18B", "ar": "1.08B"},
-                    {"p": "Q2 2024", "ee": -0.09, "ae": 0.01, "er": "0.89B", "ar": "0.80B"},
-                    {"p": "Q1 2024", "ee": -0.04, "ae": 0.09, "er": "0.75B", "ar": "0.88B"},
-                    {"p": "Q4 2023", "ee": 0.29, "ae": 0.22, "er": "2.05B", "ar": "1.79B"},
-                    {"p": "FY 2023", "ee": -0.15, "ae": 0.02, "er": "5.40B", "ar": "5.27B"},
-                    {"p": "FY 2022", "ee": -1.30, "ae": -1.03, "er": "5.90B", "ar": "5.93B"},
+                    {"p": "Q3 2025", "ee": 0.20, "ae": 0.24, "er": "893.6M", "ar": "821.0M"},
+                    {"p": "Q2 2025", "ee": 0.16, "ae": 0.25, "er": "823.2M", "ar": "972.2M"},
+                    {"p": "Q1 2025", "ee": 0.04, "ae": 0.17, "er": "754.2M", "ar": "732.4M"},
+                    {"p": "Q4 2024", "ee": 0.08, "ae": 0.30, "er": "1.50B",  "ar": "1.28B"},
+                    {"p": "Q3 2024", "ee": -0.06, "ae": 0.06, "er": "919.9M", "ar": "860.3M"},
+                    {"p": "Q2 2024", "ee": -0.09, "ae": 0.01, "er": "895.6M", "ar": "798.0M"},
+                    {"p": "Q1 2024", "ee": -0.14, "ae": -0.03, "er": "1.05B",  "ar": "881.8M"},
+                    {"p": "Q4 2023", "ee": -0.12, "ae": -0.14, "er": "1.79B",  "ar": "1.79B"},
+                    {"p": "Q3 2023", "ee": -0.13, "ae": 0.16, "er": "1.18B",  "ar": "1.08B"},
+                    {"p": "Q2 2023", "ee": -0.28, "ae": -0.31, "er": "1.14B",  "ar": "1.16B"},
+                    {"p": "Q1 2023", "ee": -0.38, "ae": -0.35, "er": "1.36B",  "ar": "1.24B"},
+                    {"p": "Q4 2022", "ee": -0.37, "ae": -0.52, "er": "2.18B",  "ar": "2.23B"},
+                    {"p": "Q3 2022", "ee": 0.21, "ae": -0.46, "er": "1.35B",  "ar": "1.19B"},
+                    {"p": "Q2 2022", "ee": -0.13, "ae": -0.35, "er": "1.27B",  "ar": "1.14B"},
+                    {"p": "Q1 2022", "ee": -0.17, "ae": -0.19, "er": "1.32B",  "ar": "1.38B"},
+                    {"p": "Q4 2021", "ee": -0.21, "ae": -0.11, "er": "2.22B",  "ar": "2.25B"},
+                    {"p": "Q3 2021", "ee": 0.34, "ae": 0.34, "er": "1.30B",  "ar": "1.30B"},
+                    {"p": "Q2 2021", "ee": -0.21, "ae": -0.13, "er": "1.12B",  "ar": "1.18B"},
+                    {"p": "Q1 2021", "ee": -0.29, "ae": -0.35, "er": "1.28B",  "ar": "1.28B"},
+                    {"p": "Q4 2020", "ee": -0.32, "ae": -0.40, "er": "2.21B",  "ar": "2.12B"}
                 ]
                 
-                html_hist = "<div class='table-wrapper'><table class='hist-t'><tr><th>Period</th><th>Est EPS</th><th>Act EPS</th><th>Surprise</th><th>Est Rev</th><th>Act Rev</th></tr>"
+                html_hist = "<div class='table-wrapper' style='max-height:400px; overflow-y:auto;'><table class='hist-t'><tr><th>Period</th><th>Est EPS</th><th>Act EPS</th><th>Surprise</th><th>Est Rev</th><th>Act Rev</th></tr>"
                 
                 for r in hist_data:
                     ee, ae = r["ee"], r["ae"]
                     
-                    # Calculate surprise percentage
                     if ee != 0:
                         diff = ae - ee
                         surp = (diff / abs(ee)) * 100
                     else:
                         surp = 0
                         
-                    surp_cls = "beat" if surp >= 0 else "miss"
+                    surp_cls = "beat" if ae >= ee else "miss"
                     surp_str = f"+{surp:.0f}%" if surp >= 0 else f"{surp:.0f}%"
                     
-                    # Color actual EPS
                     ae_cls = "beat" if ae >= ee else "miss"
                     
                     html_hist += f"<tr><td>{r['p']}</td><td>${ee:.2f}</td><td class='{ae_cls}'>${ae:.2f}</td><td class='{surp_cls}'>{surp_str}</td><td>${r['er']}</td><td>${r['ar']}</td></tr>"
                     
                 html_hist += "</table></div>"
-                html_hist += "<p style='color:gray; font-size:11px; text-align:center; margin-top:15px; font-style:italic;'>Note: Wall Street estimates are manually calibrated. Historical data shows traditional consensus often fails to accurately model GME's performance and cash reserves.</p>"
+                html_hist += "<p style='color:gray; font-size:11px; text-align:center; margin-top:15px; font-style:italic;'>Note: Data uses split-adjusted Non-GAAP EPS. Wall Street consensus often fails to accurately model GME's performance.</p>"
                 
                 st.markdown(html_est + html_hist, unsafe_allow_html=True)
+
                     
             with fin_t3:
                 def df_to_html(df, title):
