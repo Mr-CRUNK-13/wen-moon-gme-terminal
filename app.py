@@ -626,7 +626,7 @@ else:
             """
             st.markdown(html_summary, unsafe_allow_html=True)
 
-                with ph9.container():
+        with ph9.container():
             def fmt(val, is_pct=False, is_dol=False):
                 if val == 'N/A' or pd.isna(val) or val is None: return "N/A"
                 try:
