@@ -668,7 +668,7 @@ else:
                 </div>"""
                 st.markdown(html_gme, unsafe_allow_html=True)
                 
-             with ptab2:
+            with ptab2:
                 @st.cache_data(ttl=3600)
                 def get_wt_52w_close():
                     try:
