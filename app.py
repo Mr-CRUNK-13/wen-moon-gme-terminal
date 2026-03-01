@@ -202,40 +202,38 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             
     st.markdown("<br>", unsafe_allow_html=True)
 
+    st.markdown("""
+    <style>
+    div.stButton > button[kind="primary"] {
+        height: 80px !important;
+        border: 2px solid #00FF00 !important;
+        background-color: rgba(0, 255, 0, 0.1) !important;
+        box-shadow: 0 0 15px #00FF00 inset !important;
+    }
+    div.stButton > button[kind="primary"] p {
+        font-size: 26px !important;
+        font-weight: 900 !important;
+        color: #00FF00 !important;
+        text-shadow: 0 0 15px #00FF00, 0 0 30px #00FF00 !important;
+        animation: flash 0.8s infinite alternate !important;
+    }
+    @keyframes flash { 100% { opacity: 0.3; text-shadow: none; } }
+    </style>
+    """, unsafe_allow_html=True)
+
     col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
     with col_l2:
-        st.markdown("""
-        <style>
-        button:has(p:contains("LAUNCH WEN MOON SYSTEM")) {
-            min-height: 80px !important;
-            border: 2px solid #00FF00 !important;
-            background: rgba(0, 255, 0, 0.05) !important;
-        }
-        button:has(p:contains("LAUNCH WEN MOON SYSTEM")) p {
-            color: #00FF00 !important;
-            font-size: 22px !important;
-            font-weight: 900 !important;
-            animation: neon-blink 0.8s infinite alternate !important;
-            text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00 !important;
-        }
-        @keyframes neon-blink {
-            0% { opacity: 1; text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
-            100% { opacity: 0.4; text-shadow: none; }
-        }
-        </style>
-        """, unsafe_allow_html=True)
-
-        if st.button("LAUNCH WEN MOON SYSTEM 🚀🌍!", use_container_width=True):
+        if st.button("LAUNCH WEN MOON SYSTEM 🚀🌍!", type="primary", use_container_width=True):
             st.session_state.launched = True
             st.rerun()
-            
+
         st.markdown("<br>", unsafe_allow_html=True)
 
         if st.button("🏆 LEADERBOARD", use_container_width=True):
             st.session_state.show_leaderboard = True
             st.rerun()
 
-    st.markdown("<h4 style='text-align: right; margin-top: 30px; font-family: monospace; animation: neon-text 1.5s infinite; color: #00FF00;'>By Mr-CRUNK-13</h4>", unsafe_allow_html=True)
+    st.markdown("<h4 style='text-align: right; margin-top: 15px; font-family: monospace; color: #00FF00; animation: neon-text 1.5s infinite;'>By Mr-CRUNK-13</h4>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
