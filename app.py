@@ -204,48 +204,47 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         
     st.markdown("<br>", unsafe_allow_html=True)
     
- # --- YOUR PERSONAL PURCHASES BLOCK ---
-p_w_s = st.session_state.get('recent_s', 0)
-p_w_w = st.session_state.get('recent_w', 0)
-p_m_s = st.session_state.get('monthly_s', 0)
-p_m_w = st.session_state.get('monthly_w', 0)
+        # --- YOUR PERSONAL PURCHASES BLOCK ---
+        p_w_s = st.session_state.get('recent_s', 0)
+        p_w_w = st.session_state.get('recent_w', 0)
+        p_m_s = st.session_state.get('monthly_s', 0)
+        p_m_w = st.session_state.get('monthly_w', 0)
 
-html_personal = f"""
-<div style="background-color: #0e1621; padding: 20px; border-radius: 10px; border: 1px solid #00FF00; margin-bottom: 20px;">
-    <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold; text-align:center;">🔥 YOUR RECENT PURCHASES</h4>
-    <div style="display: flex; justify-content: space-around; margin-top: 15px; flex-wrap: wrap; gap: 10px;">
-        <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #00FF00; flex: 1; min-width: 140px; text-align: center;">
-            <p style="color: #00FF00; font-size: 18px; margin: 0 0 10px 0; font-weight: bold;">WEEKLY</p>
-            <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{p_w_s:,.0f}</strong></p>
-            <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{p_w_w:,.0f}</strong></p>
+        html_personal = f"""
+        <div style="background-color: #0e1621; padding: 20px; border-radius: 10px; border: 1px solid #00FF00; margin-bottom: 20px;">
+            <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold; text-align:center;">🔥 YOUR RECENT PURCHASES</h4>
+            <div style="display: flex; justify-content: space-around; margin-top: 15px; flex-wrap: wrap; gap: 10px;">
+                <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #00FF00; flex: 1; min-width: 140px; text-align: center;">
+                    <p style="color: #00FF00; font-size: 18px; margin: 0 0 10px 0; font-weight: bold;">WEEKLY</p>
+                    <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{p_w_s:,.0f}</strong></p>
+                    <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{p_w_w:,.0f}</strong></p>
+                </div>
+                <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #FFD700; flex: 1; min-width: 140px; text-align: center;">
+                    <p style="color: #FFD700; font-size: 18px; margin: 0 0 10px 0; font-weight: bold;">MONTHLY</p>
+                    <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{p_m_s:,.0f}</strong></p>
+                    <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{p_m_w:,.0f}</strong></p>
+                </div>
+            </div>
         </div>
-        <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #FFD700; flex: 1; min-width: 140px; text-align: center;">
-            <p style="color: #FFD700; font-size: 18px; margin: 0 0 10px 0; font-weight: bold;">MONTHLY</p>
-            <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{p_m_s:,.0f}</strong></p>
-            <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{p_m_w:,.0f}</strong></p>
-        </div>
-    </div>
-</div>
-"""
-st.markdown(html_personal, unsafe_allow_html=True)
+        """
+        st.markdown(html_personal, unsafe_allow_html=True)
 
-fig_pers = go.Figure()
-fig_pers.add_trace(go.Bar(name='Shares 🟩', x=['WEEKLY', 'MONTHLY'], y=[p_w_s, p_m_s], marker_color='#00FF00'))
-fig_pers.add_trace(go.Bar(name='Warrants 🟥', x=['WEEKLY', 'MONTHLY'], y=[p_w_w, p_m_w], marker_color='#FF3333'))
-fig_pers.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "YOUR BUYING POWER", 'x': 0.5, 'font': {'color': '#00FF00', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
-st.plotly_chart(fig_pers, use_container_width=True)
-# -------------------------------------
+        fig_pers = go.Figure()
+        fig_pers.add_trace(go.Bar(name='Shares 🟩', x=['WEEKLY', 'MONTHLY'], y=[p_w_s, p_m_s], marker_color='#00FF00'))
+        fig_pers.add_trace(go.Bar(name='Warrants 🟥', x=['WEEKLY', 'MONTHLY'], y=[p_w_w, p_m_w], marker_color='#FF3333'))
+        fig_pers.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "YOUR BUYING POWER", 'x': 0.5, 'font': {'color': '#00FF00', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
+        st.plotly_chart(fig_pers, use_container_width=True)
+        # -------------------------------------
 
+        col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
+        with col_l2:
+            if st.button("🏆 LEADERBOARD", use_container_width=True):
+                st.session_state.show_leaderboard = True
+                st.rerun()
 
-col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
-with col_l2:
-    if st.button("🏆 LEADERBOARD", use_container_width=True):
-        st.session_state.show_leaderboard = True
-        st.rerun()
-
-    if st.button("LAUNCH WEN MOON SYSTEM 🚀🌍!", use_container_width=True):
-        st.session_state.launched = True
-        st.rerun()
+            if st.button("LAUNCH WEN MOON SYSTEM 🚀🌍!", use_container_width=True):
+                st.session_state.launched = True
+                st.rerun()
 
 st.markdown("<h4 style='text-align: right; margin-top: 30px; font-family: monospace; animation: neon-text 1.5s infinite...</h4>", unsafe_allow_html=True)
 
