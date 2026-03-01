@@ -204,9 +204,32 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
 
     col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
     with col_l2:
+        st.markdown("""
+        <style>
+        button:has(p:contains("LAUNCH WEN MOON SYSTEM")) {
+            min-height: 80px !important;
+            border: 2px solid #00FF00 !important;
+            background: rgba(0, 255, 0, 0.05) !important;
+        }
+        button:has(p:contains("LAUNCH WEN MOON SYSTEM")) p {
+            color: #00FF00 !important;
+            font-size: 22px !important;
+            font-weight: 900 !important;
+            animation: neon-blink 0.8s infinite alternate !important;
+            text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00 !important;
+        }
+        @keyframes neon-blink {
+            0% { opacity: 1; text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
+            100% { opacity: 0.4; text-shadow: none; }
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
         if st.button("LAUNCH WEN MOON SYSTEM 🚀🌍!", use_container_width=True):
             st.session_state.launched = True
             st.rerun()
+            
+        st.markdown("<br>", unsafe_allow_html=True)
 
         if st.button("🏆 LEADERBOARD", use_container_width=True):
             st.session_state.show_leaderboard = True
