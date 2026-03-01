@@ -87,6 +87,56 @@ components.html("""
             const ps = parent.querySelectorAll('p');
             ps.forEach(p => { if(p.innerText === 'BACK_HOME_SECRET') p.closest('div[data-testid="stButton"]').querySelector('button').click(); });
         };
+components.html("""
+<script>
+    const parent = window.parent.document;
+    const head = parent.querySelector('head');
+
+    // 1. NEON STYLE ENGINE
+    if (!parent.getElementById('neon-style')) {
+        const style = parent.createElement('style');
+        style.id = 'neon-style';
+        style.innerHTML = `@keyframes neon-blink { 0%, 100% { box-shadow: 0 0 5px #00FF00, inset 0 0 2px #00FF00; } 50% { box-shadow: 0 0 15px #00FF00, inset 0 0 5px #00FF00; } }`;
+        head.appendChild(style);
+    }
+
+    // 2. HIDE SECRET TRIGGER (Permanent Stealth)
+    const hideSecret = () => {
+        const ps = parent.querySelectorAll('p');
+        ps.forEach(p => { if (p.innerText === 'BACK_HOME_SECRET') { 
+            const btn = p.closest('div[data-testid="stButton"]'); 
+            if (btn) btn.style.display = 'none'; 
+        }});
+    };
+    hideSecret(); 
+    setInterval(hideSecret, 500);
+
+    // 3. PWA MOBILE LOGIC
+    if (!parent.querySelector('#pwa-manifest')) {
+        const manifest = { "name": "GME TERMINAL", "short_name": "GME", "display": "fullscreen", "background_color": "#050505", "theme_color": "#00FF00" };
+        const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+        head.insertAdjacentHTML('beforeend', `<link id="pwa-manifest" rel="manifest" href="${URL.createObjectURL(blob)}">`);
+        head.insertAdjacentHTML('beforeend', `<meta name="apple-mobile-web-app-capable" content="yes">`);
+    }
+
+    // 4. FLOATING BUTTONS (FIXED SIZE & POSITION)
+    let nav = parent.getElementById('floating-nav');
+    if (!nav) {
+        nav = parent.createElement('div');
+        nav.id = 'floating-nav';
+        // Lowered to 55px to match original FS height
+        nav.style = "position:fixed; bottom:55px; right:12px; z-index:99999; display:flex; flex-direction:column; gap:10px; transition: opacity 0.5s; opacity: 1;";
+        
+        // Original Square Shape (36px)
+        const btnStyle = "width:36px; height:36px; border-radius:6px; background:#050505; color:#00FF00; border:1px solid #00FF00; font-size:18px; cursor:pointer; box-shadow: 0 0 8px #00FF00; display:flex; align-items:center; justify-content:center;";
+
+        const btnHome = parent.createElement('button');
+        btnHome.innerHTML = '🏠';
+        btnHome.style = btnStyle;
+        btnHome.onclick = () => {
+            const ps = parent.querySelectorAll('p');
+            ps.forEach(p => { if(p.innerText === 'BACK_HOME_SECRET') p.closest('div[data-testid="stButton"]').querySelector('button').click(); });
+        };
 
         const btnFs = parent.createElement('button');
         btnFs.innerHTML = '⛶';
@@ -120,6 +170,7 @@ components.html("""
     showNav();
 </script>
 """, height=0, width=0)
+
 
 # --- CSS ---
 st.markdown("""
