@@ -237,17 +237,17 @@ st.plotly_chart(fig_pers, use_container_width=True)
 # -------------------------------------
 
 
-    col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
-    with col_l2:
-        if st.button("🏆 LEADERBOARD", use_container_width=True): 
-            st.session_state.show_leaderboard = True
-            st.rerun()
-            
-    if st.button("LAUNCH WEN MOON SYSTEM 🚀🌘!", use_container_width=True): 
+col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
+with col_l2:
+    if st.button("🏆 LEADERBOARD", use_container_width=True):
+        st.session_state.show_leaderboard = True
+        st.rerun()
+
+    if st.button("LAUNCH WEN MOON SYSTEM 🚀🌍!", use_container_width=True):
         st.session_state.launched = True
         st.rerun()
-        
-    st.markdown("<h4 style='text-align: right; margin-top: 30px; font-family: monospace; animation: neon-text 1.5s infinite;'>By Mr-CRUNK-13</h4>", unsafe_allow_html=True)
+
+st.markdown("<h4 style='text-align: right; margin-top: 30px; font-family: monospace; animation: neon-text 1.5s infinite...</h4>", unsafe_allow_html=True)
 
 # --- 2.5 LEADERBOARD SCREEN ---
 elif st.session_state.get('show_leaderboard', False):
