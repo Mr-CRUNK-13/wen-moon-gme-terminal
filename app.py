@@ -407,7 +407,7 @@ else:
             
         with w_t1: st.markdown(portal_btn("GAMESTOP INVESTORS", "Official corporate and SEC filings.", "https://investor.gamestop.com/"), unsafe_allow_html=True)
         with w_t2: st.markdown(portal_btn("CHARTEXCHANGE", "Live Borrow Fee and Dark Pool data.", "https://chartexchange.com/symbol/nyse-gme/borrow-fee/"), unsafe_allow_html=True)
-        with w_t3: st.markdown(portal_btn("RED STRIPE TIE", "Direct access to community data.", "https://redstripetie.com/gme"), unsafe_allow_html=True)
+        with w_t3: st.markdown(portal_btn("RED STRIPED TIE", "Direct access to community data.", "https://redstripedtie.com/_/GME?view=largest_trades"), unsafe_allow_html=True)
         with w_t4: st.markdown(portal_btn("UNUSUAL WHALES", "Track options market activity.", "https://unusualwhales.com/stock/GME"), unsafe_allow_html=True)
         with w_t5: st.markdown(portal_btn("r/SUPERSTONK", "The heart of the GME community.", "https://www.reddit.com/r/Superstonk/"), unsafe_allow_html=True)
         with w_t6: st.markdown(portal_btn("WHALEWISDOM (WARRANTS)", "Track institutional holders of GME Warrants.", "https://whalewisdom.com/stock/gmews"), unsafe_allow_html=True)
