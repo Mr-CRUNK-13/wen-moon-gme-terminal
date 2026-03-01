@@ -50,56 +50,6 @@ components.html("""
         head.appendChild(style);
     }
 
-    // 2. HIDE SECRET TRIGGER
-    const hideSecret = () => {
-        const ps = parent.querySelectorAll('p');
-        ps.forEach(p => { if (p.innerText === 'BACK_HOME_SECRET') { 
-            const btn = p.closest('div[data-testid="stButton"]'); 
-            if (btn) btn.style.display = 'none'; 
-        }});
-    };
-    hideSecret(); 
-    setInterval(hideSecret, 500);
-
-    // 3. PWA MOBILE LOGIC
-    if (!parent.querySelector('#pwa-manifest')) {
-        const manifest = { "name": "GME TERMINAL", "short_name": "GME", "display": "fullscreen", "background_color": "#050505", "theme_color": "#00FF00" };
-        const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-        head.insertAdjacentHTML('beforeend', `<link id="pwa-manifest" rel="manifest" href="${URL.createObjectURL(blob)}">`);
-        head.insertAdjacentHTML('beforeend', `<meta name="apple-mobile-web-app-capable" content="yes">`);
-    }
-
-    // 4. FLOATING BUTTONS (SQUARE SHAPE & HIGHER POSITION)
-    let nav = parent.getElementById('floating-nav');
-    if (!nav) {
-        nav = parent.createElement('div');
-        nav.id = 'floating-nav';
-        // Raised to 90px to avoid being hidden by Streamlit footer
-        nav.style = "position:fixed; bottom:90px; right:15px; z-index:99999; display:flex; flex-direction:column; gap:12px; transition: opacity 0.5s; opacity: 1;";
-        
-        // Square shape with 8px rounded corners
-        const btnStyle = "width:42px; height:42px; border-radius:8px; background:#050505; color:#00FF00; border:1px solid #00FF00; font-size:22px; cursor:pointer; box-shadow: 0 0 10px #00FF00; display:flex; align-items:center; justify-content:center;";
-
-        const btnHome = parent.createElement('button');
-        btnHome.innerHTML = '🏠';
-        btnHome.style = btnStyle;
-        btnHome.onclick = () => {
-            const ps = parent.querySelectorAll('p');
-            ps.forEach(p => { if(p.innerText === 'BACK_HOME_SECRET') p.closest('div[data-testid="stButton"]').querySelector('button').click(); });
-        };
-components.html("""
-<script>
-    const parent = window.parent.document;
-    const head = parent.querySelector('head');
-
-    // 1. NEON STYLE ENGINE
-    if (!parent.getElementById('neon-style')) {
-        const style = parent.createElement('style');
-        style.id = 'neon-style';
-        style.innerHTML = `@keyframes neon-blink { 0%, 100% { box-shadow: 0 0 5px #00FF00, inset 0 0 2px #00FF00; } 50% { box-shadow: 0 0 15px #00FF00, inset 0 0 5px #00FF00; } }`;
-        head.appendChild(style);
-    }
-
     // 2. HIDE SECRET TRIGGER (Permanent Stealth)
     const hideSecret = () => {
         const ps = parent.querySelectorAll('p');
