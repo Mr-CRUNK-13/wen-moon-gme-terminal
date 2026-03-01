@@ -467,14 +467,14 @@ else:
             @st.fragment(run_every="30s")
             def live_gme_screen():
                 p_n, _, pr_n, _, v_n, _, ch_n, _ = fetch_terminal_data()
-                draw_live(p_n, pr_n, ch_n, v_n, sym="GME-WT")
+                draw_live(p_n, pr_n, ch_n, v_n)
             live_gme_screen()
 
         with ph2.container():
             @st.fragment(run_every="30s")
             def live_wt_screen():
                 _, p_w, _, pr_w, _, v_w, _, ch_w = fetch_terminal_data()
-                draw_live(p_w, pr_w, ch_w, v_w)
+                draw_live(p_w, pr_w, ch_w, v_w, sym="GME-WT")
             live_wt_screen()
 
         with ph3.container():
