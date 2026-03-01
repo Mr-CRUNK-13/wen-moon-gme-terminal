@@ -200,10 +200,24 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             st.number_input("Warrants Qty", min_value=0, key="in_t_wq")
             st.number_input("Execution Price W ($)", format="%.3f", key="in_t_wp")
             
-        st.button("UPDATE PORTFOLIO", use_container_width=True, on_click=update_portfolio_logic)
-        
     st.markdown("<br>", unsafe_allow_html=True)
-        # --- YOUR PERSONAL PURCHASES BLOCK ---
+
+    col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
+    with col_l2:
+        if st.button("LAUNCH WEN MOON SYSTEM 🚀🌍!", use_container_width=True):
+            st.session_state.launched = True
+            st.rerun()
+
+        if st.button("🏆 LEADERBOARD", use_container_width=True):
+            st.session_state.show_leaderboard = True
+            st.rerun()
+
+    st.markdown("<h4 style='text-align: right; margin-top: 30px; font-family: monospace; animation: neon-text 1.5s infinite; color: #00FF00;'>By Mr-CRUNK-13</h4>", unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # --- YOUR PERSONAL PURCHASES BLOCK ---
+    import plotly.graph_objects as go
     p_w_s = st.session_state.get('recent_s', 0)
     p_w_w = st.session_state.get('recent_w', 0)
     p_m_s = st.session_state.get('monthly_s', 0)
@@ -234,16 +248,6 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
     fig_pers.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "YOUR BUYING POWER", 'x': 0.5, 'font': {'color': '#00FF00', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
     st.plotly_chart(fig_pers, use_container_width=True)
     # -------------------------------------
-
-    col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
-    with col_l2:
-        if st.button("🏆 LEADERBOARD", use_container_width=True):
-            st.session_state.show_leaderboard = True
-            st.rerun()
-
-        if st.button("LAUNCH WEN MOON SYSTEM 🚀🌍!", use_container_width=True):
-            st.session_state.launched = True
-            st.rerun()
 
 # --- 2.5 LEADERBOARD SCREEN ---
 elif st.session_state.get('show_leaderboard', False):
