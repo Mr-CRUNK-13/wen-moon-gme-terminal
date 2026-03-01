@@ -638,7 +638,7 @@ else:
                     </div>
                 </div>
                 <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 1px solid #FFD700; text-align: center; margin-top: 20px;">
-                    <h4 style="color: #FFD700; margin-top: 0; font-size: 24px; font-weight: bold;">🔥 RECENT PURCHASES</h4>
+                    <h4 style="color: #FFD700; margin-top: 0; font-size: 24px; font-weight: bold;">🔥 WEN MOON RECENT PURCHASES</h4>
                     <div style="display: flex; justify-content: space-around; margin-top: 15px; flex-wrap: wrap; gap: 10px;">
                         <div style="background-color: #0f172a; padding: 15px; border-radius: 5px; flex: 1; min-width: 140px; border: 1px solid #00FF00;">
                             <h5 style="color: #00FF00; font-size: 18px; margin: 0 0 10px 0;">WEEKLY</h5>
