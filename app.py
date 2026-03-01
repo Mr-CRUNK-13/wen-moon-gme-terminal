@@ -42,33 +42,7 @@ components.html("""
     const parent = window.parent.document;
     const head = parent.querySelector('head');
 
-    // 1. NEON STYLE ENGINE
-    if (!parent.getElementById('neon-style')) {
-        const style = parent.createElement('style');
-        style.id = 'neon-style';
-        style.innerHTML = `@keyframes neon-blink { 0%, 100% { box-shadow: 0 0 5px #00FF00, inset 0 0 2px #00FF00; } 50% { box-shadow: 0 0 15px #00FF00, inset 0 0 5px #00FF00; } }`;
-        head.appendChild(style);
-    }
-
-    // 2. HIDE SECRET TRIGGER (Permanent Stealth)
-    const hideSecret = () => {
-        const ps = parent.querySelectorAll('p');
-        ps.forEach(p => { if (p.innerText === 'BACK_HOME_SECRET') { 
-            const btn = p.closest('div[data-testid="stButton"]'); 
-            if (btn) btn.style.display = 'none'; 
-        }});
-    };
-    hideSecret(); 
-    setInterval(hideSecret, 500);
-
-    // 3. PWA MOBILE LOGIC
-    if (!parent.querySelector('#pwa-manifest')) {
-components.html("""
-<script>
-    const parent = window.parent.document;
-    const head = parent.querySelector('head');
-
-    // 1. NEON ENGINE (Using from/to for Python safety)
+    // 1. NEON ENGINE (Standard CSS)
     if (!parent.getElementById('neon-style')) {
         const style = parent.createElement('style');
         style.id = 'neon-style';
