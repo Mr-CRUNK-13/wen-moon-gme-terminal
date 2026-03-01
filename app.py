@@ -712,17 +712,16 @@ else:
             st.markdown(html_summary, unsafe_allow_html=True)
             
         # --- WEN MOON COMMUNITY GRAPH ---
-        with ph8.container():
-            import plotly.graph_objects as go
-            cw_s = st.session_state.get('weekly_s', 0)
-            cm_s = st.session_state.get('monthly_s', 0)
-            cw_w = st.session_state.get('weekly_w', 0)
-            cm_w = st.session_state.get('monthly_w', 0)
-            fig_comm = go.Figure()
-            fig_comm.add_trace(go.Bar(name='Shares 🟩', x=['WEEKLY', 'MONTHLY'], y=[cw_s, cm_s], marker_color='#00FF00'))
-            fig_comm.add_trace(go.Bar(name='Warrants 🟥', x=['WEEKLY', 'MONTHLY'], y=[cw_w, cm_w], marker_color='#FF3333'))
-            fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'font': {'color': '#FFD700', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
-            st.plotly_chart(fig_comm, use_container_width=True)
+        import plotly.graph_objects as go
+        cw_s = st.session_state.get('weekly_s', 0)
+        cm_s = st.session_state.get('monthly_s', 0)
+        cw_w = st.session_state.get('weekly_w', 0)
+        cm_w = st.session_state.get('monthly_w', 0)
+        fig_comm = go.Figure()
+        fig_comm.add_trace(go.Bar(name='Shares 🟩', x=['WEEKLY', 'MONTHLY'], y=[cw_s, cm_s], marker_color='#00FF00'))
+        fig_comm.add_trace(go.Bar(name='Warrants 🟥', x=['WEEKLY', 'MONTHLY'], y=[cw_w, cm_w], marker_color='#FF3333'))
+        fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'font': {'color': '#FFD700', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
+        st.plotly_chart(fig_comm, use_container_width=True)
 
 
         with ph9.container():
