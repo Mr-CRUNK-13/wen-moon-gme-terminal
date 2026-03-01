@@ -37,52 +37,74 @@ if st.button("BACK_HOME_SECRET", key="secret_home"):
     st.rerun()
 
 # --- BLINKING BUTTONS (HOME + FULLSCREEN) ---
-components.html(
-    """
-    <script>
+components.html("""
+<script>
     const parent = window.parent.document;
     const head = parent.querySelector('head');
-    
+
+    // 1. NEON STYLE ENGINE
     if (!parent.getElementById('neon-style')) {
         const style = parent.createElement('style');
         style.id = 'neon-style';
-        style.innerHTML = `@keyframes neon-blink { 0%, 100% { box-shadow: 0 0 5px #00FF00, inset 0 0 2px #00FF00; } 50% { box-shadow: 0 0 20px #00FF00, inset 0 0 8px #00FF00; } }`;
+        style.innerHTML = `@keyframes neon-blink { 0%, 100% { box-shadow: 0 0 5px #00FF00, inset 0 0 2px #00FF00; } 50% { box-shadow: 0 0 15px #00FF00, inset 0 0 5px #00FF00; } }`;
         head.appendChild(style);
     }
-    
-    const ps = parent.querySelectorAll('p');
-    ps.forEach(p => { if(p.innerText === 'BACK_HOME_SECRET') p.closest('div[data-testid="stButton"]').style.display = 'none'; });
 
+    // 2. PWA MOBILE LOGIC
     if (!parent.querySelector('#pwa-manifest')) {
-        head.insertAdjacentHTML('beforeend', '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">');
-        const manifest = {"name": "GME TERMINAL", "short_name": "GME", "display": "fullscreen", "background_color": "#050505", "theme_color": "#050505"};
+        const manifest = { "name": "GME TERMINAL", "short_name": "GME", "display": "fullscreen", "background_color": "#050505", "theme_color": "#00FF00" };
         const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-        head.insertAdjacentHTML('beforeend', '<link id="pwa-manifest" rel="manifest" href="' + URL.createObjectURL(blob) + '">');
+        head.insertAdjacentHTML('beforeend', `<link id="pwa-manifest" rel="manifest" href="${URL.createObjectURL(blob)}">`);
+        head.insertAdjacentHTML('beforeend', `<meta name="apple-mobile-web-app-capable" content="yes">`);
     }
 
-    if (!parent.getElementById('btn-fs')) {
-        const btn = parent.createElement('button');
-        btn.id = 'btn-fs'; btn.innerText = '⛶';
-        btn.style = 'position:fixed; bottom:55px; right:10px; z-index:99999; background:#050505; color:#00FF00; border:2px solid #00FF00; border-radius:10px; width:35px; height:35px; font-size:20px; cursor:pointer; display:flex; justify-content:center; align-items:center; animation: neon-blink 1.5s infinite;';
-        btn.onclick = function() {
-            const doc = parent.documentElement;
-            if (!parent.fullscreenElement) doc.requestFullscreen(); else parent.exitFullscreen();
-        };
-        parent.body.appendChild(btn);
-    }
-    
-    if (!parent.getElementById('btn-home')) {
+    // 3. FLOATING BUTTONS CREATION (HOME + FULLSCREEN)
+    let nav = parent.getElementById('floating-nav');
+    if (!nav) {
+        nav = parent.createElement('div');
+        nav.id = 'floating-nav';
+        nav.style = "position:fixed; bottom:20px; right:10px; z-index:99999; display:flex; flex-direction:column; gap:10px; transition: opacity 0.5s; opacity: 1;";
+        
         const btnHome = parent.createElement('button');
-        btnHome.id = 'btn-home'; btnHome.innerText = '🏠';
-        btnHome.style = 'position:fixed; bottom:100px; right:10px; z-index:99999; background:#050505; color:#00FF00; border:2px solid #00FF00; border-radius:10px; width:35px; height:35px; font-size:20px; cursor:pointer; display:flex; justify-content:center; align-items:center; animation: neon-blink 1.5s infinite;';
-        btnHome.onclick = function() {
-            ps.forEach(p => { if(p.innerText === 'BACK_HOME_SECRET') p.closest('button').click(); });
+        btnHome.innerHTML = '🏠';
+        btnHome.style = "width:50px; height:50px; border-radius:50%; background:#050505; color:#00FF00; border:1px solid #00FF00; font-size:25px; cursor:pointer; box-shadow: 0 0 10px #00FF00;";
+        btnHome.onclick = () => {
+            const ps = parent.querySelectorAll('p');
+            ps.forEach(p => { if(p.innerText === 'BACK_HOME_SECRET') p.closest('div[data-testid="stButton"]').querySelector('button').click(); });
         };
-        parent.body.appendChild(btnHome);
+
+        const btnFs = parent.createElement('button');
+        btnFs.innerHTML = '⛶';
+        btnFs.style = "width:50px; height:50px; border-radius:50%; background:#050505; color:#00FF00; border:1px solid #00FF00; font-size:25px; cursor:pointer; box-shadow: 0 0 10px #00FF00;";
+        btnFs.onclick = () => {
+            if (!parent.fullscreenElement) parent.documentElement.requestFullscreen();
+            else parent.exitFullscreen();
+        };
+
+        nav.appendChild(btnHome);
+        nav.appendChild(btnFs);
+        parent.body.appendChild(nav);
     }
-    </script>
-    """, height=0, width=0
-)
+
+    // 4. SMART GHOST LOGIC (3s Auto-hide / Show on touch or mouse)
+    let timer;
+    function showNav() {
+        if (!nav) return;
+        nav.style.display = 'flex';
+        setTimeout(() => { nav.style.opacity = '1'; }, 10);
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            nav.style.opacity = '0';
+            setTimeout(() => { if(nav.style.opacity === '0') nav.style.display = 'none'; }, 500);
+        }, 3000);
+    }
+
+    ['mousedown', 'mousemove', 'touchstart', 'scroll', 'keydown'].forEach(e => {
+        parent.addEventListener(e, showNav);
+    });
+    showNav();
+</script>
+""", height=0, width=0)
 
 # --- CSS ---
 st.markdown("""
