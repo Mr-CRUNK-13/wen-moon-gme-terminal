@@ -50,7 +50,18 @@ components.html("""
         head.appendChild(style);
     }
 
-    // 2. PWA MOBILE LOGIC
+    // 2. HIDE SECRET TRIGGER (Fixes the "BACK_HOME_SECRET" display bug)
+    const hideSecret = () => {
+        const ps = parent.querySelectorAll('p');
+        ps.forEach(p => { if (p.innerText === 'BACK_HOME_SECRET') { 
+            const btn = p.closest('div[data-testid="stButton"]'); 
+            if (btn) btn.style.display = 'none'; 
+        }});
+    };
+    hideSecret(); 
+    setInterval(hideSecret, 500);
+
+    // 3. PWA MOBILE LOGIC
     if (!parent.querySelector('#pwa-manifest')) {
         const manifest = { "name": "GME TERMINAL", "short_name": "GME", "display": "fullscreen", "background_color": "#050505", "theme_color": "#00FF00" };
         const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
@@ -58,16 +69,18 @@ components.html("""
         head.insertAdjacentHTML('beforeend', `<meta name="apple-mobile-web-app-capable" content="yes">`);
     }
 
-    // 3. FLOATING BUTTONS CREATION (HOME + FULLSCREEN)
+    // 4. FLOATING BUTTONS (Original Size & Position)
     let nav = parent.getElementById('floating-nav');
     if (!nav) {
         nav = parent.createElement('div');
         nav.id = 'floating-nav';
-        nav.style = "position:fixed; bottom:20px; right:10px; z-index:99999; display:flex; flex-direction:column; gap:10px; transition: opacity 0.5s; opacity: 1;";
+        nav.style = "position:fixed; bottom:20px; right:10px; z-index:99999; display:flex; flex-direction:column; gap:8px; transition: opacity 0.5s; opacity: 1;";
         
+        const btnStyle = "width:42px; height:42px; border-radius:50%; background:#050505; color:#00FF00; border:1px solid #00FF00; font-size:20px; cursor:pointer; box-shadow: 0 0 8px #00FF00; display:flex; align-items:center; justify-content:center;";
+
         const btnHome = parent.createElement('button');
         btnHome.innerHTML = '🏠';
-        btnHome.style = "width:50px; height:50px; border-radius:50%; background:#050505; color:#00FF00; border:1px solid #00FF00; font-size:25px; cursor:pointer; box-shadow: 0 0 10px #00FF00;";
+        btnHome.style = btnStyle;
         btnHome.onclick = () => {
             const ps = parent.querySelectorAll('p');
             ps.forEach(p => { if(p.innerText === 'BACK_HOME_SECRET') p.closest('div[data-testid="stButton"]').querySelector('button').click(); });
@@ -75,7 +88,7 @@ components.html("""
 
         const btnFs = parent.createElement('button');
         btnFs.innerHTML = '⛶';
-        btnFs.style = "width:50px; height:50px; border-radius:50%; background:#050505; color:#00FF00; border:1px solid #00FF00; font-size:25px; cursor:pointer; box-shadow: 0 0 10px #00FF00;";
+        btnFs.style = btnStyle;
         btnFs.onclick = () => {
             if (!parent.fullscreenElement) parent.documentElement.requestFullscreen();
             else parent.exitFullscreen();
@@ -86,7 +99,7 @@ components.html("""
         parent.body.appendChild(nav);
     }
 
-    // 4. SMART GHOST LOGIC (3s Auto-hide / Show on touch or mouse)
+    // 5. SMART GHOST LOGIC (5s Auto-hide / Show on touch or mouse)
     let timer;
     function showNav() {
         if (!nav) return;
@@ -96,7 +109,7 @@ components.html("""
         timer = setTimeout(() => {
             nav.style.opacity = '0';
             setTimeout(() => { if(nav.style.opacity === '0') nav.style.display = 'none'; }, 500);
-        }, 3000);
+        }, 5000);
     }
 
     ['mousedown', 'mousemove', 'touchstart', 'scroll', 'keydown'].forEach(e => {
