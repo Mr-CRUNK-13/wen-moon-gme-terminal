@@ -407,7 +407,7 @@ else:
             v = chart.dropna().values
             ax.bar(np.arange(len(v)), v - np.min(v)*0.99, bottom=np.min(v)*0.99, color=clr, width=0.8); ax.axis('off')
             st.pyplot(fig, bbox_inches='tight', pad_inches=0); plt.close(fig)
-                    try:
+        try:
                     tk = yf.Ticker(sym)
                     fi = tk.fast_info
                     inf = tk.info
