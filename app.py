@@ -427,17 +427,16 @@ else:
 
             avg_html = f"<div>AVG VOLUME: {fmt_d(d_avg)}</div>" if (sym == 'GME' or d_avg != 'N/A') else ""
             
-            html_vol = f"""
-            <div style='text-align:center; color:#888; font-family:monospace; margin-top:5px; line-height:1.6; font-size:18px;'>
-                <div>TODAY'S VOLUME: {vol:,.0f}</div>
-                {avg_html}
-                <div>DAY HIGH: {fmt_d(d_high, True)}</div>
-                <div>DAY LOW: {fmt_d(d_low, True)}</div>
-                <div>PREV CLOSE: {fmt_d(d_prev, True)}</div>
-            </div>
-            """
+            html_vol = (
+                f"<div style='text-align:center; color:#888; font-family:monospace; margin-top:5px; line-height:1.6; font-size:18px;'>"
+                f"<div>TODAY'S VOLUME: {vol:,.0f}</div>"
+                f"{avg_html}"
+                f"<div>DAY HIGH: {fmt_d(d_high, True)}</div>"
+                f"<div>DAY LOW: {fmt_d(d_low, True)}</div>"
+                f"<div>PREV CLOSE: {fmt_d(d_prev, True)}</div>"
+                f"</div>"
+            )
             st.markdown(html_vol, unsafe_allow_html=True)
-
 
     def render_content():
         plt.close('all') 
