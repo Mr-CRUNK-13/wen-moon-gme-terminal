@@ -422,7 +422,7 @@ else:
         def x_btn(handle, name, icon):
             return f"""<div style='text-align:center; padding:30px; background:#0f172a; border:1px solid #1DA1F2; border-radius:10px; margin-bottom:15px;'>
                 <h3 style='color:white; margin-top:0;'>{icon} {name}</h3>
-                <a href='https://twitter.com/{handle}' target='_blank' style='display:inline-block; padding:15px 30px; background:#1DA1F2; color:white; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN @{handle} ON X</a>
+                <a href='https://twitter.com/{handle}' target='_blank' style='display:inline-block; padding:15px 30px; background:#1DA1F2; color:white; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN @{handle} ON 𝕏</a>
             </div>"""
             
         c1, c2 = st.columns(2)
