@@ -203,6 +203,14 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         st.button("UPDATE PORTFOLIO", use_container_width=True, on_click=update_portfolio_logic)
         
     st.markdown("<br>", unsafe_allow_html=True)
+            # --- WEN MOON COMMUNITY GRAPH ---
+        import plotly.graph_objects as go
+        fig_comm = go.Figure()
+        fig_comm.add_trace(go.Bar(name='Shares 🟩', x=['WEEKLY', 'MONTHLY'], y=[w_s_, m_s_], marker_color='#00FF00'))
+        fig_comm.add_trace(go.Bar(name='Warrants 🟥', x=['WEEKLY', 'MONTHLY'], y=[w_w_, m_w_], marker_color='#FF3333'))
+        fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'font': {'color': '#FFD700', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
+        st.plotly_chart(fig_comm, use_container_width=True)
+
     col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
     with col_l2:
         if st.button("🏆 LEADERBOARD", use_container_width=True): 
@@ -655,6 +663,13 @@ else:
             </div>
             """
             st.markdown(html_summary, unsafe_allow_html=True)
+        # --- WEN MOON COMMUNITY GRAPH ---
+        import plotly.graph_objects as go
+        fig_comm = go.Figure()
+        fig_comm.add_trace(go.Bar(name='Shares 🟩', x=['WEEKLY', 'MONTHLY'], y=[w_s_, m_s_], marker_color='#00FF00'))
+        fig_comm.add_trace(go.Bar(name='Warrants 🟥', x=['WEEKLY', 'MONTHLY'], y=[w_w_, m_w_], marker_color='#FF3333'))
+        fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'font': {'color': '#FFD700', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
+        st.plotly_chart(fig_comm, use_container_width=True)
 
         with ph9.container():
             def fmt(val, is_pct=False, is_dol=False):
