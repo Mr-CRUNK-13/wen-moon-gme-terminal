@@ -380,7 +380,7 @@ else:
             st.markdown(x_btn("GameStop", "GameStop", "🎮"), unsafe_allow_html=True)
             st.markdown(x_btn("PowerPacks", "PowerPacks", "🃏"), unsafe_allow_html=True)
 
-    def draw_live(price, prev, chart, vol=0):
+    def draw_live(price, prev, chart, vol=0, sym="GME"):
         pct = ((price - prev) / prev) * 100 if prev > 0 else 0
         diff, clr = price - prev, ("#00FF00" if price >= prev else "#FF0000")
         price_str = f"{price:.2f}"
@@ -407,7 +407,37 @@ else:
             v = chart.dropna().values
             ax.bar(np.arange(len(v)), v - np.min(v)*0.99, bottom=np.min(v)*0.99, color=clr, width=0.8); ax.axis('off')
             st.pyplot(fig, bbox_inches='tight', pad_inches=0); plt.close(fig)
-            st.markdown(f"<p style='text-align:center; color:#888; font-family:monospace; font-size:18px; margin-top:5px; margin-bottom:20px;'>TODAY'S VOLUME: {vol:,}</p>", unsafe_allow_html=True)
+                try:
+                    tk = yf.Ticker(sym)
+                    fi = tk.fast_info
+                    inf = tk.info
+                    d_high = fi.day_high
+                    d_low = fi.day_low
+                    d_prev = fi.previous_close
+                    d_avg = inf.get('averageVolume', inf.get('averageDailyVolume10Day', 'N/A'))
+                except:
+                    d_high, d_low, d_prev, d_avg = 'N/A', 'N/A', 'N/A', 'N/A'
+
+                def fmt_d(val, is_dol=False):
+                    if val == 'N/A' or val is None or str(val).lower() == 'nan': return "N/A"
+                    try: 
+                        if sym == "GME-WT": return f"${float(val):,.3f}" if is_dol else f"{float(val):,.0f}"
+                        else: return f"${float(val):,.2f}" if is_dol else f"{float(val):,.0f}"
+                    except: return str(val)
+
+                avg_html = f"<div>AVG VOLUME: {fmt_d(d_avg)}</div>" if (sym == 'GME' or d_avg != 'N/A') else ""
+                
+                html_vol = f"""
+                <div style='text-align:center; color:#888; font-family:monospace; margin-top:5px; line-height:1.6; font-size:18px;'>
+                    <div>TODAY'S VOLUME: {vol:,.0f}</div>
+                    {avg_html}
+                    <div>DAY HIGH: {fmt_d(d_high, True)}</div>
+                    <div>DAY LOW: {fmt_d(d_low, True)}</div>
+                    <div>PREV CLOSE: {fmt_d(d_prev, True)}</div>
+                </div>
+                """
+                st.markdown(html_vol, unsafe_allow_html=True)
+
     def render_content():
         plt.close('all') 
         p_nsy, p_wt, pr_nsy, pr_wt, vol_n, vol_w, ch_gme, ch_wt = fetch_terminal_data()
@@ -437,7 +467,7 @@ else:
             @st.fragment(run_every="30s")
             def live_gme_screen():
                 p_n, _, pr_n, _, v_n, _, ch_n, _ = fetch_terminal_data()
-                draw_live(p_n, pr_n, ch_n, v_n)
+                draw_live(p_n, pr_n, ch_n, v_n, sym="GME-WT")
             live_gme_screen()
 
         with ph2.container():
