@@ -50,7 +50,7 @@ components.html("""
         head.appendChild(style);
     }
 
-    // 2. HIDE SECRET TRIGGER (Fixes the "BACK_HOME_SECRET" display bug)
+    // 2. HIDE SECRET TRIGGER
     const hideSecret = () => {
         const ps = parent.querySelectorAll('p');
         ps.forEach(p => { if (p.innerText === 'BACK_HOME_SECRET') { 
@@ -69,14 +69,16 @@ components.html("""
         head.insertAdjacentHTML('beforeend', `<meta name="apple-mobile-web-app-capable" content="yes">`);
     }
 
-    // 4. FLOATING BUTTONS (Original Size & Position)
+    // 4. FLOATING BUTTONS (SQUARE SHAPE & HIGHER POSITION)
     let nav = parent.getElementById('floating-nav');
     if (!nav) {
         nav = parent.createElement('div');
         nav.id = 'floating-nav';
-        nav.style = "position:fixed; bottom:20px; right:10px; z-index:99999; display:flex; flex-direction:column; gap:8px; transition: opacity 0.5s; opacity: 1;";
+        // Raised to 90px to avoid being hidden by Streamlit footer
+        nav.style = "position:fixed; bottom:90px; right:15px; z-index:99999; display:flex; flex-direction:column; gap:12px; transition: opacity 0.5s; opacity: 1;";
         
-        const btnStyle = "width:42px; height:42px; border-radius:50%; background:#050505; color:#00FF00; border:1px solid #00FF00; font-size:20px; cursor:pointer; box-shadow: 0 0 8px #00FF00; display:flex; align-items:center; justify-content:center;";
+        // Square shape with 8px rounded corners
+        const btnStyle = "width:42px; height:42px; border-radius:8px; background:#050505; color:#00FF00; border:1px solid #00FF00; font-size:22px; cursor:pointer; box-shadow: 0 0 10px #00FF00; display:flex; align-items:center; justify-content:center;";
 
         const btnHome = parent.createElement('button');
         btnHome.innerHTML = '🏠';
@@ -99,7 +101,7 @@ components.html("""
         parent.body.appendChild(nav);
     }
 
-    // 5. SMART GHOST LOGIC (5s Auto-hide / Show on touch or mouse)
+    // 5. SMART GHOST LOGIC (4s Auto-hide)
     let timer;
     function showNav() {
         if (!nav) return;
@@ -109,7 +111,7 @@ components.html("""
         timer = setTimeout(() => {
             nav.style.opacity = '0';
             setTimeout(() => { if(nav.style.opacity === '0') nav.style.display = 'none'; }, 500);
-        }, 5000);
+        }, 4000);
     }
 
     ['mousedown', 'mousemove', 'touchstart', 'scroll', 'keydown'].forEach(e => {
