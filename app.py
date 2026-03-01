@@ -407,37 +407,36 @@ else:
             v = chart.dropna().values
             ax.bar(np.arange(len(v)), v - np.min(v)*0.99, bottom=np.min(v)*0.99, color=clr, width=0.8); ax.axis('off')
             st.pyplot(fig, bbox_inches='tight', pad_inches=0); plt.close(fig)
-        try:
-                try:
-            tk = yf.Ticker(sym)
-            fi = tk.fast_info
-            inf = tk.info
-            d_high = fi.day_high
-            d_low = fi.day_low
-            d_prev = fi.previous_close
-            d_avg = inf.get('averageVolume', inf.get('averageDailyVolume10Day', 'N/A'))
-        except:
-            d_high, d_low, d_prev, d_avg = 'N/A', 'N/A', 'N/A', 'N/A'
+            try:
+                tk = yf.Ticker(sym)
+                fi = tk.fast_info
+                inf = tk.info
+                d_high = fi.day_high
+                d_low = fi.day_low
+                d_prev = fi.previous_close
+                d_avg = inf.get('averageVolume', inf.get('averageDailyVolume10Day', 'N/A'))
+            except:
+                d_high, d_low, d_prev, d_avg = 'N/A', 'N/A', 'N/A', 'N/A'
 
-        def fmt_d(val, is_dol=False):
-            if val == 'N/A' or val is None or str(val).lower() == 'nan': return "N/A"
-            try: 
-                if sym == "GME-WT": return f"${float(val):,.3f}" if is_dol else f"{float(val):,.0f}"
-                else: return f"${float(val):,.2f}" if is_dol else f"{float(val):,.0f}"
-            except: return str(val)
+            def fmt_d(val, is_dol=False):
+                if val == 'N/A' or val is None or str(val).lower() == 'nan': return "N/A"
+                try: 
+                    if sym == "GME-WT": return f"${float(val):,.3f}" if is_dol else f"{float(val):,.0f}"
+                    else: return f"${float(val):,.2f}" if is_dol else f"{float(val):,.0f}"
+                except: return str(val)
 
-        avg_html = f"<div>AVG VOLUME: {fmt_d(d_avg)}</div>" if (sym == 'GME' or d_avg != 'N/A') else ""
-        
-        html_vol = f"""
-        <div style='text-align:center; color:#888; font-family:monospace; margin-top:5px; line-height:1.6; font-size:18px;'>
-            <div>TODAY'S VOLUME: {vol:,.0f}</div>
-            {avg_html}
-            <div>DAY HIGH: {fmt_d(d_high, True)}</div>
-            <div>DAY LOW: {fmt_d(d_low, True)}</div>
-            <div>PREV CLOSE: {fmt_d(d_prev, True)}</div>
-        </div>
-        """
-        st.markdown(html_vol, unsafe_allow_html=True)
+            avg_html = f"<div>AVG VOLUME: {fmt_d(d_avg)}</div>" if (sym == 'GME' or d_avg != 'N/A') else ""
+            
+            html_vol = f"""
+            <div style='text-align:center; color:#888; font-family:monospace; margin-top:5px; line-height:1.6; font-size:18px;'>
+                <div>TODAY'S VOLUME: {vol:,.0f}</div>
+                {avg_html}
+                <div>DAY HIGH: {fmt_d(d_high, True)}</div>
+                <div>DAY LOW: {fmt_d(d_low, True)}</div>
+                <div>PREV CLOSE: {fmt_d(d_prev, True)}</div>
+            </div>
+            """
+            st.markdown(html_vol, unsafe_allow_html=True)
 
 
     def render_content():
