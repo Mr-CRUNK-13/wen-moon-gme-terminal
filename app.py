@@ -235,7 +235,11 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             st.number_input("Warrants Qty", min_value=0, key="in_t_wq")
             st.number_input("Execution Price W ($)", format="%.3f", key="in_t_wp")
             
-    st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # --- PORTFOLIO UPDATE BUTTON ---
+        if st.button("🔄 UPDATE PORTFOLIO", use_container_width=True):
+            st.rerun()
 
     st.markdown("""
     <style>
