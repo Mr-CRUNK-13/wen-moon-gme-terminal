@@ -236,9 +236,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             st.number_input("Execution Price W ($)", format="%.3f", key="in_t_wp")
             
         st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("🔄 UPDATE PORTFOLIO", use_container_width=True):
-            update_portfolio_logic()
-            st.rerun()
+        st.button("🔄 UPDATE PORTFOLIO", use_container_width=True, on_click=update_portfolio_logic)
 
     st.markdown("""
     <style>
