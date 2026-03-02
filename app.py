@@ -252,6 +252,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         font-weight: 900 !important;
         animation: neon-blink 0.8s infinite alternate !important;
         text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00 !important;
+        white-space: pre-line !important;
     }
 
     /* 2. TEXT BOOST +15% (For Configuration & Leaderboard) */
@@ -270,7 +271,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
     col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
     with col_l2:
         # FUSED: No space between 🙌💎 and 🚀🌍
-        if st.button("LAUNCH WEN MOON SYSTEM 🙌💎🚀🌍!", type="primary", use_container_width=True):
+        if st.button("LAUNCH WEN MOON SYSTEM\n🙌💎🚀🌍!", type="primary", use_container_width=True):
             st.session_state.launched = True
             st.rerun()
 
