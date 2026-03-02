@@ -74,7 +74,7 @@ components.html("""
     if (!nav) {
         nav = parent.createElement('div');
         nav.id = 'floating-nav';
-        nav.style = "position:fixed; bottom:40px; right:12px; z-index:99999; display:flex; flex-direction:column; gap:8px; transition: opacity 0.5s; opacity: 1;";
+        nav.style = "position:fixed; bottom:40px; right:12px; z-index:99999; display:flex; flex-direction:column; gap:4px; transition: opacity 0.5s; opacity: 1;";
         
         const btnStyle = "width:32px; height:32px; border-radius:4px; background:#050505; color:#00FF00; border:1px solid #00FF00; font-size:16px; cursor:pointer; box-shadow: 0 0 5px #00FF00; display:flex; align-items:center; justify-content:center;";
 
