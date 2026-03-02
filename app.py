@@ -239,26 +239,38 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
 
     st.markdown("""
     <style>
-    div.stButton > button[kind="primary"] {
-        height: 80px !important;
+    /* 1. PRIMARY BUTTON: WEN MOON (Grown Upward for Symmetry) */
+    button[kind="primary"] {
+        min-height: 110px !important;
         border: 2px solid #00FF00 !important;
-        background-color: rgba(0, 255, 0, 0.1) !important;
-        box-shadow: 0 0 15px #00FF00 inset !important;
+        background-color: rgba(0, 255, 0, 0.05) !important;
+        margin-top: -32px !important; /* Grows upward only */
     }
-    div.stButton > button[kind="primary"] p {
-        font-size: 26px !important;
-        font-weight: 900 !important;
+    button[kind="primary"] p {
         color: #00FF00 !important;
-        text-shadow: 0 0 15px #00FF00, 0 0 30px #00FF00 !important;
-        animation: flash 0.8s infinite alternate !important;
+        font-size: 24px !important;
+        font-weight: 900 !important;
+        animation: neon-blink 0.8s infinite alternate !important;
+        text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00 !important;
     }
-    @keyframes flash { 100% { opacity: 0.3; text-shadow: none; } }
+
+    /* 2. TEXT BOOST +15% (For Configuration & Leaderboard) */
+    button[kind="secondary"] p, .stExpander p {
+        font-size: 18.5px !important; 
+        font-weight: 600 !important;
+    }
+
+    @keyframes neon-blink {
+        0% { opacity: 1; text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
+        100% { opacity: 0.4; text-shadow: none; }
+    }
     </style>
     """, unsafe_allow_html=True)
 
     col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
     with col_l2:
-        if st.button("LAUNCH WEN MOON SYSTEM 🚀🌍!", type="primary", use_container_width=True):
+        # FUSED: No space between 🙌💎 and 🚀🌍
+        if st.button("LAUNCH WEN MOON SYSTEM 🙌💎🚀🌍!", type="primary", use_container_width=True):
             st.session_state.launched = True
             st.rerun()
 
@@ -268,8 +280,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             st.session_state.show_leaderboard = True
             st.rerun()
 
-    st.markdown("<h4 style='text-align: right; margin-top: 15px; font-family: monospace; color: #00FF00; animation: neon-text 1.5s infinite;'>By Mr-CRUNK-13</h4>", unsafe_allow_html=True)
-
+    st.markdown("<h4 style='text-align: right; margin-top: 10px; font-family: monospace; animation: neon-text 1.5s infinite; color: #00FF00;'>By Mr-CRUNK-13</h4>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
 
     # --- YOUR PERSONAL PURCHASES BLOCK ---
