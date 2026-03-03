@@ -245,12 +245,16 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         min-height: 145px !important;
         border: 2px solid #00FF00 !important;
         background-color: rgba(0, 255, 0, 0.05) !important;
-        margin-top: -32px !important; 
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
         align-items: center !important;
     }
+    /* Smart margin: -32px only on mobile portrait, 0px on landscape */
+    @media screen and (max-width: 600px) {
+        button[kind="primary"] { margin-top: -32px !important; }
+    }
+    
     button[kind="primary"] p {
         color: #00FF00 !important;
         font-size: 30px !important; 
