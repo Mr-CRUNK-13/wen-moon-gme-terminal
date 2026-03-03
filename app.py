@@ -767,7 +767,6 @@ else:
         cw_w = st.session_state.get('weekly_w', 0)
         cm_w = st.session_state.get('monthly_w', 0)
         fig_comm = go.Figure()
-        # Emojis retirés : Plotly va générer une seule case couleur parfaite !
         fig_comm.add_trace(go.Bar(name='Shares', x=['WEEKLY', 'MONTHLY'], y=[cw_s, cm_s], marker_color='#00FF00'))
         fig_comm.add_trace(go.Bar(name='Warrants', x=['WEEKLY', 'MONTHLY'], y=[cw_w, cm_w], marker_color='#006400'))
         fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'font': {'color': '#FFD700', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
