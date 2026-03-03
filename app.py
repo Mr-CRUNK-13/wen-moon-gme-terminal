@@ -240,36 +240,52 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
 
     st.markdown("""
     <style>
-    /* 1. PRIMARY BUTTON: WEN MOON (Grown Upward & Downward for Symmetry) */
+    /* 1. PRIMARY BUTTON: WEN MOON (Centered, Bigger Text, Stretched) */
     button[kind="primary"] {
         min-height: 145px !important;
         border: 2px solid #00FF00 !important;
         background-color: rgba(0, 255, 0, 0.05) !important;
         margin-top: -32px !important; 
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
     }
     button[kind="primary"] p {
         color: #00FF00 !important;
-        font-size: 24px !important;
+        font-size: 30px !important; 
         font-weight: 900 !important;
         animation: neon-blink 0.8s infinite alternate !important;
         text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00 !important;
         white-space: pre-line !important;
+        margin: 0 !important;
     }
 
-    /* 2. TEXT BOOST +15% (For Configuration & Leaderboard) */
-    button[kind="secondary"] p, .stExpander p {
-        font-size: 18.5px !important; 
-        font-weight: 600 !important;
-    }
-
-    /* 3. YELLOW NEON FOR LEADERBOARD BUTTON ONLY */
-    div[data-testid="column"]:nth-of-type(2) button[kind="secondary"] {
+    /* 2. YELLOW NEON FOR LEADERBOARD BUTTON */
+    button[kind="secondary"] {
         border: 2px solid #FFD700 !important;
         background-color: rgba(255, 215, 0, 0.05) !important;
+        min-height: 70px !important;
     }
-    div[data-testid="column"]:nth-of-type(2) button[kind="secondary"] p {
+    button[kind="secondary"] p {
         color: #FFD700 !important;
+        font-size: 24px !important;
+        font-weight: 900 !important;
         animation: neon-blink-yellow 0.8s infinite alternate !important;
+    }
+
+    /* 3. PROTECT THE PORTFOLIO BUTTON (Keep it normal inside Expander) */
+    div[data-testid="stExpander"] button[kind="secondary"] {
+        border: 1px solid rgba(250, 250, 250, 0.2) !important;
+        background-color: #0e1621 !important;
+        min-height: 40px !important;
+    }
+    div[data-testid="stExpander"] button[kind="secondary"] p {
+        color: white !important;
+        font-size: 16px !important;
+        font-weight: normal !important;
+        animation: none !important;
+        text-shadow: none !important;
     }
 
     @keyframes neon-blink {
@@ -291,7 +307,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             st.session_state.launched = True
             st.rerun()
 
-        st.markdown("<br>", unsafe_allow_html=True)
+        # GAP REMOVED HERE
 
         if st.button("🏆 LEADERBOARD", use_container_width=True):
             st.session_state.show_leaderboard = True
