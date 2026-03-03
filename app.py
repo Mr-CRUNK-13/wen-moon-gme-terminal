@@ -923,13 +923,19 @@ else:
                     .beat { color: #00FF00 !important; font-weight: bold; }
                     .miss { color: #FF3333 !important; }
                     .fy-row td { background: #0b2239 !important; border-top: 2px solid #00FF00; font-size: 13px; }
+                    /* --- MOBILE RESPONSIVE RULES --- */
+                    @media screen and (max-width: 600px) {
+                        .sep { display: none; }
+                        .eps-val { display: block; margin-top: 5px; }
+                    }
                 </style>
                 <div class="est-g">
-                    <div class="eb"><h4>Q4 2025 (Next)</h4><p>Rev: $1.47B | EPS: $0.37</p></div>
-                    <div class="eb"><h4>FY 2026 (Proj)</h4><p>Rev: $4.16B | EPS: $0.99</p></div>
+                    <div class="eb"><h4>Q4 2025 (Next)</h4><p>Rev: $1.47B<span class="sep"> | </span><span class="eps-val">EPS: $0.37</span></p></div>
+                    <div class="eb"><h4>FY 2026 (Proj)</h4><p>Rev: $4.16B<span class="sep"> | </span><span class="eps-val">EPS: $0.99</span></p></div>
                 </div>
                 <h3 style='color:#00FF00; text-align:center; margin-top:20px;'>5-Year Consensus History</h3>
                 """
+
                 
                 # Verified Real History Data with Full Years (FY)
                 hist_data = [
