@@ -137,6 +137,17 @@ st.markdown("""
     .ldb-t th { background: #001f3f; color: #00FF00; padding: 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }
     .ldb-t td { background: #0f172a; padding: 12px; border-bottom: 1px solid #0259c7; white-space: nowrap; }
     .podium td { font-size: 18px !important; color: #00FF00 !important; font-weight: bold; }
+
+    /* TABS NEON GREEN & SIZE BOOST */
+    .stTabs [data-baseweb="tab-highlight"] {
+        background-color: #00FF00 !important;
+    }
+    .stTabs [aria-selected="true"] p {
+        color: #00FF00 !important;
+    }
+    .stTabs [data-baseweb="tab"] p {
+        font-size: 1.5rem !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
