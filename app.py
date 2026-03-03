@@ -240,12 +240,12 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
 
     st.markdown("""
     <style>
-    /* 1. PRIMARY BUTTON: WEN MOON (Grown Upward for Symmetry) */
+    /* 1. PRIMARY BUTTON: WEN MOON (Grown Upward & Downward for Symmetry) */
     button[kind="primary"] {
-        min-height: 110px !important;
+        min-height: 145px !important;
         border: 2px solid #00FF00 !important;
         background-color: rgba(0, 255, 0, 0.05) !important;
-        margin-top: -32px !important; /* Grows upward only */
+        margin-top: -32px !important; 
     }
     button[kind="primary"] p {
         color: #00FF00 !important;
@@ -262,8 +262,23 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         font-weight: 600 !important;
     }
 
+    /* 3. YELLOW NEON FOR LEADERBOARD BUTTON ONLY */
+    div[data-testid="column"]:nth-of-type(2) button[kind="secondary"] {
+        border: 2px solid #FFD700 !important;
+        background-color: rgba(255, 215, 0, 0.05) !important;
+    }
+    div[data-testid="column"]:nth-of-type(2) button[kind="secondary"] p {
+        color: #FFD700 !important;
+        animation: neon-blink-yellow 0.8s infinite alternate !important;
+    }
+
     @keyframes neon-blink {
         0% { opacity: 1; text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
+        100% { opacity: 0.4; text-shadow: none; }
+    }
+    
+    @keyframes neon-blink-yellow {
+        0% { opacity: 1; text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; }
         100% { opacity: 0.4; text-shadow: none; }
     }
     </style>
