@@ -138,15 +138,22 @@ st.markdown("""
     .ldb-t td { background: #0f172a; padding: 12px; border-bottom: 1px solid #0259c7; white-space: nowrap; }
     .podium td { font-size: 18px !important; color: #00FF00 !important; font-weight: bold; }
 
-    /* TABS NEON GREEN & SIZE BOOST */
+    /* 4. TABS: NEON GREEN & CUSTOM SIZES */
     .stTabs [data-baseweb="tab-highlight"] {
         background-color: #00FF00 !important;
     }
     .stTabs [aria-selected="true"] p {
         color: #00FF00 !important;
     }
+    
+    /* Main Tabs Label Size */
     .stTabs [data-baseweb="tab"] p {
-        font-size: 1.5rem !important;
+        font-size: 22px !important; /* <--- MODIFY MAIN SIZE HERE */
+    }
+    
+    /* Sub-Tabs Label Size (20% smaller than main) */
+    .stTabs .stTabs [data-baseweb="tab"] p {
+        font-size: 18px !important; /* <--- MODIFY SUB SIZE HERE */
     }
 </style>
 """, unsafe_allow_html=True)
