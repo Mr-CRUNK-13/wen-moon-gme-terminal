@@ -410,7 +410,7 @@ elif st.session_state.get('show_leaderboard', False):
 
 # --- 3. TERMINAL & LIVE ENGINE ---
 else:
-    @st.cache_data(ttl=30)
+    @st.cache_data(ttl=15)
     def fetch_terminal_data():
         try:
             ts = ["GME", "GME-WT"]
@@ -620,14 +620,14 @@ else:
         c_t_c = (c_s * c_gp_val) + (c_w * c_pw_val)
 
         with ph1.container():
-            @st.fragment(run_every="30s")
+            @st.fragment(run_every="15s")
             def live_gme_screen():
                 p_n, _, pr_n, _, v_n, _, ch_n, _ = fetch_terminal_data()
                 draw_live(p_n, pr_n, ch_n, v_n)
             live_gme_screen()
 
         with ph2.container():
-            @st.fragment(run_every="30s")
+            @st.fragment(run_every="15s")
             def live_wt_screen():
                 _, p_w, _, pr_w, _, v_w, _, ch_w = fetch_terminal_data()
                 draw_live(p_w, pr_w, ch_w, v_w, sym="GME-WT")
