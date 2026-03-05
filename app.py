@@ -432,7 +432,7 @@ else:
         """
         st.markdown(loader_html, unsafe_allow_html=True)
         
-    st.markdown("<style>div[data-testid='stExpander'] { display: none !important; }</style>", unsafe_allow_html=True)
+        st.markdown("<style>div[data-testid='stExpander'], div[data-testid='stButton'] { display: none !important; }</style>", unsafe_allow_html=True)
 
     @st.cache_data(ttl=15)
     def fetch_terminal_data():
