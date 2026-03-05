@@ -540,8 +540,13 @@ else:
     # --- TAB 16 : 📺 GME YouTube ---
     with tab16:
         st.markdown("<h2 style='text-align:center; color:#FF0000; font-family:monospace; animation: neon-flash-red 1.5s infinite;'>📺 GME YOUTUBE HUB</h2>", unsafe_allow_html=True)
+        
+        components.html("""<iframe width="100%" height="220" src="https://www.youtube.com/embed/videoseries?list=PL8E5BqjEa7V0KYhYAq18oYJ6GVMTFKZyR" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border-radius:10px; border:2px solid #FF0000; box-shadow: 0 0 15px rgba(255,0,0,0.5);"></iframe>""", height=230)
+        st.markdown("""<div style='display:flex; justify-content:center; margin-bottom:20px;'><div style='background:#0f172a; padding:15px; border-radius:10px; border:1px solid #FF0000; width:100%; max-width:300px; text-align:center; box-shadow: 0 0 10px rgba(255,0,0,0.2);'><h4 style='color:#FF0000; margin-top:0;'>🎬 ROARING KITTY - GME MIX</h4><div style='display:flex; gap:10px; justify-content:center; margin-top:15px;'><a href='https://youtube.com/playlist?list=PL8E5BqjEa7V0KYhYAq18oYJ6GVMTFKZyR' target='_blank' style='flex:1; padding:10px; background:rgba(255,0,0,0.1); border:1px solid #FF0000; color:#FF0000; text-decoration:none; font-weight:bold; border-radius:5px;'>🔴 YT VIDEO</a><a href='https://music.youtube.com/playlist?list=PL8E5BqjEa7V0KYhYAq18oYJ6GVMTFKZyR' target='_blank' style='flex:1; padding:10px; background:rgba(176,38,255,0.1); border:1px solid #b026ff; color:#b026ff; text-decoration:none; font-weight:bold; border-radius:5px;'>🎵 YT MUSIC</a></div></div></div>""", unsafe_allow_html=True)
+
         def yt_btn(url, name, icon):
             return f"<div style='text-align:center; padding:30px; background:#0f172a; border:2px solid #FF0000; border-radius:10px; margin-bottom:15px; box-shadow: 0 0 15px rgba(255,0,0,0.3);'><h3 style='color:white; margin-top:0;'>{icon} {name}</h3><a href='{url}' target='_blank' style='display:inline-block; padding:15px 30px; background:#FF0000; color:white; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN ON YOUTUBE</a></div>"
+        
         c16_1, c16_2 = st.columns(2)
         with c16_1: st.markdown(yt_btn("https://youtube.com/@roaringkitty", "Roaring Kitty", "🐱"), unsafe_allow_html=True)
         with c16_2: st.markdown(yt_btn("https://youtube.com/@gamestop", "GameStop", "🎮"), unsafe_allow_html=True)
@@ -549,11 +554,10 @@ else:
     # --- TAB 17 : 💎🙌13 Music ---
     with tab17:
         st.markdown("<h2 style='text-align:center; color:#b026ff; font-family:monospace;'>🎧 PLAYLISTS</h2>", unsafe_allow_html=True)
-        components.html("""<iframe width="100%" height="220" src="https://www.youtube.com/embed/videoseries?list=PL8E5BqjEa7V0KYhYAq18oYJ6GVMTFKZyR" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border-radius:10px; border:2px solid #b026ff; box-shadow: 0 0 15px #b026ff;"></iframe>""", height=230)
-        st.markdown("<h3 style='text-align:center; color:white; margin-top:20px;'>💿 YOUR PLAYLISTS</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align:center; color:white; margin-top:10px; font-size:45px;'>💿</h3>", unsafe_allow_html=True)
         
         playlists = [
-            "PL8E5BqjEa7V0KYhYAq18oYJ6GVMTFKZyR", "PL8E5BqjEa7V15KI2Rwf1tRYSd9OzfMktN", "PL8E5BqjEa7V0b-FzghpQ3XdTraUm2tgH4",
+            "PL8E5BqjEa7V15KI2Rwf1tRYSd9OzfMktN", "PL8E5BqjEa7V0b-FzghpQ3XdTraUm2tgH4",
             "PL8E5BqjEa7V3xeM98N-Fngd98SK9dz7Kn", "PL8E5BqjEa7V0WnBKEsfI6ieNCqHuOKUyU", "PL8E5BqjEa7V2e19qtG5ukR1vFSYw70ZNi",
             "PL8E5BqjEa7V1IoqgJEqDQorqhKIWPFuBo", "PL8E5BqjEa7V3q0PujDYVypa8k41jmXeG9", "PL8E5BqjEa7V28qu0RKmspB2J0Ka8TOb7y",
             "PL8E5BqjEa7V3q0PujDYVypa8k41jmXeG9", "PL8E5BqjEa7V0GKewD_-KB0jgycH3NI48N", "PL8E5BqjEa7V1dPXgZvGsOvKA4pTEBuT1M",
@@ -569,7 +573,7 @@ else:
     # --- TAB 18 : 💎🙌 ---
     with tab18:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace; animation: neon-text 1.5s infinite;'>💎🙌</h2>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align:center; color:white; font-size:18px;'>Connect with Mr-CRUNK-13 across the galaxy.</p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align:center; color:white; font-size:18px; font-weight:bold;'>Mr-CRUNK-13 Accounts</p>", unsafe_allow_html=True)
         
         def social_btn(url, name, color, icon, is_discord=False):
             link = f"href='{url}' target='_blank'" if not is_discord else "href='#' onclick='return false;'"
