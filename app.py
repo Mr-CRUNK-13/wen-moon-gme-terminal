@@ -410,10 +410,33 @@ elif st.session_state.get('show_leaderboard', False):
 
 # --- 3. TERMINAL & LIVE ENGINE ---
 else:
+    if "sys_load" not in st.session_state:
+        st.session_state.sys_load = True
+        
+        wen_b64 = get_b64('Screenshot_20260216_163106_Discord.jpg')
+        
+        loader_html = f"""
+        <style>
+            @keyframes fadeLoader {{ 80% {{opacity: 1;}} 100% {{opacity: 0; visibility: hidden; pointer-events: none;}} }} 
+            @keyframes nuclear-neon-giant {{ 0%, 100% {{ filter: drop-shadow(0 0 10px #00FF00); transform: translateY(0px) scale(1); }} 50% {{ filter: drop-shadow(0 0 60px #00FF00); transform: translateY(-20px) scale(1.05); }} }}
+            @keyframes blnk-neon {{ 0%, 100% {{ opacity: 1; text-shadow: 0 0 20px #00FF00, 0 0 40px #00FF00; }} 50% {{ opacity: 0.2; text-shadow: none; }} }}
+            .t-load {{ position: fixed; top:0; left:0; width: 100vw; height: 100vh; background: #050505; z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center; animation: fadeLoader 2.5s forwards; }}
+        </style>
+        <div class='t-load'>
+            <div style='display: flex; justify-content: center; align-items: center; gap: 30px; margin-bottom: 40px; animation: nuclear-neon-giant 1.5s infinite;'>
+                <img src='data:image/jpeg;base64,{wen_b64}' style='height: 180px; border-radius: 20px;'>
+                <div style='font-size: 180px;'>🚀</div>
+            </div>
+            <h1 style='color:#00FF00; font-family:monospace; font-size: 35px; animation: blnk-neon 1s infinite; text-align:center; padding: 0 20px;'>INITIALIZING WEN MOON SYSTEM...</h1>
+        </div>
+        """
+        st.markdown(loader_html, unsafe_allow_html=True)
+        
     st.markdown("<style>div[data-testid='stExpander'] { display: none !important; }</style>", unsafe_allow_html=True)
-    
+
     @st.cache_data(ttl=15)
     def fetch_terminal_data():
+
         try:
             ts = ["GME", "GME-WT"]
             data = yf.download(ts, period="1d", interval="2m", prepost=True, progress=False)['Close']
