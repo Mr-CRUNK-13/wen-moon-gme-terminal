@@ -548,7 +548,7 @@ else:
 
     # --- TAB 17 : 💎🙌13 Music ---
     with tab17:
-        st.markdown("<h2 style='text-align:center; color:#b026ff; font-family:monospace;'>🎧 APE RADIO</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align:center; color:#b026ff; font-family:monospace;'>🎧 PLAYLISTS</h2>", unsafe_allow_html=True)
         components.html("""<iframe width="100%" height="220" src="https://www.youtube.com/embed/videoseries?list=PL8E5BqjEa7V0KYhYAq18oYJ6GVMTFKZyR" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border-radius:10px; border:2px solid #b026ff; box-shadow: 0 0 15px #b026ff;"></iframe>""", height=230)
         st.markdown("<h3 style='text-align:center; color:white; margin-top:20px;'>💿 YOUR PLAYLISTS</h3>", unsafe_allow_html=True)
         
@@ -566,9 +566,9 @@ else:
         grid_html += "</div>"
         st.markdown(grid_html, unsafe_allow_html=True)
 
-    # --- TAB 18 : 💎🙌 By Mr-CRUNK-13 ---
+    # --- TAB 18 : 💎🙌 ---
     with tab18:
-        st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace; animation: neon-text 1.5s infinite;'>💎🙌 QG DU CAPITAINE</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace; animation: neon-text 1.5s infinite;'>💎🙌</h2>", unsafe_allow_html=True)
         st.markdown("<p style='text-align:center; color:white; font-size:18px;'>Connect with Mr-CRUNK-13 across the galaxy.</p>", unsafe_allow_html=True)
         
         def social_btn(url, name, color, icon, is_discord=False):
