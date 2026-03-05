@@ -410,6 +410,8 @@ elif st.session_state.get('show_leaderboard', False):
 
 # --- 3. TERMINAL & LIVE ENGINE ---
 else:
+    st.markdown("<style>div[data-testid='stExpander'] { display: none !important; }</style>", unsafe_allow_html=True)
+    
     @st.cache_data(ttl=15)
     def fetch_terminal_data():
         try:
