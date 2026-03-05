@@ -553,8 +553,7 @@ else:
 
     # --- TAB 17 : 💎🙌13 Music ---
     with tab17:
-        st.markdown("<h2 style='text-align:center; color:#b026ff; font-family:monospace;'>🎧 PLAYLISTS</h2>", unsafe_allow_html=True)
-        st.markdown("<h3 style='text-align:center; color:white; margin-top:10px; font-size:45px;'>💿</h3>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align:center; color:#b026ff; font-family:monospace;'>🎧 PLAYLISTS 💿</h2>", unsafe_allow_html=True)
         
         playlists = [
             "PL8E5BqjEa7V15KI2Rwf1tRYSd9OzfMktN", "PL8E5BqjEa7V0b-FzghpQ3XdTraUm2tgH4",
