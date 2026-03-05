@@ -586,7 +586,7 @@ else:
             st.markdown(social_btn("https://www.reddit.com/u/Mr-CRUNK-13/s/GUhcBfd4aq", "Reddit", "#FF4500", "🟠"), unsafe_allow_html=True)
         with c18_2:
             st.markdown(social_btn("https://youtube.com/@mr-crunk-13-741", "YouTube Music", "#FF0000", "🎧"), unsafe_allow_html=True)
-            st.markdown(social_btn("https://x.com/MrCRUNK13", "𝕏 (Twitter)", "#1DA1F2", "🐦"), unsafe_allow_html=True)
+            st.markdown(social_btn("https://x.com/MrCRUNK13", "𝕏", "#1DA1F2", "🐦"), unsafe_allow_html=True)
             
         st.markdown(social_btn("mr_crunk_13", "Discord ID", "#5865F2", "👾", True), unsafe_allow_html=True)
 
