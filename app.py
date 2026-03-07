@@ -228,12 +228,15 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         st.session_state.ape_name = st.text_input("Nickname (Optional)", value=st.session_state.ape_name)
         st.markdown("### 🏦 CURRENT HOLDINGS")
         col1, col2 = st.columns(2)
+        col1, col2 = st.columns(2)
         with col1:
             st.number_input("Current Shares", min_value=0, key="ui_osq")
             st.number_input("Avg Cost ($)", format="%.3f", key="ui_osp")
         with col2:
             st.number_input("Current Warrants", min_value=0, key="ui_owq")
             st.number_input("Warrant Avg ($)", format="%.3f", key="ui_owp")
+            # DUMMY BUTTON TO FORCE REFRESH/SYNC
+            st.button("SAVE CURRENT HOLDINGS", use_container_width=True)
             
         # Immediately copy manual UI edits to shielded memory
         st.session_state.osq = st.session_state.ui_osq
