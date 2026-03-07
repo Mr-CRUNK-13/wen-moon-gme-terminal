@@ -227,34 +227,35 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
     with st.expander("⚙️ PORTFOLIO CONFIGURATION"):
         st.session_state.ape_name = st.text_input("Nickname (Optional)", value=st.session_state.ape_name)
         st.markdown("### 🏦 CURRENT HOLDINGS")
-        col1, col2 = st.columns(2)
-        with col1:
-            st.number_input("Current Shares", min_value=0, key="ui_osq")
-            st.number_input("Avg Cost ($)", format="%.3f", key="ui_osp")
-        with col2:
-            st.number_input("Current Warrants", min_value=0, key="ui_owq")
-            st.number_input("Warrant Avg ($)", format="%.3f", key="ui_owp")
-            
-        # Immediately copy manual UI edits to shielded memory
-        st.session_state.osq = st.session_state.ui_osq
-        st.session_state.osp = st.session_state.ui_osp
-        st.session_state.owq = st.session_state.ui_owq
-        st.session_state.owp = st.session_state.ui_owp
-            
-        st.markdown("---")
-        st.markdown("### 🛒 NEW TRANSACTION")
-        st.selectbox("TRANSACTION TYPE", ["BUY", "SELL"], key="in_tx_type")
-        
-        col3, col4 = st.columns(2)
-        with col3: 
-            st.number_input("Shares Qty", min_value=0, key="in_t_sq")
-            st.number_input("Execution Price ($)", format="%.3f", key="in_t_sp")
-        with col4: 
-            st.number_input("Warrants Qty", min_value=0, key="in_t_wq")
-            st.number_input("Execution Price W ($)", format="%.3f", key="in_t_wp")
-            
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.button("🔄 UPDATE PORTFOLIO", use_container_width=True, on_click=update_portfolio_logic)
+        with st.form("portfolio_master_form"):
+            col1, col2 = st.columns(2)
+            with col1:
+                st.number_input("Current Shares", min_value=0, key="ui_osq")
+                st.number_input("Avg Cost ($)", format="%.3f", key="ui_osp")
+            with col2:
+                st.number_input("Current Warrants", min_value=0, key="ui_owq")
+                st.number_input("Warrant Avg ($)", format="%.3f", key="ui_owp")
+                
+            # Immediately copy manual UI edits to shielded memory
+            st.session_state.osq = st.session_state.ui_osq
+            st.session_state.osp = st.session_state.ui_osp
+            st.session_state.owq = st.session_state.ui_owq
+            st.session_state.owp = st.session_state.ui_owp
+
+            st.markdown("---")
+            st.markdown("### 🛒 NEW TRANSACTION")
+            st.selectbox("TRANSACTION TYPE", ["BUY", "SELL"], key="in_tx_type")
+
+            col3, col4 = st.columns(2)
+            with col3:
+                st.number_input("Shares Qty", min_value=0, key="in_t_sq")
+                st.number_input("Execution Price ($)", format="%.3f", key="in_t_sp")
+            with col4:
+                st.number_input("Warrants Qty", min_value=0, key="in_t_wq")
+                st.number_input("Execution Price W ($)", format="%.3f", key="in_t_wp")
+
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.form_submit_button("💾 UPDATE PORTFOLIO", use_container_width=True, on_click=update_portfolio_logic)
 
     st.markdown("""
     <style>
