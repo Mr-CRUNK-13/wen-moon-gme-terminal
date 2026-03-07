@@ -327,28 +327,17 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
 
     col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
     with col_l2:
-        # 👻 GHOST ASSASSIN PLACEHOLDERS
-        ph_btn_launch = st.empty()
-        ph_btn_leader = st.empty()
-        ph_bottom_content = st.empty()
-
         # FUSED: No space between 🙌💎 and 🚀🌍
-        if ph_btn_launch.button("LAUNCH WEN MOON SYSTEM\n🙌💎🚀🌍!", type="primary", use_container_width=True):
+        if st.button("LAUNCH WEN MOON SYSTEM\n🙌💎🚀🌍!", type="primary", use_container_width=True):
             st.session_state.launched = True
-            ph_btn_launch.empty()
-            ph_btn_leader.empty()
-            ph_bottom_content.empty()
             st.rerun()
 
-        if ph_btn_leader.button("🏆 LEADERBOARD", use_container_width=True):
+        if st.button("🏆 LEADERBOARD", use_container_width=True):
             st.session_state.show_leaderboard = True
-            ph_btn_launch.empty()
-            ph_btn_leader.empty()
-            ph_bottom_content.empty()
             st.rerun()
 
         # --- SECURE CONTAINER TO PREVENT DOM LEAK ---
-        with ph_bottom_content.container():
+        with st.container():
 
             st.markdown("<h4 style='text-align: right; margin-top: 10px; font-family: monospace; animation: neon-text 1.5s infinite; color: #00FF00;'>By Mr-CRUNK-13</h4>", unsafe_allow_html=True)
             st.markdown("<br>", unsafe_allow_html=True)
