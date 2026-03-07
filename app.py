@@ -235,12 +235,6 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             with col2:
                 st.number_input("Current Warrants", min_value=0, key="ui_owq")
                 st.number_input("Warrant Avg ($)", format="%.3f", key="ui_owp")
-                
-            # Immediately copy manual UI edits to shielded memory
-            st.session_state.osq = st.session_state.ui_osq
-            st.session_state.osp = st.session_state.ui_osp
-            st.session_state.owq = st.session_state.ui_owq
-            st.session_state.owp = st.session_state.ui_owp
 
             st.markdown("---")
             st.markdown("### 🛒 NEW TRANSACTION")
@@ -255,7 +249,16 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 st.number_input("Execution Price W ($)", format="%.3f", key="in_t_wp")
 
             st.markdown("<br>", unsafe_allow_html=True)
-            st.form_submit_button("💾 UPDATE PORTFOLIO", use_container_width=True, on_click=update_portfolio_logic)
+            submit_val = st.form_submit_button("💾 UPDATE PORTFOLIO", use_container_width=True)
+
+        if submit_val:
+            # COPY TO MEMORY ONLY AFTER SUBMIT
+            st.session_state.osq = st.session_state.ui_osq
+            st.session_state.osp = st.session_state.ui_osp
+            st.session_state.owq = st.session_state.ui_owq
+            st.session_state.owp = st.session_state.ui_owp
+            update_portfolio_logic()
+            st.rerun()
 
     st.markdown("""
     <style>
