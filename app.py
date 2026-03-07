@@ -439,7 +439,14 @@ else:
         """
         st.markdown(loader_html, unsafe_allow_html=True)
         
-    st.markdown("<style>div[data-testid='stExpander'] { display: none !important; }</style>", unsafe_allow_html=True)
+    # 👻 SUPREME CSS CAMOUFLAGE
+    st.markdown("""
+    <style>
+        div[data-testid='stExpander'] { display: none !important; }
+        button[kind="primary"], button[kind="secondary"] { display: none !important; }
+        div[data-testid="stTabs"] ~ div { display: none !important; }
+    </style>
+    """, unsafe_allow_html=True)
 
     @st.cache_data(ttl=15)
     def fetch_terminal_data():
