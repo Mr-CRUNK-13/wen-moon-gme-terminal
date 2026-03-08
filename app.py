@@ -460,24 +460,31 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             st.plotly_chart(fig_pers, use_container_width=True, key="home_pers_chart_safe")
             # -------------------------------------
 
-        # --- PERSONAL DRS VAULT UI ---
-        html_drs = f"""
-        <div style="background-color: #0f172a; padding: 20px; border-radius: 10px; border: 2px solid #9b51e0; box-shadow: 0 0 15px rgba(155, 81, 224, 0.3); margin-bottom: 20px;">
-            <h2 style="text-align: center; color: #9b51e0; margin-bottom: 20px; text-shadow: 0 0 10px #9b51e0; font-family: monospace;">🟣 YOUR DRS VAULT</h2>
-            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center;">
+        # --- PHASE 2: DRS VAULT DISPLAY ---
+        st.markdown(f"""
+        <div style="border: 2px solid #9b51e0; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05); margin-bottom: 20px;">
+            <h2 style="text-align: center; color: #9b51e0; text-shadow: 0 0 10px #9b51e0; font-family: monospace; margin-top: 0;">🟣 YOUR DRS VAULT</h2>
+            <div style="display: flex; justify-content: space-around; text-align: center;">
                 <div style="flex: 1; min-width: 120px;">
-                    <p style="color: white; font-weight: bold; margin-bottom: 5px; font-size: 14px;">🟪 SECURED SHARES</p>
-                    <p style="color: #9b51e0; font-size: 36px; font-weight: bold; margin: 0; text-shadow: 0 0 10px rgba(155, 81, 224, 0.5);">{st.session_state.drs_osq:,}</p>
+                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px;">
+                        <span style="display:inline-block; width:16px; height:16px; background-color:#9b51e0; border-radius:3px; margin-right:8px;"></span>
+                        <span style="color: white; font-weight: bold; font-size: 14px;">SECURED SHARES</span>
+                    </div>
+                    <h1 style="color: #9b51e0; font-family: monospace; margin-top: 0; text-shadow: 0 0 10px rgba(155, 81, 224, 0.5);">{st.session_state.drs_osq:,}</h1>
                 </div>
                 <div style="flex: 1; min-width: 120px;">
-                    <p style="color: white; font-weight: bold; margin-bottom: 5px; font-size: 14px;">🟪 SECURED WARRANTS</p>
-                    <p style="color: #b026ff; font-size: 36px; font-weight: bold; margin: 0; text-shadow: 0 0 10px rgba(176, 38, 255, 0.5);">{st.session_state.drs_owq:,}</p>
+                    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px;">
+                        <span style="display:inline-block; width:16px; height:16px; background-color:#b026ff; border-radius:3px; margin-right:8px;"></span>
+                        <span style="color: white; font-weight: bold; font-size: 14px;">SECURED WARRANTS</span>
+                    </div>
+                    <h1 style="color: #b026ff; font-family: monospace; margin-top: 0; text-shadow: 0 0 10px rgba(176, 38, 255, 0.5);">{st.session_state.drs_owq:,}</h1>
                 </div>
             </div>
-            <p style="text-align: center; color: #b026ff; font-style: italic; margin-top: 20px; font-size: 14px;">"Everything else is just IOUs... These are YOURS." 🟣</p>
+            <p style="color: #b026ff; font-style: italic; font-size: 0.8em; text-align: center; margin-bottom: 0;">
+                "Everything else is just IOUs... These are YOURS." 🟣
+            </p>
         </div>
-        """
-        st.markdown(html_drs, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
         # --- DRS PROGRESS BAR ---
         drs_percent = (st.session_state.drs_osq / st.session_state.osq * 100) if st.session_state.osq > 0 else 0
@@ -494,28 +501,28 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         p_d_m_w = st.session_state.get('monthly_drs_w', 0)
 
         st.markdown(f"""
-        <div style='background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 1px solid #9b51e0; margin-top: 20px;'>
-            <h3 style='color: #9b51e0; text-align: center; font-family: monospace; text-shadow: 0 0 10px #9b51e0;'>🟣 RECENT SECURED DRS</h3>
-            <div style='display: flex; justify-content: space-around; text-align: center; margin-top: 15px;'>
-                <div style='background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; width: 45%;'>
-                    <p style='color: #9b51e0; font-weight: bold; margin-bottom: 5px;'>WEEKLY</p>
-                    <p style='color: white; margin: 0;'>Shares: <strong>+{p_d_w_s}</strong></p>
-                    <p style='color: white; margin: 0;'>Warrants: <strong>+{p_d_w_w}</strong></p>
+        <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 1px solid #9b51e0; margin-top: 20px;">
+            <h3 style="color: #9b51e0; text-align: center; font-family: monospace; text-shadow: 0 0 5px #9b51e0;">🟣 RECENT SECURED DRS</h3>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
+                <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; flex: 1; min-width: 120px; text-align: center;">
+                    <p style="color: #9b51e0; font-weight: bold; margin: 0 0 10px 0;">WEEKLY</p>
+                    <p style="color: white; margin: 0;">Shares: <strong style="color: #9b51e0;">+{p_d_w_s:,}</strong></p>
+                    <p style="color: white; margin: 0;">Warrants: <strong style="color: #b026ff;">+{p_d_w_w:,}</strong></p>
                 </div>
-                <div style='background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; width: 45%;'>
-                    <p style='color: #9b51e0; font-weight: bold; margin-bottom: 5px;'>MONTHLY</p>
-                    <p style='color: white; margin: 0;'>Shares: <strong>+{p_d_m_s}</strong></p>
-                    <p style='color: white; margin: 0;'>Warrants: <strong>+{p_d_m_w}</strong></p>
+                <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #b026ff; flex: 1; min-width: 120px; text-align: center;">
+                    <p style="color: #b026ff; font-weight: bold; margin: 0 0 10px 0;">MONTHLY</p>
+                    <p style="color: white; margin: 0;">Shares: <strong style="color: #9b51e0;">+{p_d_m_s:,}</strong></p>
+                    <p style="color: white; margin: 0;">Warrants: <strong style="color: #b026ff;">+{p_d_m_w:,}</strong></p>
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
         fig_drs_p = go.Figure()
-        fig_drs_p.add_trace(go.Bar(name='Shares 🟣', x=['WEEKLY', 'MONTHLY'], y=[p_d_w_s, p_d_m_s], marker_color='#9b51e0'))
-        fig_drs_p.add_trace(go.Bar(name='Warrants 🟪', x=['WEEKLY', 'MONTHLY'], y=[p_d_w_w, p_d_m_w], marker_color='#c48af8'))
-        fig_drs_p.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', margin=dict(l=20, r=20, t=20, b=20), height=250)
-        st.plotly_chart(fig_drs_p, use_container_width=True, key="drs_pers_chart_safe")
+        fig_drs_p.add_trace(go.Bar(name='Shares', x=['WEEKLY', 'MONTHLY'], y=[p_d_w_s, p_d_m_s], marker_color='#9b51e0'))
+        fig_drs_p.add_trace(go.Bar(name='Warrants', x=['WEEKLY', 'MONTHLY'], y=[p_d_w_w, p_d_m_w], marker_color='#b026ff'))
+        fig_drs_p.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', margin=dict(l=20, r=20, t=40, b=20), height=300)
+        st.plotly_chart(fig_drs_p, use_container_width=True)
 
 # --- 2.5 LEADERBOARD SCREEN ---
 elif st.session_state.get('show_leaderboard', False):
