@@ -448,6 +448,35 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             st.plotly_chart(fig_pers, use_container_width=True, key="home_pers_chart_safe")
             # -------------------------------------
 
+        # --- PHASE 2: DRS VAULT DISPLAY ---
+        st.markdown("""
+            <div style='border: 2px solid #9b51e0; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05); box-shadow: 0 0 15px #9b51e0;'>
+                <h2 style='color: #9b51e0; text-shadow: 0 0 10px #9b51e0; font-family: monospace; margin-top: 0;'>🟣 YOUR DRS VAULT</h2>
+                <div style='display: flex; justify-content: space-around; text-align: center;'>
+                    <div>
+                        <p style='color: #cccccc; margin-bottom: 0;'>SECURED SHARES</p>
+                        <h1 style='color: #9b51e0; font-family: monospace; margin-top: 0;'>{:,}</h1>
+                    </div>
+                    <div>
+                        <p style='color: #cccccc; margin-bottom: 0;'>SECURED WARRANTS</p>
+                        <h1 style='color: #9b51e0; font-family: monospace; margin-top: 0;'>{:,}</h1>
+                    </div>
+                </div>
+                <p style='color: #9b51e0; font-style: italic; font-size: 0.8em; text-align: center; margin-bottom: 0;'>
+                    "Everything else is just a IOUs... These are YOURS." 🟣
+                </p>
+            </div>
+            <br>
+        """.format(st.session_state.drs_osq, st.session_state.drs_owq), unsafe_allow_html=True)
+
+        # --- DRS PROGRESS BAR ---
+        drs_percent = (st.session_state.drs_osq / st.session_state.osq * 100) if st.session_state.osq > 0 else 0
+        st.markdown(f"""
+            <div style='width: 100%; background-color: #222; border-radius: 10px; height: 10px;'>
+                <div style='width: {drs_percent}%; background-color: #9b51e0; height: 10px; border-radius: 10px; box-shadow: 0 0 10px #9b51e0;'></div>
+            </div>
+            <p style='color: #9b51e0; font-size: 0.7em; text-align: right;'>{drs_percent:.1f}% OF SHARES LOCKED</p>
+        """, unsafe_allow_html=True)
 
 # --- 2.5 LEADERBOARD SCREEN ---
 elif st.session_state.get('show_leaderboard', False):
