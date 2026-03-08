@@ -1099,12 +1099,12 @@ else:
                     <h4 style="color: #FFD700; margin-top: 0; font-size: 24px; font-weight: bold; text-align: center;">🔥 WEN MOON RECENT PURCHASES</h4>
                     <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
                         <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #00FF00; flex: 1; min-width: 120px; text-align: center;">
-                            <h5 style="color: #00FF00; font-size: 18px; margin: 0 0 10px 0; text-align: center;">WEEKLY</h5>
+                            <p style="color: #00FF00; font-size: 18px; font-weight: bold; margin: 0 0 10px 0; text-align: center;">WEEKLY</p>
                             <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{w_s:,.0f}</strong></p>
                             <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{w_w:,.0f}</strong></p>
                         </div>
                         <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #006400; flex: 1; min-width: 120px; text-align: center;">
-                            <h5 style="color: #006400; font-size: 18px; margin: 0 0 10px 0; text-align: center;">MONTHLY</h5>
+                            <p style="color: #006400; font-size: 18px; font-weight: bold; margin: 0 0 10px 0; text-align: center;">MONTHLY</p>
                             <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{m_s:,.0f}</strong></p>
                             <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{m_w:,.0f}</strong></p>
                         </div>
