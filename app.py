@@ -506,28 +506,28 @@ elif st.session_state.get('show_leaderboard', False):
     drs_tv = (st.session_state.drs_osq * live_p_n) + (st.session_state.drs_owq * live_p_w)
     real_db = [{"name": u_name, "tv": u_tv, "sq": u_sq, "wq": u_wq, "spru": st.session_state.osp, "wpru": st.session_state.owp, "drs_tv": drs_tv, "drs_sq": st.session_state.drs_osq, "drs_wq": st.session_state.drs_owq}]
 
-        for idx, t in enumerate(lb_tabs):
-            with t:
-                if idx == 3:
-                    # --- 🟣 DRS RANKING TABLE ---
-                    html = "<div class='table-wrapper'><table class='ldb-t' style='border: 2px solid #9b51e0; box-shadow: 0 0 15px rgba(155,81,224,0.3);'><tr><th style='color: #9b51e0; text-shadow: 0 0 5px #9b51e0;'>RANK</th><th style='color: #9b51e0;'>APE</th><th style='color: #9b51e0;'>DRS VALUE</th><th style='color: #9b51e0;'>LOCKED SHARES</th><th style='color: #9b51e0;'>LOCKED WARRANTS</th></tr>"
-                    sorted_db = sorted(real_db, key=lambda x: x.get("drs_tv", 0), reverse=True)
-                    for i, r in enumerate(sorted_db):
-                        rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
-                        display_name = f"🟣 {r['name']}" if r.get('drs_tv', 0) > 0 else r['name']
-                        html += f"<tr class='{'podium' if i<3 else ''}'><td>{rank_str}</td><td><strong>{display_name}</strong></td><td style='color: #9b51e0; font-weight: bold; text-shadow: 0 0 5px #9b51e0;'>${r.get('drs_tv', 0):,.2f}</td><td style='color: #cccccc;'>{r.get('drs_sq', 0):,}</td><td style='color: #cccccc;'>{r.get('drs_wq', 0):,}</td></tr>"
-                    st.markdown(html + "</table></div>", unsafe_allow_html=True)
-                else:
-                    # --- 🌍 STANDARD TABLES ---
-                    html = "<div class='table-wrapper'><table class='ldb-t'><tr><th>RANK</th><th>APE</th><th>TOTAL VALUE</th><th>SHARES (%)</th><th>WARRANTS (%)</th></tr>"
-                    sorted_db = sorted(real_db, key=lambda x: x.get("tv", 0), reverse=True)
-                    for i, r in enumerate(sorted_db):
-                        rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
-                        s_pct = (r["sq"]*live_p_n / r["tv"]) * 100 if r.get("tv", 0) > 0 else 0
-                        w_pct = (r["wq"]*live_p_w / r["tv"]) * 100 if r.get("tv", 0) > 0 else 0
-                        display_name = f"🟣 {r['name']}" if r.get('drs_tv', 0) > 0 else r['name']
-                        html += f"<tr class='{'podium' if i<3 else ''}'><td>{rank_str}</td><td><strong>{display_name}</strong></td><td style='color:#00FF00;'>${r.get('tv', 0):,.2f}</td><td>{r.get('sq', 0):,} <span style='font-size:12px;color:#888'>({s_pct:.1f}%)</span></td><td>{r.get('wq', 0):,} <span style='font-size:12px;color:#888'>({w_pct:.1f}%)</span></td></tr>"
-                    st.markdown(html + "</table></div>", unsafe_allow_html=True)
+    for idx, t in enumerate(lb_tabs):
+        with t:
+            if idx == 3:
+                # --- 🟣 DRS RANKING TABLE ---
+                html = "<div class='table-wrapper'><table class='ldb-t' style='border: 2px solid #9b51e0; box-shadow: 0 0 15px rgba(155,81,224,0.3);'><tr><th style='color: #9b51e0; text-shadow: 0 0 5px #9b51e0;'>RANK</th><th style='color: #9b51e0;'>APE</th><th style='color: #9b51e0;'>DRS VALUE</th><th style='color: #9b51e0;'>LOCKED SHARES</th><th style='color: #9b51e0;'>LOCKED WARRANTS</th></tr>"
+                sorted_db = sorted(real_db, key=lambda x: x.get("drs_tv", 0), reverse=True)
+                for i, r in enumerate(sorted_db):
+                    rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
+                    display_name = f"🟣 {r['name']}" if r.get('drs_tv', 0) > 0 else r['name']
+                    html += f"<tr class='{'podium' if i<3 else ''}'><td>{rank_str}</td><td><strong>{display_name}</strong></td><td style='color: #9b51e0; font-weight: bold; text-shadow: 0 0 5px #9b51e0;'>${r.get('drs_tv', 0):,.2f}</td><td style='color: #cccccc;'>{r.get('drs_sq', 0):,}</td><td style='color: #cccccc;'>{r.get('drs_wq', 0):,}</td></tr>"
+                st.markdown(html + "</table></div>", unsafe_allow_html=True)
+            else:
+                # --- 🌍 STANDARD TABLES ---
+                html = "<div class='table-wrapper'><table class='ldb-t'><tr><th>RANK</th><th>APE</th><th>TOTAL VALUE</th><th>SHARES (%)</th><th>WARRANTS (%)</th></tr>"
+                sorted_db = sorted(real_db, key=lambda x: x.get("tv", 0), reverse=True)
+                for i, r in enumerate(sorted_db):
+                    rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
+                    s_pct = (r["sq"]*live_p_n / r["tv"]) * 100 if r.get("tv", 0) > 0 else 0
+                    w_pct = (r["wq"]*live_p_w / r["tv"]) * 100 if r.get("tv", 0) > 0 else 0
+                    display_name = f"🟣 {r['name']}" if r.get('drs_tv', 0) > 0 else r['name']
+                    html += f"<tr class='{'podium' if i<3 else ''}'><td>{rank_str}</td><td><strong>{display_name}</strong></td><td style='color:#00FF00;'>${r.get('tv', 0):,.2f}</td><td>{r.get('sq', 0):,} <span style='font-size:12px;color:#888'>({s_pct:.1f}%)</span></td><td>{r.get('wq', 0):,} <span style='font-size:12px;color:#888'>({w_pct:.1f}%)</span></td></tr>"
+                st.markdown(html + "</table></div>", unsafe_allow_html=True)
 
 # --- 3. TERMINAL & LIVE ENGINE ---
 else:
