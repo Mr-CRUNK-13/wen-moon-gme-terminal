@@ -1066,65 +1066,82 @@ else:
             w_s, w_w = st.session_state.get("weekly_s", 0), st.session_state.get("weekly_w", 0)
             m_s, m_w = st.session_state.get("monthly_s", 0), st.session_state.get("monthly_w", 0)
 
-            # --- DYNAMIC HTML DASHBOARD ---
+            # --- ORIGINAL WEN MOON DASHBOARD (FULLY RESTORED) ---
             html_summary = f"""
-            <div style="background-color: #0f172a; padding: 20px; border-radius: 10px; border: 2px solid #9b51e0; box-shadow: 0 0 15px rgba(155, 81, 224, 0.3);">
-                <h2 style="text-align: center; color: #9b51e0; margin-bottom: 30px; text-shadow: 0 0 10px #9b51e0; font-family: monospace;">🟣 WEN MOON DRS</h2>
+            <div style="background-color: #0f172a; padding: 20px; border-radius: 10px; border: 1px solid #0259c7;">
+                <h2 style="text-align: center; color: #00FF00; margin-bottom: 30px; animation: neon-text 1.5s infinite; font-family: monospace;">📊 WEN MOON SUMMARY</h2>
                 <div style="text-align: center; margin-bottom: 30px;">
-                    <h3 style="color: white; margin: 0; font-family: monospace;">TOTAL HOLDERS</h3>
-                    <p style="font-size: 48px; color: white; font-weight: bold; margin: 10px 0 0 0; text-shadow: 0 0 10px rgba(255,255,255,0.5);">{total_holders:,}</p>
+                    <h3 style="color: #66c2a5; margin: 0; font-size: 24px;">TOTAL HOLDERS</h3>
+                    <p style="font-size: 48px; color: white; font-weight: bold; margin: 10px 0 0 0;">{total_holders:,}</p>
                 </div>
                 <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 30px; gap: 20px;">
-                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #9b51e0; flex: 1; min-width: 250px; text-align: center; box-shadow: 0 0 10px rgba(155, 81, 224, 0.2);">
-                        <h4 style="color: #9b51e0; margin-top: 0; font-size: 24px; font-weight: bold; text-shadow: 0 0 5px #9b51e0;">🟪 SECURED SHARES</h4>
-                        <p style="font-size: 18px; color: white; margin-bottom: 5px;">Total Locked: <strong style="color: #9b51e0; font-size: 22px;">{c_s:,.0f}</strong></p>
-                        <p style="margin: 5px 0; color: #ccc; font-size: 14px;">Avg / Ape: <strong style="color: white;">{avg_s_per_person:,.0f}</strong></p>
+                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #00FF00; flex: 1; min-width: 250px;">
+                        <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold; text-align: center;">GME SHARES</h4>
+                        <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Total Shares: <strong style="color: white;">{c_s:,.0f}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Cost: <strong style="color: white;">${(c_gp_val / c_s if c_s > 0 else 0):,.2f}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Shares / Person: <strong style="color: white;">{avg_s_per_person:,.0f}</strong></p>
                     </div>
-                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #b026ff; flex: 1; min-width: 250px; text-align: center; box-shadow: 0 0 10px rgba(176, 38, 255, 0.2);">
-                        <h4 style="color: #b026ff; margin-top: 0; font-size: 24px; font-weight: bold; text-shadow: 0 0 5px #b026ff;">🟪 SECURED WARRANTS</h4>
-                        <p style="font-size: 18px; color: white; margin-bottom: 5px;">Total Locked: <strong style="color: #b026ff; font-size: 22px;">{c_w:,.0f}</strong></p>
-                        <p style="margin: 5px 0; color: #ccc; font-size: 14px;">Avg / Ape: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
+                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #006400; flex: 1; min-width: 250px;">
+                        <h4 style="color: #006400; margin-top: 0; font-size: 24px; font-weight: bold; text-align: center;">GME WARRANTS</h4>
+                        <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Total Warrants: <strong style="color: white;">{c_w:,.0f}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Cost: <strong style="color: white;">${(c_pw_val / c_w if c_w > 0 else 0):,.2f}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
+                    </div>
+                </div>
+                
+                <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #FFD700; margin-top: 20px;">
+                    <h4 style="color: #FFD700; margin-top: 0; font-size: 24px; font-weight: bold; text-align: center;">🔥 WEN MOON RECENT PURCHASES</h4>
+                    <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
+                        <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #00FF00; flex: 1; min-width: 120px; text-align: center;">
+                            <h5 style="color: #00FF00; font-size: 18px; margin: 0 0 10px 0;">WEEKLY</h5>
+                            <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{w_s:,.0f}</strong></p>
+                            <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{w_w:,.0f}</strong></p>
+                        </div>
+                        <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #006400; flex: 1; min-width: 120px; text-align: center;">
+                            <h5 style="color: #006400; font-size: 18px; margin: 0 0 10px 0;">MONTHLY</h5>
+                            <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{m_s:,.0f}</strong></p>
+                            <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{m_w:,.0f}</strong></p>
+                        </div>
                     </div>
                 </div>
             </div>
             """
             st.markdown(html_summary, unsafe_allow_html=True)
             
-            # --- WEN MOON COMMUNITY GRAPH ---
+            # --- WEN MOON COMMUNITY GRAPH (RESTORED COLORS) ---
             import plotly.graph_objects as go
-            cw_s = st.session_state.get('weekly_s', 0)
-            cm_s = st.session_state.get('monthly_s', 0)
-            cw_w = st.session_state.get('weekly_w', 0)
-            cm_w = st.session_state.get('monthly_w', 0)
             fig_comm = go.Figure()
-            fig_comm.add_trace(go.Bar(name='Shares 🟪', x=['WEEKLY', 'MONTHLY'], y=[cw_s, cm_s], marker_color='#9b51e0'))
-            fig_comm.add_trace(go.Bar(name='Warrants 🟪', x=['WEEKLY', 'MONTHLY'], y=[cw_w, cm_w], marker_color='#b026ff'))
-            fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'font': {'color': '#9b51e0', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
+            fig_comm.add_trace(go.Bar(name='Shares', x=['WEEKLY', 'MONTHLY'], y=[w_s, m_s], marker_color='#00FF00'))
+            fig_comm.add_trace(go.Bar(name='Warrants', x=['WEEKLY', 'MONTHLY'], y=[w_w, m_w], marker_color='#006400'))
+            fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'font': {'color': '#FFD700', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
             st.plotly_chart(fig_comm, use_container_width=True)
 
-            # --- 🟣 WEN MOON DRS POOL ---
+            # --- 🟣 WEN MOON DRS POOL (CSS SQUARES PURPLE/PINK) ---
             total_comm_drs_s = sum(r.get("drs_sq", 0) for r in real_db)
             total_comm_drs_w = sum(r.get("drs_wq", 0) for r in real_db)
-            drs_apes_count = sum(1 for r in real_db if r.get("drs_tv", 0) > 0)
             
             st.markdown(f"""
-            <div style='margin-top: 30px; border: 2px solid #9b51e0; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05); box-shadow: 0 0 20px #9b51e0;'>
-                <h2 style='text-align: center; color: #9b51e0; text-shadow: 0 0 10px #9b51e0; font-family: monospace; margin-top: 0;'>🟣 WEN MOON DRS POOL</h2>
-                <div style='display: flex; justify-content: space-around; text-align: center;'>
-                    <div>
-                        <p style='color: #cccccc; margin-bottom: 0;'>COMMUNITY SECURED SHARES</p>
-                        <h2 style='color: #9b51e0; font-family: monospace; margin-top: 0;'>{total_comm_drs_s:,}</h2>
+            <div style="margin-top: 30px; border: 2px solid #9b51e0; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05);">
+                <h2 style="text-align: center; color: #9b51e0; text-shadow: 0 0 10px #9b51e0; font-family: monospace; margin-bottom: 20px;">🟣 WEN MOON DRS</h2>
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center;">
+                    <div style="flex: 1; min-width: 120px;">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px;">
+                            <span style="display:inline-block; width:16px; height:16px; background-color:#9b51e0; border-radius:3px; margin-right:8px;"></span>
+                            <span style="color: white; font-weight: bold; font-size: 14px;">SECURED SHARES</span>
+                        </div>
+                        <p style="color: #9b51e0; font-size: 32px; font-weight: bold; margin: 0; text-shadow: 0 0 10px rgba(155, 81, 224, 0.5);">{total_comm_drs_s:,}</p>
                     </div>
-                    <div>
-                        <p style='color: #cccccc; margin-bottom: 0;'>COMMUNITY SECURED WARRANTS</p>
-                        <h2 style='color: #9b51e0; font-family: monospace; margin-top: 0;'>{total_comm_drs_w:,}</h2>
+                    <div style="flex: 1; min-width: 120px;">
+                        <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px;">
+                            <span style="display:inline-block; width:16px; height:16px; background-color:#b026ff; border-radius:3px; margin-right:8px;"></span>
+                            <span style="color: white; font-weight: bold; font-size: 14px;">SECURED WARRANTS</span>
+                        </div>
+                        <p style="color: #b026ff; font-size: 32px; font-weight: bold; margin: 0; text-shadow: 0 0 10px rgba(176, 38, 255, 0.5);">{total_comm_drs_w:,}</p>
                     </div>
                 </div>
-                <p style='text-align: center; color: #ffffff; font-size: 1.1em; margin-top: 15px;'>
-                    🦍 <strong>{drs_apes_count}</strong> APES HAVE LOCKED THEIR SHARES 🟣
-                </p>
             </div>
             """, unsafe_allow_html=True)
+
             # --- COMMUNITY DRS WEEKLY/MONTHLY VISUALS ---
             c_d_w_s = sum(r.get("drs_w_s", 0) for r in real_db)
             c_d_m_s = sum(r.get("drs_m_s", 0) for r in real_db)
