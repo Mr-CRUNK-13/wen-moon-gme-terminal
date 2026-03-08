@@ -460,26 +460,24 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             st.plotly_chart(fig_pers, use_container_width=True, key="home_pers_chart_safe")
             # -------------------------------------
 
-        # --- PHASE 2: DRS VAULT DISPLAY ---
-        st.markdown("""
-            <div style='border: 2px solid #9b51e0; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05); box-shadow: 0 0 15px #9b51e0;'>
-                <h2 style='color: #9b51e0; text-shadow: 0 0 10px #9b51e0; font-family: monospace; margin-top: 0;'>🟣 YOUR DRS VAULT</h2>
-                <div style='display: flex; justify-content: space-around; text-align: center;'>
-                    <div>
-                        <p style='color: #cccccc; margin-bottom: 0;'>SECURED SHARES</p>
-                        <h1 style='color: #9b51e0; font-family: monospace; margin-top: 0;'>{:,}</h1>
-                    </div>
-                    <div>
-                        <p style='color: #cccccc; margin-bottom: 0;'>SECURED WARRANTS</p>
-                        <h1 style='color: #9b51e0; font-family: monospace; margin-top: 0;'>{:,}</h1>
-                    </div>
+        # --- PERSONAL DRS VAULT UI ---
+        html_drs = f"""
+        <div style="background-color: #0f172a; padding: 20px; border-radius: 10px; border: 2px solid #9b51e0; box-shadow: 0 0 15px rgba(155, 81, 224, 0.3); margin-bottom: 20px;">
+            <h2 style="text-align: center; color: #9b51e0; margin-bottom: 20px; text-shadow: 0 0 10px #9b51e0; font-family: monospace;">🟣 YOUR DRS VAULT</h2>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center;">
+                <div style="flex: 1; min-width: 120px;">
+                    <p style="color: white; font-weight: bold; margin-bottom: 5px; font-size: 14px;">🟪 SECURED SHARES</p>
+                    <p style="color: #9b51e0; font-size: 36px; font-weight: bold; margin: 0; text-shadow: 0 0 10px rgba(155, 81, 224, 0.5);">{st.session_state.drs_osq:,}</p>
                 </div>
-                <p style='color: #9b51e0; font-style: italic; font-size: 0.8em; text-align: center; margin-bottom: 0;'>
-                    "Everything else is just a IOUs... These are YOURS." 🟣
-                </p>
+                <div style="flex: 1; min-width: 120px;">
+                    <p style="color: white; font-weight: bold; margin-bottom: 5px; font-size: 14px;">🟪 SECURED WARRANTS</p>
+                    <p style="color: #b026ff; font-size: 36px; font-weight: bold; margin: 0; text-shadow: 0 0 10px rgba(176, 38, 255, 0.5);">{st.session_state.drs_owq:,}</p>
+                </div>
             </div>
-            <br>
-        """.format(st.session_state.drs_osq, st.session_state.drs_owq), unsafe_allow_html=True)
+            <p style="text-align: center; color: #b026ff; font-style: italic; margin-top: 20px; font-size: 14px;">"Everything else is just IOUs... These are YOURS." 🟣</p>
+        </div>
+        """
+        st.markdown(html_drs, unsafe_allow_html=True)
 
         # --- DRS PROGRESS BAR ---
         drs_percent = (st.session_state.drs_osq / st.session_state.osq * 100) if st.session_state.osq > 0 else 0
