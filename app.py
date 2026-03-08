@@ -393,6 +393,18 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         0% { opacity: 1; text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700; }
         100% { opacity: 0.4; text-shadow: none; }
     }
+
+    @keyframes pulse-purple {
+    0% { text-shadow: 0 0 5px #9b51e0; }
+    50% { text-shadow: 0 0 15px #b026ff, 0 0 25px #9b51e0; }
+    100% { text-shadow: 0 0 5px #9b51e0; }
+}
+.drs-winner {
+    animation: pulse-purple 1.5s infinite;
+    color: #b026ff !important;
+    font-weight: bold;
+}
+
     </style>
     """, unsafe_allow_html=True)
 
@@ -477,6 +489,35 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             </div>
             <p style='color: #9b51e0; font-size: 0.7em; text-align: right;'>{drs_percent:.1f}% OF SHARES LOCKED</p>
         """, unsafe_allow_html=True)
+        # --- PERSONAL DRS WEEKLY/MONTHLY VISUALS ---
+        p_d_w_s = st.session_state.get('weekly_drs_s', 0)
+        p_d_m_s = st.session_state.get('monthly_drs_s', 0)
+        p_d_w_w = st.session_state.get('weekly_drs_w', 0)
+        p_d_m_w = st.session_state.get('monthly_drs_w', 0)
+
+        st.markdown(f"""
+        <div style='background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 1px solid #9b51e0; margin-top: 20px;'>
+            <h3 style='color: #9b51e0; text-align: center; font-family: monospace; text-shadow: 0 0 10px #9b51e0;'>🟣 RECENT SECURED DRS</h3>
+            <div style='display: flex; justify-content: space-around; text-align: center; margin-top: 15px;'>
+                <div style='background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; width: 45%;'>
+                    <p style='color: #9b51e0; font-weight: bold; margin-bottom: 5px;'>WEEKLY</p>
+                    <p style='color: white; margin: 0;'>Shares: <strong>+{p_d_w_s}</strong></p>
+                    <p style='color: white; margin: 0;'>Warrants: <strong>+{p_d_w_w}</strong></p>
+                </div>
+                <div style='background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; width: 45%;'>
+                    <p style='color: #9b51e0; font-weight: bold; margin-bottom: 5px;'>MONTHLY</p>
+                    <p style='color: white; margin: 0;'>Shares: <strong>+{p_d_m_s}</strong></p>
+                    <p style='color: white; margin: 0;'>Warrants: <strong>+{p_d_m_w}</strong></p>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        fig_drs_p = go.Figure()
+        fig_drs_p.add_trace(go.Bar(name='Shares 🟣', x=['WEEKLY', 'MONTHLY'], y=[p_d_w_s, p_d_m_s], marker_color='#9b51e0'))
+        fig_drs_p.add_trace(go.Bar(name='Warrants 🟪', x=['WEEKLY', 'MONTHLY'], y=[p_d_w_w, p_d_m_w], marker_color='#c48af8'))
+        fig_drs_p.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', margin=dict(l=20, r=20, t=20, b=20), height=250)
+        st.plotly_chart(fig_drs_p, use_container_width=True, key="drs_pers_chart_safe")
 
 # --- 2.5 LEADERBOARD SCREEN ---
 elif st.session_state.get('show_leaderboard', False):
@@ -489,44 +530,49 @@ elif st.session_state.get('show_leaderboard', False):
             st.session_state.show_leaderboard = False
             st.rerun()
             
-    lb_tabs = st.tabs(["🌍 GENERAL", "📅 MONTHLY", "📆 WEEKLY", "🟣 DRS RANKING"])
-
+    # --- 6-TAB LEADERBOARD WITH TROPHY COLUMN ---
+    lb_tabs = st.tabs(["🌍 GENERAL", "📅 MONTHLY", "📆 WEEKLY", "🟣 DRS TOTAL", "🗓️ DRS MONTHLY", "⏳ DRS WEEKLY"])
+    
     try:
         data = yf.download(["GME", "GME-WT"], period="1d", interval="2m", prepost=True, progress=False)['Close']
         live_p_n = float(data['GME'].dropna().iloc[-1]) if not data['GME'].dropna().empty else 24.50
         live_p_w = float(data['GME-WT'].dropna().iloc[-1]) if not data['GME-WT'].dropna().empty else 4.30
-    except: 
+    except:
         live_p_n, live_p_w = 24.50, 4.30
-        
-    u_name = st.session_state.get("ape_name", "Anonymous")
-    u_sq = st.session_state.osq
-    u_wq = st.session_state.owq
-    u_tv = (u_sq * live_p_n) + (u_wq * live_p_w)
-    
+
     drs_tv = (st.session_state.drs_osq * live_p_n) + (st.session_state.drs_owq * live_p_w)
-    real_db = [{"name": u_name, "tv": u_tv, "sq": u_sq, "wq": u_wq, "spru": st.session_state.osp, "wpru": st.session_state.owp, "drs_tv": drs_tv, "drs_sq": st.session_state.drs_osq, "drs_wq": st.session_state.drs_owq}]
+    drs_m_v = (st.session_state.get('monthly_drs_s', 0) * live_p_n) + (st.session_state.get('monthly_drs_w', 0) * live_p_w)
+    drs_w_v = (st.session_state.get('weekly_drs_s', 0) * live_p_n) + (st.session_state.get('weekly_drs_w', 0) * live_p_w)
+
+    real_db = [{
+        "name": st.session_state.get("ape_name", "Anonymous"),
+        "tv": (st.session_state.osq * live_p_n) + (st.session_state.owq * live_p_w),
+        "sq": st.session_state.osq, "wq": st.session_state.owq,
+        "drs_tv": drs_tv, "drs_mv": drs_m_v, "drs_wv": drs_w_v,
+        "drs_sq": st.session_state.drs_osq, "drs_wq": st.session_state.drs_owq
+    }]
 
     for idx, t in enumerate(lb_tabs):
         with t:
-            if idx == 3:
-                # --- 🟣 DRS RANKING TABLE ---
-                html = "<div class='table-wrapper'><table class='ldb-t' style='border: 2px solid #9b51e0; box-shadow: 0 0 15px rgba(155,81,224,0.3);'><tr><th style='color: #9b51e0; text-shadow: 0 0 5px #9b51e0;'>RANK</th><th style='color: #9b51e0;'>APE</th><th style='color: #9b51e0;'>DRS VALUE</th><th style='color: #9b51e0;'>LOCKED SHARES</th><th style='color: #9b51e0;'>LOCKED WARRANTS</th></tr>"
-                sorted_db = sorted(real_db, key=lambda x: x.get("drs_tv", 0), reverse=True)
+            if idx >= 3: # 🟣 DRS TABS (3, 4, 5)
+                sort_key = "drs_tv" if idx == 3 else "drs_mv" if idx == 4 else "drs_wv"
+                title = "DRS TOTAL" if idx == 3 else "DRS MONTHLY" if idx == 4 else "DRS WEEKLY"
+                html = f"<div class='table-wrapper'><table class='ldb-t' style='border: 2px solid #9b51e0;'><tr><th style='color:#9b51e0;'>RANK</th><th style='color:#9b51e0;'>APE</th><th style='color:#9b51e0;'>{title} VALUE</th><th style='color:#9b51e0;'>LOCKED S.</th><th style='color:#9b51e0;'>LOCKED W.</th><th style='color:#9b51e0;'>TROPHIES</th></tr>"
+                sorted_db = sorted(real_db, key=lambda x: x.get(sort_key, 0), reverse=True)
                 for i, r in enumerate(sorted_db):
                     rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
-                    display_name = f"🟣 {r['name']}" if r.get('drs_tv', 0) > 0 else r['name']
-                    html += f"<tr class='{'podium' if i<3 else ''}'><td>{rank_str}</td><td><strong>{display_name}</strong></td><td style='color: #9b51e0; font-weight: bold; text-shadow: 0 0 5px #9b51e0;'>${r.get('drs_tv', 0):,.2f}</td><td style='color: #cccccc;'>{r.get('drs_sq', 0):,}</td><td style='color: #cccccc;'>{r.get('drs_wq', 0):,}</td></tr>"
+                    # Animation for DRS Rank 1
+                    name_style = "class='drs-winner'" if i == 0 and r.get(sort_key, 0) > 0 else ""
+                    user_trophies = "🟣" if r.get('drs_tv', 0) > 0 else ""
+                    html += f"<tr><td>{rank_str}</td><td><span {name_style}>{r['name']}</span></td><td style='color:#9b51e0;'>${r.get(sort_key, 0):,.2f}</td><td>{r.get('drs_sq', 0):,}</td><td>{r.get('drs_wq', 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
                 st.markdown(html + "</table></div>", unsafe_allow_html=True)
-            else:
-                # --- 🌍 STANDARD TABLES ---
-                html = "<div class='table-wrapper'><table class='ldb-t'><tr><th>RANK</th><th>APE</th><th>TOTAL VALUE</th><th>SHARES (%)</th><th>WARRANTS (%)</th></tr>"
+            else: # 🌍 STANDARD TABS (0, 1, 2)
+                html = "<div class='table-wrapper'><table class='ldb-t'><tr><th>RANK</th><th>APE</th><th>TOTAL VALUE</th><th>SHARES</th><th>WARRANTS</th><th>TROPHIES</th></tr>"
                 sorted_db = sorted(real_db, key=lambda x: x.get("tv", 0), reverse=True)
                 for i, r in enumerate(sorted_db):
                     rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
-                    s_pct = (r["sq"]*live_p_n / r["tv"]) * 100 if r.get("tv", 0) > 0 else 0
-                    w_pct = (r["wq"]*live_p_w / r["tv"]) * 100 if r.get("tv", 0) > 0 else 0
-                    display_name = f"🟣 {r['name']}" if r.get('drs_tv', 0) > 0 else r['name']
-                    html += f"<tr class='{'podium' if i<3 else ''}'><td>{rank_str}</td><td><strong>{display_name}</strong></td><td style='color:#00FF00;'>${r.get('tv', 0):,.2f}</td><td>{r.get('sq', 0):,} <span style='font-size:12px;color:#888'>({s_pct:.1f}%)</span></td><td>{r.get('wq', 0):,} <span style='font-size:12px;color:#888'>({w_pct:.1f}%)</span></td></tr>"
+                    user_trophies = "🟣" if r.get('drs_tv', 0) > 0 else ""
+                    html += f"<tr><td>{rank_str}</td><td><strong>{r['name']}</strong></td><td style='color:#00FF00;'>${r.get('tv', 0):,.2f}</td><td>{r.get('sq', 0):,}</td><td>{r.get('wq', 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
                 st.markdown(html + "</table></div>", unsafe_allow_html=True)
 
 # --- 3. TERMINAL & LIVE ENGINE ---
@@ -1068,6 +1114,35 @@ else:
                 </p>
             </div>
             """, unsafe_allow_html=True)
+            # --- COMMUNITY DRS WEEKLY/MONTHLY VISUALS ---
+            c_d_w_s = sum(r.get("drs_w_s", 0) for r in real_db)
+            c_d_m_s = sum(r.get("drs_m_s", 0) for r in real_db)
+            c_d_w_w = sum(r.get("drs_w_w", 0) for r in real_db)
+            c_d_m_w = sum(r.get("drs_m_w", 0) for r in real_db)
+
+            st.markdown(f"""
+            <div style='background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 1px solid #9b51e0; margin-top: 20px;'>
+                <h3 style='color: #9b51e0; text-align: center; font-family: monospace; text-shadow: 0 0 10px #9b51e0;'>🟣 WEN MOON RECENT DRS</h3>
+                <div style='display: flex; justify-content: space-around; text-align: center; margin-top: 15px;'>
+                    <div style='background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; width: 45%;'>
+                        <p style='color: #9b51e0; font-weight: bold; margin-bottom: 5px;'>WEEKLY</p>
+                        <p style='color: white; margin: 0;'>Shares: <strong>+{c_d_w_s}</strong></p>
+                        <p style='color: white; margin: 0;'>Warrants: <strong>+{c_d_w_w}</strong></p>
+                    </div>
+                    <div style='background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; width: 45%;'>
+                        <p style='color: #9b51e0; font-weight: bold; margin-bottom: 5px;'>MONTHLY</p>
+                        <p style='color: white; margin: 0;'>Shares: <strong>+{c_d_m_s}</strong></p>
+                        <p style='color: white; margin: 0;'>Warrants: <strong>+{c_d_m_w}</strong></p>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            fig_drs_c = go.Figure()
+            fig_drs_c.add_trace(go.Bar(name='Shares 🟣', x=['WEEKLY', 'MONTHLY'], y=[c_d_w_s, c_d_m_s], marker_color='#9b51e0'))
+            fig_drs_c.add_trace(go.Bar(name='Warrants 🟪', x=['WEEKLY', 'MONTHLY'], y=[c_d_w_w, c_d_m_w], marker_color='#c48af8'))
+            fig_drs_c.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', margin=dict(l=20, r=20, t=20, b=20), height=250)
+            st.plotly_chart(fig_drs_c, use_container_width=True, key="drs_comm_chart_safe")
 
         with ph9.container():
             def fmt(val, is_pct=False, is_dol=False):
