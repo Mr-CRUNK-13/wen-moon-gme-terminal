@@ -217,6 +217,41 @@ def update_portfolio_logic():
     st.session_state.in_t_wq = 0
     st.session_state.in_t_wp = 0.0
 
+# --- DRS LOGIC ENGINE ---
+def update_drs_logic():
+    drs_tx = st.session_state.get("in_drs_tx_type", "ADD TO DRS")
+    drs_sq = st.session_state.get("in_drs_t_sq", 0)
+    drs_wq = st.session_state.get("in_drs_t_wq", 0)
+    
+    new_drs_osq = st.session_state.drs_osq
+    new_drs_owq = st.session_state.drs_owq
+    
+    if drs_sq > 0:
+        if drs_tx == "ADD TO DRS":
+            new_drs_osq += drs_sq
+            st.session_state.weekly_drs_s += drs_sq
+            st.session_state.monthly_drs_s += drs_sq
+        elif drs_tx == "REMOVE FROM DRS":
+            new_drs_osq = max(0, new_drs_osq - drs_sq)
+            
+    if drs_wq > 0:
+        if drs_tx == "ADD TO DRS":
+            new_drs_owq += drs_wq
+            st.session_state.weekly_drs_w += drs_wq
+            st.session_state.monthly_drs_w += drs_wq
+        elif drs_tx == "REMOVE FROM DRS":
+            new_drs_owq = max(0, new_drs_owq - drs_wq)
+            
+    # SECURITY: DRS cannot exceed total portfolio holdings
+    st.session_state.drs_osq = min(new_drs_osq, st.session_state.osq)
+    st.session_state.drs_owq = min(new_drs_owq, st.session_state.owq)
+    
+    st.session_state.ui_drs_osq = st.session_state.drs_osq
+    st.session_state.ui_drs_owq = st.session_state.drs_owq
+    
+    st.session_state.in_drs_t_sq = 0
+    st.session_state.in_drs_t_wq = 0
+
 # --- 2. HOME SCREEN ---
 if not st.session_state.launched and not st.session_state.show_leaderboard:
     # Recover UI states from shielded memory if returning from Terminal
