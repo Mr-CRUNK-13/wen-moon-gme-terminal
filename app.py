@@ -1119,7 +1119,8 @@ else:
             fig_comm = go.Figure()
             fig_comm.add_trace(go.Bar(name='Shares', x=['WEEKLY', 'MONTHLY'], y=[w_s, m_s], marker_color='#00FF00'))
             fig_comm.add_trace(go.Bar(name='Warrants', x=['WEEKLY', 'MONTHLY'], y=[w_w, m_w], marker_color='#006400'))
-            fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'font': {'color': '#FFD700', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
+            fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'y': 0.85, 'font': {'color': '#FFD700', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=100, b=20), height=380)
+            st.markdown("<br>", unsafe_allow_html=True)
             st.plotly_chart(fig_comm, use_container_width=True)
 
             # --- 🟣 WEN MOON DRS POOL ---
@@ -1183,7 +1184,8 @@ else:
             fig_drs_c = go.Figure()
             fig_drs_c.add_trace(go.Bar(name='Shares', x=['WEEKLY', 'MONTHLY'], y=[c_d_w_s, c_d_m_s], marker_color=color_drs_s))
             fig_drs_c.add_trace(go.Bar(name='Warrants', x=['WEEKLY', 'MONTHLY'], y=[c_d_w_w, c_d_m_w], marker_color=color_drs_w))
-            fig_drs_c.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON DRS VOLUME", 'x': 0.5, 'font': {'color': color_drs_s, 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
+            fig_drs_c.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON DRS VOLUME", 'x': 0.5, 'y': 0.85, 'font': {'color': color_drs_s, 'family': 'monospace'}}, margin=dict(l=20, r=20, t=100, b=20), height=380)
+            st.markdown("<br>", unsafe_allow_html=True)
             st.plotly_chart(fig_drs_c, use_container_width=True)
 
         with ph9.container():
