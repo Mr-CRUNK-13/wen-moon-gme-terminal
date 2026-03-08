@@ -297,6 +297,38 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
 
         st.markdown("<br>", unsafe_allow_html=True)
         st.button("💾 UPDATE PORTFOLIO", use_container_width=True, on_click=update_portfolio_logic)
+        # --- DRS CONFIGURATION PANEL ---
+        st.markdown("<hr style='border: 1px solid #9b51e0; margin-top: 30px;'>", unsafe_allow_html=True)
+        st.markdown("<h3 style='color: #9b51e0; text-shadow: 0 0 10px #9b51e0; font-family: monospace;'>🟣 DRS REGISTRATION</h3>", unsafe_allow_html=True)
+        
+        # Recover UI states
+        if "ui_drs_osq" not in st.session_state: st.session_state.ui_drs_osq = st.session_state.drs_osq
+        if "ui_drs_owq" not in st.session_state: st.session_state.ui_drs_owq = st.session_state.drs_owq
+
+        col_d1, col_d2 = st.columns(2)
+        with col_d1:
+            st.number_input("Current DRS Shares", min_value=0, key="ui_drs_osq")
+        with col_d2:
+            st.number_input("Current DRS Warrants", min_value=0, key="ui_drs_owq")
+            # DUMMY BUTTON FOR DRS SYNC HACK
+            st.button("SAVE DRS HOLDINGS", use_container_width=True)
+
+        # Apply security max check directly on UI edits
+        st.session_state.drs_osq = min(st.session_state.ui_drs_osq, st.session_state.osq)
+        st.session_state.drs_owq = min(st.session_state.ui_drs_owq, st.session_state.owq)
+
+        st.markdown("---")
+        st.markdown("<h4 style='color: #9b51e0;'>🟣 NEW DRS TRANSFER</h4>", unsafe_allow_html=True)
+        st.selectbox("TRANSFER TYPE", ["ADD TO DRS", "REMOVE FROM DRS"], key="in_drs_tx_type")
+
+        col_d3, col_d4 = st.columns(2)
+        with col_d3:
+            st.number_input("Transfer Shares Qty", min_value=0, key="in_drs_t_sq")
+        with col_d4:
+            st.number_input("Transfer Warrants Qty", min_value=0, key="in_drs_t_wq")
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.button("🟣 LOCK DRS SHARES", use_container_width=True, on_click=update_drs_logic)
 
     st.markdown("""
     <style>
