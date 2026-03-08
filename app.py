@@ -1120,23 +1120,27 @@ else:
             total_comm_drs_w = sum(r.get("drs_wq", 0) for r in real_db)
             drs_apes_count = sum(1 for r in real_db if r.get("drs_tv", 0) > 0)
             
+            # --- COLOR CONFIGURATION ---
+            color_drs_s = "#9b51e0"  # Established Purple
+            color_drs_w = "#b026ff"  # Established Electric Pink/Rose
+            
             st.markdown(f"""
-            <div style="margin-top: 30px; border: 2px solid #9b51e0; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05);">
-                <h2 style="text-align: center; color: #9b51e0; text-shadow: 0 0 10px #9b51e0; font-family: monospace; margin-bottom: 20px;">🟣 WEN MOON DRS</h2>
+            <div style="margin-top: 30px; border: 2px solid {color_drs_s}; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05);">
+                <h2 style="text-align: center; color: {color_drs_s}; text-shadow: 0 0 10px {color_drs_s}; font-family: monospace; margin-bottom: 20px;">🟣 WEN MOON DRS</h2>
                 <div style="display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center;">
                     <div style="flex: 1; min-width: 120px;">
                         <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px;">
-                            <span style="display:inline-block; width:16px; height:16px; background-color:#9b51e0; border-radius:3px; margin-right:8px;"></span>
+                            <span style="display:inline-block; width:16px; height:16px; background-color:{color_drs_s}; border-radius:3px; margin-right:8px;"></span>
                             <span style="color: white; font-weight: bold; font-size: 14px;">SECURED SHARES</span>
                         </div>
-                        <p style="color: #9b51e0; font-size: 32px; font-weight: bold; margin: 0; text-shadow: 0 0 10px rgba(155, 81, 224, 0.5);">{total_comm_drs_s:,}</p>
+                        <p style="color: {color_drs_s}; font-size: 32px; font-weight: bold; margin: 0; text-shadow: 0 0 10px rgba(155, 81, 224, 0.5);">{total_comm_drs_s:,}</p>
                     </div>
                     <div style="flex: 1; min-width: 120px;">
                         <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px;">
-                            <span style="display:inline-block; width:16px; height:16px; background-color:#b026ff; border-radius:3px; margin-right:8px;"></span>
+                            <span style="display:inline-block; width:16px; height:16px; background-color:{color_drs_w}; border-radius:3px; margin-right:8px;"></span>
                             <span style="color: white; font-weight: bold; font-size: 14px;">SECURED WARRANTS</span>
                         </div>
-                        <p style="color: #b026ff; font-size: 32px; font-weight: bold; margin: 0; text-shadow: 0 0 10px rgba(176, 38, 255, 0.5);">{total_comm_drs_w:,}</p>
+                        <p style="color: {color_drs_w}; font-size: 32px; font-weight: bold; margin: 0; text-shadow: 0 0 10px rgba(176, 38, 255, 0.5);">{total_comm_drs_w:,}</p>
                     </div>
                 </div>
                 <p style="text-align: center; color: #ffffff; font-size: 1.1em; margin-top: 15px;">
@@ -1152,27 +1156,27 @@ else:
             c_d_m_w = sum(r.get("drs_m_w", 0) for r in real_db)
 
             st.markdown(f"""
-            <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 1px solid #9b51e0; margin-top: 20px;">
-                <h3 style="color: #9b51e0; text-align: center; font-family: monospace; text-shadow: 0 0 5px #9b51e0;">🟣 RECENT SECURED DRS</h3>
+            <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 1px solid {color_drs_s}; margin-top: 20px;">
+                <h3 style="color: {color_drs_s}; text-align: center; font-family: monospace; text-shadow: 0 0 5px {color_drs_s};">🟣 RECENT SECURED DRS</h3>
                 <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
-                    <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; flex: 1; min-width: 120px; text-align: center;">
-                        <p style="color: #9b51e0; font-weight: bold; margin: 0 0 10px 0;">WEEKLY</p>
-                        <p style="color: white; margin: 0;">Shares: <strong style="color: #9b51e0;">+{c_d_w_s:,}</strong></p>
-                        <p style="color: white; margin: 0;">Warrants: <strong style="color: #b026ff;">+{c_d_w_w:,}</strong></p>
+                    <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid {color_drs_s}; flex: 1; min-width: 120px; text-align: center;">
+                        <p style="color: {color_drs_s}; font-weight: bold; margin: 0 0 10px 0;">WEEKLY</p>
+                        <p style="color: white; margin: 0;">Shares: <strong style="color: {color_drs_s};">+{c_d_w_s:,}</strong></p>
+                        <p style="color: white; margin: 0;">Warrants: <strong style="color: {color_drs_w};">+{c_d_w_w:,}</strong></p>
                     </div>
-                    <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; flex: 1; min-width: 120px; text-align: center;">
-                        <p style="color: #9b51e0; font-weight: bold; margin: 0 0 10px 0;">MONTHLY</p>
-                        <p style="color: white; margin: 0;">Shares: <strong style="color: #9b51e0;">+{c_d_m_s:,}</strong></p>
-                        <p style="color: white; margin: 0;">Warrants: <strong style="color: #b026ff;">+{c_d_m_w:,}</strong></p>
+                    <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid {color_drs_w}; flex: 1; min-width: 120px; text-align: center;">
+                        <p style="color: {color_drs_w}; font-weight: bold; margin: 0 0 10px 0;">MONTHLY</p>
+                        <p style="color: white; margin: 0;">Shares: <strong style="color: {color_drs_s};">+{c_d_m_s:,}</strong></p>
+                        <p style="color: white; margin: 0;">Warrants: <strong style="color: {color_drs_w};">+{c_d_m_w:,}</strong></p>
                     </div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
 
             fig_drs_c = go.Figure()
-            fig_drs_c.add_trace(go.Bar(name='Shares', x=['WEEKLY', 'MONTHLY'], y=[c_d_w_s, c_d_m_s], marker_color='#9b51e0'))
-            fig_drs_c.add_trace(go.Bar(name='Warrants', x=['WEEKLY', 'MONTHLY'], y=[c_d_w_w, c_d_m_w], marker_color='#b026ff'))
-            fig_drs_c.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON DRS VOLUME", 'x': 0.5, 'font': {'color': '#9b51e0', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
+            fig_drs_c.add_trace(go.Bar(name='Shares', x=['WEEKLY', 'MONTHLY'], y=[c_d_w_s, c_d_m_s], marker_color=color_drs_s))
+            fig_drs_c.add_trace(go.Bar(name='Warrants', x=['WEEKLY', 'MONTHLY'], y=[c_d_w_w, c_d_m_w], marker_color=color_drs_w))
+            fig_drs_c.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON DRS VOLUME", 'x': 0.5, 'font': {'color': color_drs_s, 'family': 'monospace'}}, margin=dict(l=20, r=20, t=40, b=20), height=300)
             st.plotly_chart(fig_drs_c, use_container_width=True)
 
         with ph9.container():
