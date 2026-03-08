@@ -24,6 +24,10 @@ if 'in_w_sq' not in st.session_state:
     st.session_state.update(in_w_sq=0, in_w_sp=0.0, in_w_wq=0, in_w_wp=0.0)
 if 'in_m_sq' not in st.session_state:
     st.session_state.update(in_m_sq=0, in_m_sp=0.0, in_m_wq=0, in_m_wp=0.0)
+# --- DRS VARIABLES ---
+if 'drs_osq' not in st.session_state:
+    st.session_state.update(drs_osq=0, drs_owq=0, weekly_drs_s=0, weekly_drs_w=0, monthly_drs_s=0, monthly_drs_w=0)
+    st.session_state.update(ui_drs_osq=0, ui_drs_owq=0, in_drs_t_sq=0, in_drs_t_wq=0)
 
 def get_b64(path):
     try:
