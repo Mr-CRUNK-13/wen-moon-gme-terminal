@@ -1045,6 +1045,29 @@ else:
             fig_comm.add_trace(go.Bar(name='Warrants', x=['WEEKLY', 'MONTHLY'], y=[cw_w, cm_w], marker_color='#006400'))
             fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'font': {'color': '#FFD700', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=80, b=20), height=300)
             st.plotly_chart(fig_comm, use_container_width=True)
+            # --- 🟣 WEN MOON DRS POOL ---
+            total_comm_drs_s = sum(r.get("drs_sq", 0) for r in real_db)
+            total_comm_drs_w = sum(r.get("drs_wq", 0) for r in real_db)
+            drs_apes_count = sum(1 for r in real_db if r.get("drs_tv", 0) > 0)
+            
+            st.markdown(f"""
+            <div style='margin-top: 30px; border: 2px solid #9b51e0; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05); box-shadow: 0 0 20px #9b51e0;'>
+                <h2 style='text-align: center; color: #9b51e0; text-shadow: 0 0 10px #9b51e0; font-family: monospace; margin-top: 0;'>🟣 WEN MOON DRS POOL</h2>
+                <div style='display: flex; justify-content: space-around; text-align: center;'>
+                    <div>
+                        <p style='color: #cccccc; margin-bottom: 0;'>COMMUNITY SECURED SHARES</p>
+                        <h2 style='color: #9b51e0; font-family: monospace; margin-top: 0;'>{total_comm_drs_s:,}</h2>
+                    </div>
+                    <div>
+                        <p style='color: #cccccc; margin-bottom: 0;'>COMMUNITY SECURED WARRANTS</p>
+                        <h2 style='color: #9b51e0; font-family: monospace; margin-top: 0;'>{total_comm_drs_w:,}</h2>
+                    </div>
+                </div>
+                <p style='text-align: center; color: #ffffff; font-size: 1.1em; margin-top: 15px;'>
+                    🦍 <strong>{drs_apes_count}</strong> APES HAVE LOCKED THEIR SHARES 🟣
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
 
         with ph9.container():
             def fmt(val, is_pct=False, is_dol=False):
