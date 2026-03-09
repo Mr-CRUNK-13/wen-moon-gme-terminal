@@ -844,12 +844,12 @@ else:
             .l-icn-w {{ display:flex; align-items:center; justify-content:center; }}
             
             @media screen and (orientation: landscape) {{
-                .l-box {{ justify-content:space-between !important; padding:0 10% !important; }}
+                .l-box {{ justify-content:space-between !important; align-items:flex-end !important; padding:0 10% !important; margin-top:0px !important; }}
                 .l-dlr {{ font-size:87px !important; }}
                 .l-int {{ font-size:175px !important; }}
                 .l-dec {{ font-size:140px !important; }}
-                .l-sub {{ font-size:42px !important; text-align:right; }}
-                .l-icn-w {{ transform: scale(1.5); }}
+                .l-sub {{ font-size:42px !important; text-align:right; margin-top:-45px !important; }}
+                .l-icn-w {{ transform: scale(1.5); margin-bottom:15px !important; }}
             }}
         </style>
         <div class='l-box'>
