@@ -770,7 +770,7 @@ else:
 
     # --- TAB 17 : 💎🙌13 Music ---
     with tab17:
-        st.markdown("<h2 style='text-align:center; color:#b026ff; font-family:monospace;'>🎧 PLAYLISTS 💿</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align:center; color:#b026ff; font-family:monospace; animation: pulse-purple 1.5s infinite;'>🎧 PLAYLISTS 💿</h2>", unsafe_allow_html=True)
         
         playlists = [
             "PL8E5BqjEa7V15KI2Rwf1tRYSd9OzfMktN", "PL8E5BqjEa7V0b-FzghpQ3XdTraUm2tgH4",
@@ -798,7 +798,7 @@ else:
 
         grid_html = "<div style='display:flex; flex-wrap:wrap; gap:15px; justify-content:center; margin-bottom:20px;'>"
         for i, pid in enumerate(playlists):
-            grid_html += f"<div style='background:#0f172a; padding:15px; border-radius:10px; border:1px solid #b026ff; width:100%; max-width:300px; text-align:center;'><h4 style='color:#b026ff; margin-top:0;'>MIX VOL. {i+1}<br><span style='color:#FFFFFF; font-size:15px; font-weight:normal;'>{playlist_titles[i]}</span></h4><div style='display:flex; gap:10px; justify-content:center; margin-top:15px;'><a href='https://youtube.com/playlist?list={pid}' target='_blank' style='flex:1; padding:10px; background:rgba(255,0,0,0.1); border:1px solid #FF0000; color:#FF0000; text-decoration:none; font-weight:bold; border-radius:5px;'>🔴 YT VIDEO</a><a href='https://music.youtube.com/playlist?list={pid}' target='_blank' style='flex:1; padding:10px; background:rgba(176,38,255,0.1); border:1px solid #b026ff; color:#b026ff; text-decoration:none; font-weight:bold; border-radius:5px;'>🎵 YT MUSIC</a></div></div>"
+            grid_html += f"<div style='background:#0f172a; padding:15px; border-radius:10px; border:2px solid #b026ff; box-shadow: 0 0 15px #b026ff; width:100%; max-width:300px; text-align:center;'><h4 style='color:#b026ff; margin-top:0;'>MIX VOL. {i+1}<br><span style='color:#FFFFFF; font-size:15px; font-weight:normal;'>{playlist_titles[i]}</span></h4><div style='display:flex; gap:10px; justify-content:center; margin-top:15px;'><a href='https://youtube.com/playlist?list={pid}' target='_blank' style='flex:1; padding:10px; background:rgba(255,0,0,0.1); border:1px solid #FF0000; color:#FF0000; text-decoration:none; font-weight:bold; border-radius:5px;'>🔴 YT VIDEO</a><a href='https://music.youtube.com/playlist?list={pid}' target='_blank' style='flex:1; padding:10px; background:rgba(176,38,255,0.1); border:1px solid #b026ff; color:#b026ff; text-decoration:none; font-weight:bold; border-radius:5px;'>🎵 YT MUSIC</a></div></div>"
         grid_html += "</div>"
         st.markdown(grid_html, unsafe_allow_html=True)
 
