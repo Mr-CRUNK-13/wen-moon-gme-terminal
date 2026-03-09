@@ -501,7 +501,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         p_d_m_w = st.session_state.get('monthly_drs_w', 0)
 
         st.markdown(f"""
-        <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 1px solid #9b51e0; margin-top: 20px;">
+        <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 1px solid #9b51e0; margin-top: 0px;">
             <h3 style="color: #9b51e0; text-align: center; font-family: monospace; text-shadow: 0 0 5px #9b51e0;">🟣 RECENT SECURED DRS</h3>
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
                 <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; flex: 1; min-width: 120px; text-align: center;">
