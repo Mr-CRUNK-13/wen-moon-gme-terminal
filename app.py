@@ -1256,7 +1256,7 @@ else:
                 html_gme = f"""
                 <style>
                     .pro-g {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px; }}
-                    .pb {{ background: #0e1621; border: 1px solid #00FF00; border-radius: 8px; padding: 15px; text-align: center; }}
+                    .pb {{ background: #0e1621; border: 2px solid #00FF00; box-shadow: 0 0 10px #00FF00; border-radius: 8px; padding: 15px; text-align: center; }}
                     .pb h4 {{ color: #00FF00; margin: 0 0 5px 0; font-size: 16px; font-family: monospace; }}
                     .pb p {{ color: white; font-size: 22px; font-weight: bold; margin: 0; }}
                 </style>
@@ -1296,13 +1296,13 @@ else:
                 
                 html_wt = f"""
                 <div class="pro-g">
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Contract Name</h4><p>GME-WT (Warrant)</p></div>
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Live Price</h4><p>{fmt_w(p_wt)}</p></div>
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Today's Volume</h4><p>{fmt_w(wt_vol, True)}</p></div>
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Market Open</h4><p>{fmt_w(wt_open)}</p></div>
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Day High</h4><p>{fmt_w(wt_high)}</p></div>
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Day Low</h4><p>{fmt_w(wt_low)}</p></div>
-                    <div class="pb" style="border-color:#006400;"><h4 style="color:#006400;">Previous Close</h4><p>{fmt_w(wt_prev)}</p></div>
+                    <div class="pb" style="border-color:#006400; box-shadow: 0 0 10px #006400;"><h4 style="color:#006400;">Contract Name</h4><p>GME-WT (Warrant)</p></div>
+                    <div class="pb" style="border-color:#006400; box-shadow: 0 0 10px #006400;"><h4 style="color:#006400;">Live Price</h4><p>{fmt_w(p_wt)}</p></div>
+                    <div class="pb" style="border-color:#006400; box-shadow: 0 0 10px #006400;"><h4 style="color:#006400;">Today's Volume</h4><p>{fmt_w(wt_vol, True)}</p></div>
+                    <div class="pb" style="border-color:#006400; box-shadow: 0 0 10px #006400;"><h4 style="color:#006400;">Market Open</h4><p>{fmt_w(wt_open)}</p></div>
+                    <div class="pb" style="border-color:#006400; box-shadow: 0 0 10px #006400;"><h4 style="color:#006400;">Day High</h4><p>{fmt_w(wt_high)}</p></div>
+                    <div class="pb" style="border-color:#006400; box-shadow: 0 0 10px #006400;"><h4 style="color:#006400;">Day Low</h4><p>{fmt_w(wt_low)}</p></div>
+                    <div class="pb" style="border-color:#006400; box-shadow: 0 0 10px #006400;"><h4 style="color:#006400;">Previous Close</h4><p>{fmt_w(wt_prev)}</p></div>
                 </div>"""
                 st.markdown(html_wt, unsafe_allow_html=True)
 
