@@ -1299,8 +1299,8 @@ else:
                         val = r[q]
                         if val is None: html_inc += "<td></td>"
                         else:
-                            c = "#132a13" if val > 0 else "#2a1313" if val < 0 else "transparent"
-                            html_inc += f"<td style='background-color:{c}; color:white;'>{val if val < 0 else f'+{val}'}M</td>"
+                            c = "rgba(0, 255, 0, 0.25)" if val > 0 else "rgba(255, 0, 0, 0.25)" if val < 0 else "transparent"
+                            html_inc += f"<td style='background-color:{c}; color:white; font-size:20px; font-weight:bold;'>{val if val < 0 else f'+{val}'}M</td>"
                     html_inc += "</tr>"
                 st.markdown(html_inc + "</table></div>", unsafe_allow_html=True)
 
