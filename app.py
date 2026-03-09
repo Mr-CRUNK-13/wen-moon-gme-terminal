@@ -1136,20 +1136,20 @@ else:
                     <p class="neon-yellow" style="font-size: 62px; font-weight: bold; margin: 10px 0 0 0;">{total_holders:,}</p>
                 </div>
                 <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 0px; gap: 20px; text-align: center;">
-                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #00FF00; flex: 1; min-width: 250px;">
+                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; flex: 1; min-width: 250px;">
                         <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold;">GME SHARES</h4>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Total Shares: <strong style="color: white;">{c_s:,.0f}</strong></p>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Cost: <strong style="color: white;">${c_gp_val:,.2f}</strong></p>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Shares / Person: <strong style="color: white;">{avg_s_per_person:,.0f}</strong></p>
                     </div>
-                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #006400; flex: 1; min-width: 250px;">
+                    <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #006400; box-shadow: 0 0 15px #006400; flex: 1; min-width: 250px;">
                         <h4 style="color: #006400; margin-top: 0; font-size: 24px; font-weight: bold;">GME WARRANTS</h4>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Total Warrants: <strong style="color: white;">{c_w:,.0f}</strong></p>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Cost: <strong style="color: white;">${c_pw_val:,.2f}</strong></p>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
                     </div>
                 </div>
-                <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #FFD700; margin-top: 20px;">
+                <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #FFD700; box-shadow: 0 0 15px #FFD700; margin-top: 20px;">
                     <h4 style="color: #FFD700; margin-top: 0; font-size: 24px; font-weight: bold; text-align: center;">🔥 WEN MOON RECENT PURCHASES</h4>
                     <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
                         <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #00FF00; flex: 1; min-width: 120px; text-align: center;">
