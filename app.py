@@ -521,7 +521,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         fig_drs_p = go.Figure()
         fig_drs_p.add_trace(go.Bar(name='Shares', x=['WEEKLY', 'MONTHLY'], y=[p_d_w_s, p_d_m_s], marker_color='#9b51e0'))
         fig_drs_p.add_trace(go.Bar(name='Warrants', x=['WEEKLY', 'MONTHLY'], y=[p_d_w_w, p_d_m_w], marker_color='#b026ff'))
-        fig_drs_p.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', margin=dict(l=20, r=20, t=40, b=20), height=300, legend=dict(y=1.15))
+        fig_drs_p.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', margin=dict(l=20, r=20, t=40, b=20), height=300, legend=dict(y=1.10))
         st.plotly_chart(fig_drs_p, use_container_width=True)
 
 # --- 2.5 LEADERBOARD SCREEN ---
