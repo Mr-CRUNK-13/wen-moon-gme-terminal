@@ -159,6 +159,7 @@ st.markdown("""
     .stTabs .stTabs [data-baseweb="tab"] p {
         font-size: 18px !important; /* <--- MODIFY SUB SIZE HERE */
     }
+        div[data-testid="stExpander"] summary p { font-size: 22px !important; }
 </style>
 """, unsafe_allow_html=True)
 
