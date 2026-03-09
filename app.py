@@ -834,15 +834,33 @@ else:
         anim_class = "nuclear-neon" if pct >= 0 else "neon-flash-red"
         icn = f"<div style='animation: {anim_class} 1.5s infinite;'><div style='font-size:{sz}px;'>🚀</div></div>" if pct >= 0 else f"<img src='data:image/jpeg;base64,{get_b64('Screenshot_20260216_163106_Discord.jpg')}' style='height:{sz}px; animation:{anim_class} 1.5s infinite;'>"
         
-        st.markdown(f"""
-        <div style='display:flex; justify-content:center; align-items:center; gap:20px; margin-top:30px;'>
+        html_live = f"""
+        <style>
+            .l-box {{ display:flex; justify-content:center; align-items:center; gap:20px; margin-top:30px; }}
+            .l-dlr {{ font-size:50px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; vertical-align:top; }}
+            .l-int {{ font-size:100px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; }}
+            .l-dec {{ font-size:80px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; }}
+            .l-sub {{ color:{clr}; margin-top:0px; font-size:24px; font-weight:bold; }}
+            .l-icn-w {{ display:flex; align-items:center; justify-content:center; }}
+            
+            @media screen and (orientation: landscape) {{
+                .l-box {{ justify-content:space-between !important; padding:0 10% !important; }}
+                .l-dlr {{ font-size:87px !important; }}
+                .l-int {{ font-size:175px !important; }}
+                .l-dec {{ font-size:140px !important; }}
+                .l-sub {{ font-size:42px !important; text-align:right; }}
+                .l-icn-w {{ transform: scale(1.5); }}
+            }}
+        </style>
+        <div class='l-box'>
             <div style='text-align:right; white-space:nowrap;'>
-                <span style='font-size:50px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; vertical-align:top;'>$</span><span style='font-size:100px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold;'>{p_int}.</span><span style='font-size:80px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold;'>{p_dec}</span>
-                <h3 style='color:{clr}; margin-top:0px;'>{diff_sign}{abs_diff:.2f} {pct:+.2f}%</h3>
+                <span class='l-dlr'>$</span><span class='l-int'>{p_int}.</span><span class='l-dec'>{p_dec}</span>
+                <div class='l-sub'>{diff_sign}{abs_diff:.2f} {pct:+.2f}%</div>
             </div>
-            {icn}
+            <div class='l-icn-w'>{icn}</div>
         </div>
-        """, unsafe_allow_html=True)
+        """
+        st.markdown(html_live, unsafe_allow_html=True)
         
         if not chart.empty:
             fig, ax = plt.subplots(figsize=(10, 2.5), facecolor='black'); ax.set_facecolor('black')
