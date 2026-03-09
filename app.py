@@ -805,8 +805,8 @@ else:
     # --- TAB 18 : 💎🙌 ---
     with tab18:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace; animation: neon-text 1.5s infinite;'>💎🙌</h2>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align:center; color:white; font-size:18px; font-weight:bold;'>Mr-CRUNK-13 Accounts</p>", unsafe_allow_html=True)
-        
+        st.markdown("<p style='text-align:center; color:#00FF00; font-size:22px; font-weight:bold; animation: neon-text 1.5s infinite;'>Mr-CRUNK-13 Accounts</p>", unsafe_allow_html=True)
+
         def social_btn(url, name, color, icon, is_discord=False):
             link = f"href='{url}' target='_blank'" if not is_discord else "href='#' onclick='return false;'"
             return f"<div style='text-align:center; padding:20px; background:#0f172a; border:2px solid {color}; border-radius:10px; margin-bottom:15px; box-shadow: 0 0 10px {color};'><h3 style='color:white; margin:0 0 10px 0;'>{icon} {name}</h3><a {link} style='display:inline-block; padding:12px 25px; background:rgba(0,0,0,0.5); border:1px solid {color}; color:{color}; font-weight:bold; text-decoration:none; border-radius:5px; font-size:18px; width:100%; box-sizing:border-box;'>{'mr_crunk_13' if is_discord else 'OPEN LINK'}</a></div>"
