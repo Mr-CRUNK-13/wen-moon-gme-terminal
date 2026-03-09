@@ -554,7 +554,11 @@ elif st.session_state.get('show_leaderboard', False):
         "tv": (st.session_state.osq * live_p_n) + (st.session_state.owq * live_p_w),
         "sq": st.session_state.osq, "wq": st.session_state.owq,
         "drs_tv": drs_tv, "drs_mv": drs_m_v, "drs_wv": drs_w_v,
-        "drs_sq": st.session_state.drs_osq, "drs_wq": st.session_state.drs_owq
+        "drs_sq": st.session_state.drs_osq, "drs_wq": st.session_state.drs_owq,
+        "drs_w_s": st.session_state.get('weekly_drs_s', 0),
+        "drs_m_s": st.session_state.get('monthly_drs_s', 0),
+        "drs_w_w": st.session_state.get('weekly_drs_w', 0),
+        "drs_m_w": st.session_state.get('monthly_drs_w', 0)
     }]
 
     for idx, t in enumerate(lb_tabs):
@@ -562,14 +566,17 @@ elif st.session_state.get('show_leaderboard', False):
             if idx >= 3: # 🟣 DRS TABS (3, 4, 5)
                 sort_key = "drs_tv" if idx == 3 else "drs_mv" if idx == 4 else "drs_wv"
                 title = "DRS TOTAL" if idx == 3 else "DRS MONTHLY" if idx == 4 else "DRS WEEKLY"
+                
+                q_s_key = "drs_sq" if idx == 3 else "drs_m_s" if idx == 4 else "drs_w_s"
+                q_w_key = "drs_wq" if idx == 3 else "drs_m_w" if idx == 4 else "drs_w_w"
+                
                 html = f"<div class='table-wrapper'><table class='ldb-t' style='border: 2px solid #9b51e0;'><tr><th style='color:#9b51e0;'>RANK</th><th style='color:#9b51e0;'>APE</th><th style='color:#9b51e0;'>{title} VALUE</th><th style='color:#9b51e0;'>LOCKED S.</th><th style='color:#9b51e0;'>LOCKED W.</th><th style='color:#9b51e0;'>TROPHIES</th></tr>"
                 sorted_db = sorted(real_db, key=lambda x: x.get(sort_key, 0), reverse=True)
                 for i, r in enumerate(sorted_db):
                     rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
-                    # Animation for DRS Rank 1
                     name_style = "class='drs-winner'" if i == 0 and r.get(sort_key, 0) > 0 else ""
                     user_trophies = "🟣" if r.get('drs_tv', 0) > 0 else ""
-                    html += f"<tr><td>{rank_str}</td><td><span {name_style}>{r['name']}</span></td><td style='color:#9b51e0;'>${r.get(sort_key, 0):,.2f}</td><td>{r.get('drs_sq', 0):,}</td><td>{r.get('drs_wq', 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
+                    html += f"<tr><td>{rank_str}</td><td><span {name_style}>{r['name']}</span></td><td style='color:#9b51e0;'>${r.get(sort_key, 0):,.2f}</td><td>{r.get(q_s_key, 0):,}</td><td>{r.get(q_w_key, 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
                 st.markdown(html + "</table></div>", unsafe_allow_html=True)
             else: # 🌍 STANDARD TABS (0, 1, 2)
                 html = "<div class='table-wrapper'><table class='ldb-t'><tr><th>RANK</th><th>APE</th><th>TOTAL VALUE</th><th>SHARES</th><th>WARRANTS</th><th>TROPHIES</th></tr>"
