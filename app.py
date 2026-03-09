@@ -438,7 +438,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             p_m_w = st.session_state.get('monthly_w', 0)
 
             html_personal = f"""
-            <div style="background-color: #0e1621; padding: 20px; border-radius: 10px; border: 1px solid #00FF00; margin-bottom: 0px;">
+            <div style="background-color: #0e1621; padding: 20px; border-radius: 10px; border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; margin-bottom: 0px;">
                 <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold; text-align:center;">🔥 YOUR RECENT PURCHASES</h4>
                 <div style="display: flex; justify-content: space-around; margin-top: 15px; flex-wrap: wrap; gap: 10px;">
                     <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #00FF00; flex: 1; min-width: 120px; text-align: center;">
@@ -467,7 +467,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
 
         # --- PHASE 2: DRS VAULT DISPLAY ---
         st.markdown(f"""
-        <div style="border: 2px solid #9b51e0; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05); margin-bottom: 20px;">
+        <div style="border: 2px solid #9b51e0; box-shadow: 0 0 15px #9b51e0; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05); margin-bottom: 20px;">
             <h2 style="text-align: center; color: #9b51e0; text-shadow: 0 0 10px #9b51e0; font-family: monospace; margin-top: 0;">🟣 YOUR DRS VAULT</h2>
             <div style="display: flex; justify-content: space-around; text-align: center;">
                 <div style="flex: 1; min-width: 120px;">
@@ -506,7 +506,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         p_d_m_w = st.session_state.get('monthly_drs_w', 0)
 
         st.markdown(f"""
-        <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 1px solid #9b51e0; margin-top: 0px;">
+        <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 2px solid #9b51e0; box-shadow: 0 0 15px #9b51e0; margin-top: 0px;">
             <h3 style="color: #9b51e0; text-align: center; font-family: monospace; text-shadow: 0 0 5px #9b51e0;">🟣 RECENT SECURED DRS</h3>
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
                 <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; flex: 1; min-width: 120px; text-align: center;">
