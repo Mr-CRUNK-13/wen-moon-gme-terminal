@@ -454,8 +454,8 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             fig_pers = go.Figure()
             fig_pers.add_trace(go.Bar(name='Shares', x=['WEEKLY', 'MONTHLY'], y=[p_w_s, p_m_s], marker_color='#00FF00'))
             fig_pers.add_trace(go.Bar(name='Warrants', x=['WEEKLY', 'MONTHLY'], y=[p_w_w, p_m_w], marker_color='#006400'))
-            fig_pers.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "YOUR BUYING POWER", 'x': 0.5, 'font': {'color': '#00FF00', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=80, b=20), height=300)
-            
+            fig_pers.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "YOUR BUYING POWER", 'x': 0.5, 'y': 0.92, 'font': {'color': '#00FF00', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=70, b=20), height=350)
+
             # --- DIGITAL LOCK TO FIX DOM LEAK ---
             st.plotly_chart(fig_pers, use_container_width=True, key="home_pers_chart_safe")
             # -------------------------------------
