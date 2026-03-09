@@ -770,6 +770,7 @@ else:
 
     # --- TAB 17 : 💎🙌13 Music ---
     with tab17:
+        st.markdown("<style>@keyframes pulse-purple { 0% { text-shadow: 0 0 5px #9b51e0; } 50% { text-shadow: 0 0 15px #b026ff, 0 0 25px #9b51e0; } 100% { text-shadow: 0 0 5px #9b51e0; } }</style>", unsafe_allow_html=True)
         st.markdown("<h2 style='text-align:center; color:#b026ff; font-family:monospace; animation: pulse-purple 1.5s infinite;'>🎧 PLAYLISTS 💿</h2>", unsafe_allow_html=True)
         
         playlists = [
