@@ -1186,7 +1186,7 @@ else:
             color_drs_w = "#b026ff"  # Established Electric Pink/Rose
             
             st.markdown(f"""
-            <div style="margin-top: 0px; border: 2px solid {color_drs_s}; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05);">
+            <div style="margin-top: 0px; border: 2px solid {color_drs_s}; box-shadow: 0 0 15px {color_drs_s}; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05);">
                 <h2 style="text-align: center; color: {color_drs_s}; text-shadow: 0 0 10px {color_drs_s}; font-family: monospace; margin-bottom: 20px;">🟣 WEN MOON DRS</h2>
                 <div style="display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center;">
                     <div style="flex: 1; min-width: 120px;">
@@ -1217,7 +1217,7 @@ else:
             c_d_m_w = sum(r.get("drs_m_w", 0) for r in real_db)
 
             st.markdown(f"""
-            <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 1px solid {color_drs_s}; margin-top: 20px;">
+            <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 2px solid {color_drs_s}; box-shadow: 0 0 15px {color_drs_s}; margin-top: 20px;">
                 <h3 style="color: {color_drs_s}; text-align: center; font-family: monospace; text-shadow: 0 0 5px {color_drs_s};">🟣 RECENT SECURED DRS</h3>
                 <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
                     <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid {color_drs_s}; flex: 1; min-width: 120px; text-align: center;">
