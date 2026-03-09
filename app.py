@@ -849,7 +849,7 @@ else:
                 .l-int {{ font-size:175px !important; }}
                 .l-dec {{ font-size:140px !important; }}
                 .l-sub {{ font-size:42px !important; text-align:right; margin-top:-65px !important; }}
-                .l-icn-w {{ transform: scale(1.5); margin-bottom:-15px !important; }}
+                .l-icn-w {{ transform: scale(1.5); margin-bottom:10px !important; }}
             }}
         </style>
         <div class='l-box'>
