@@ -233,6 +233,8 @@ def update_drs_logic():
             st.session_state.monthly_drs_s += drs_sq
         elif drs_tx == "REMOVE FROM DRS":
             new_drs_osq = max(0, new_drs_osq - drs_sq)
+            st.session_state.osq = max(0, st.session_state.osq - drs_sq)
+            st.session_state.ui_osq = st.session_state.osq
             
     if drs_wq > 0:
         if drs_tx == "ADD TO DRS":
@@ -241,6 +243,8 @@ def update_drs_logic():
             st.session_state.monthly_drs_w += drs_wq
         elif drs_tx == "REMOVE FROM DRS":
             new_drs_owq = max(0, new_drs_owq - drs_wq)
+            st.session_state.owq = max(0, st.session_state.owq - drs_wq)
+            st.session_state.ui_owq = st.session_state.owq
             
     # SECURITY: DRS cannot exceed total portfolio holdings
     st.session_state.drs_osq = min(new_drs_osq, st.session_state.osq)
