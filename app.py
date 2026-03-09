@@ -1113,7 +1113,7 @@ else:
                     <h3 class="neon-yellow" style="margin: 0; font-size: 32px;">TOTAL HOLDERS</h3>
                     <p class="neon-yellow" style="font-size: 62px; font-weight: bold; margin: 10px 0 0 0;">{total_holders:,}</p>
                 </div>
-                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 30px; gap: 20px; text-align: center;">
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 0px; gap: 20px; text-align: center;">
                     <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #00FF00; flex: 1; min-width: 250px;">
                         <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold;">GME SHARES</h4>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Total Shares: <strong style="color: white;">{c_s:,.0f}</strong></p>
@@ -1151,7 +1151,7 @@ else:
             fig_comm = go.Figure()
             fig_comm.add_trace(go.Bar(name='Shares', x=['WEEKLY', 'MONTHLY'], y=[w_s, m_s], marker_color='#00FF00'))
             fig_comm.add_trace(go.Bar(name='Warrants', x=['WEEKLY', 'MONTHLY'], y=[w_w, m_w], marker_color='#006400'))
-            fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'y': 0.92, 'font': {'color': '#FFD700', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=70, b=20), height=350)
+            fig_comm.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', title={'text': "WEN MOON VOLUME", 'x': 0.5, 'y': 0.92, 'font': {'color': '#FFD700', 'family': 'monospace'}}, margin=dict(l=20, r=20, t=70, b=0), height=350)
             st.plotly_chart(fig_comm, use_container_width=True)
 
             # --- 🟣 WEN MOON DRS POOL ---
@@ -1164,7 +1164,7 @@ else:
             color_drs_w = "#b026ff"  # Established Electric Pink/Rose
             
             st.markdown(f"""
-            <div style="margin-top: 30px; border: 2px solid {color_drs_s}; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05);">
+            <div style="margin-top: 0px; border: 2px solid {color_drs_s}; border-radius: 15px; padding: 20px; background-color: rgba(155, 81, 224, 0.05);">
                 <h2 style="text-align: center; color: {color_drs_s}; text-shadow: 0 0 10px {color_drs_s}; font-family: monospace; margin-bottom: 20px;">🟣 WEN MOON DRS</h2>
                 <div style="display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center;">
                     <div style="flex: 1; min-width: 120px;">
