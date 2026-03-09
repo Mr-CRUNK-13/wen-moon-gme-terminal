@@ -1100,13 +1100,13 @@ else:
                     <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #00FF00; flex: 1; min-width: 250px;">
                         <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold;">GME SHARES</h4>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Total Shares: <strong style="color: white;">{c_s:,.0f}</strong></p>
-                        <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Cost: <strong style="color: white;">${(c_gp_val / c_s if c_s > 0 else 0):,.2f}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Cost: <strong style="color: white;">${c_gp_val:,.2f}</strong></p>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Shares / Person: <strong style="color: white;">{avg_s_per_person:,.0f}</strong></p>
                     </div>
                     <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #006400; flex: 1; min-width: 250px;">
                         <h4 style="color: #006400; margin-top: 0; font-size: 24px; font-weight: bold;">GME WARRANTS</h4>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Total Warrants: <strong style="color: white;">{c_w:,.0f}</strong></p>
-                        <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Cost: <strong style="color: white;">${(c_pw_val / c_w if c_w > 0 else 0):,.2f}</strong></p>
+                        <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Cost: <strong style="color: white;">${c_pw_val:,.2f}</strong></p>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
                     </div>
                 </div>
