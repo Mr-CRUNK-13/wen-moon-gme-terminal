@@ -433,7 +433,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             p_m_w = st.session_state.get('monthly_w', 0)
 
             html_personal = f"""
-            <div style="background-color: #0e1621; padding: 20px; border-radius: 10px; border: 1px solid #00FF00; margin-bottom: 20px;">
+            <div style="background-color: #0e1621; padding: 20px; border-radius: 10px; border: 1px solid #00FF00; margin-bottom: 0px;">
                 <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold; text-align:center;">🔥 YOUR RECENT PURCHASES</h4>
                 <div style="display: flex; justify-content: space-around; margin-top: 15px; flex-wrap: wrap; gap: 10px;">
                     <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #00FF00; flex: 1; min-width: 120px; text-align: center;">
