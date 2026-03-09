@@ -470,14 +470,14 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                         <span style="display:inline-block; width:16px; height:16px; background-color:#9b51e0; border-radius:3px; margin-right:8px;"></span>
                         <span style="color: white; font-weight: bold; font-size: 14px;">SECURED SHARES</span>
                     </div>
-                    <h1 style="color: #9b51e0; font-family: monospace; margin-top: 0; text-shadow: 0 0 10px rgba(155, 81, 224, 0.5);">{st.session_state.drs_osq:,}</h1>
+                    <p style="color: #9b51e0; font-family: monospace; margin: 0; text-shadow: 0 0 10px rgba(155, 81, 224, 0.5); font-size: 32px; font-weight: bold;">{st.session_state.drs_osq:,}</p>
                 </div>
                 <div style="flex: 1; min-width: 120px;">
                     <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 5px;">
                         <span style="display:inline-block; width:16px; height:16px; background-color:#b026ff; border-radius:3px; margin-right:8px;"></span>
                         <span style="color: white; font-weight: bold; font-size: 14px;">SECURED WARRANTS</span>
                     </div>
-                    <h1 style="color: #b026ff; font-family: monospace; margin-top: 0; text-shadow: 0 0 10px rgba(176, 38, 255, 0.5);">{st.session_state.drs_owq:,}</h1>
+                    <p style="color: #b026ff; font-family: monospace; margin: 0; text-shadow: 0 0 10px rgba(176, 38, 255, 0.5); font-size: 32px; font-weight: bold;">{st.session_state.drs_owq:,}</p>
                 </div>
             </div>
             <p style="color: #b026ff; font-style: italic; font-size: 0.8em; text-align: center; margin-bottom: 0;">
