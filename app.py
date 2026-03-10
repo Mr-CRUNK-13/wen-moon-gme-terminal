@@ -1381,7 +1381,7 @@ else:
                 html_est = """
                 <style>
                     .est-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
-                    .eb { background: #0e1621; border: 1px solid #00FF00; border-radius: 8px; padding: 10px; text-align: center; }
+                    .eb { background: #0e1621; border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; border-radius: 8px; padding: 10px; text-align: center; }
                     .eb h4 { color: #00FF00; margin: 0 0 5px 0; font-size: 14px; }
                     .eb p { color: white; font-size: 18px; font-weight: bold; margin: 0; }
                     .hist-t { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 12px; text-align: right; margin-top: 10px; }
@@ -1404,8 +1404,7 @@ else:
                 </div>
                 <h3 style='color:#00FF00; text-align:center; margin-top:20px;'>5-Year Consensus History</h3>
                 """
-
-                
+               
                 # Verified Real History Data with Full Years (FY)
                 hist_data = [
                     {"p": "Q3 2025", "ee": 0.20, "ae": 0.24, "er": "893.6M", "ar": "821.0M", "fy": False},
