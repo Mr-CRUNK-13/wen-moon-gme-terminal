@@ -337,17 +337,17 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
 
     st.markdown("""
     <style>
-    /* 1. PRIMARY BUTTON: WEN MOON (Centered, Bigger Text, Stretched) */
+    /* 1. PRIMARY BUTTON: WEN MOON */
     button[kind="primary"] {
         min-height: 145px !important;
         border: 2px solid #00FF00 !important;
+        box-shadow: 0 0 15px #00FF00 !important;
         background-color: rgba(0, 255, 0, 0.05) !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
         align-items: center !important;
     }
-    /* Smart margin: -32px only on mobile portrait, 0px on landscape */
     @media screen and (max-width: 600px) {
         button[kind="primary"] { margin-top: -32px !important; }
     }
@@ -365,6 +365,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
     /* 2. YELLOW NEON FOR LEADERBOARD BUTTON */
     button[kind="secondary"] {
         border: 2px solid #FFD700 !important;
+        box-shadow: 0 0 15px #FFD700 !important;
         background-color: rgba(255, 215, 0, 0.05) !important;
         min-height: 70px !important;
     }
@@ -375,9 +376,10 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         animation: neon-blink-yellow 0.8s infinite alternate !important;
     }
 
-    /* 3. PROTECT THE PORTFOLIO BUTTON (Keep it normal inside Expander) */
+    /* 3. PROTECT THE PORTFOLIO BUTTON */
     div[data-testid="stExpander"] button[kind="secondary"] {
         border: 1px solid rgba(250, 250, 250, 0.2) !important;
+        box-shadow: none !important;
         background-color: #0e1621 !important;
         min-height: 40px !important;
     }
@@ -400,16 +402,15 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
     }
 
     @keyframes pulse-purple {
-    0% { text-shadow: 0 0 5px #9b51e0; }
-    50% { text-shadow: 0 0 15px #b026ff, 0 0 25px #9b51e0; }
-    100% { text-shadow: 0 0 5px #9b51e0; }
-}
-.drs-winner {
-    animation: pulse-purple 1.5s infinite;
-    color: #b026ff !important;
-    font-weight: bold;
-}
-
+        0% { text-shadow: 0 0 5px #9b51e0; }
+        50% { text-shadow: 0 0 15px #b026ff, 0 0 25px #9b51e0; }
+        100% { text-shadow: 0 0 5px #9b51e0; }
+    }
+    .drs-winner {
+        animation: pulse-purple 1.5s infinite;
+        color: #b026ff !important;
+        font-weight: bold;
+    }
     </style>
     """, unsafe_allow_html=True)
 
