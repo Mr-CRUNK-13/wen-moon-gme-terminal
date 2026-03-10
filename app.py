@@ -796,10 +796,7 @@ else:
         st.markdown("<p style='text-align:center; color:#ccc; font-size:16px;'>Select a profile below to open their live feed securely.</p>", unsafe_allow_html=True)
         
         def x_btn(handle, name, icon):
-            return f"""<div style='text-align:center; padding:30px; background:#0f172a; border:2px solid #1DA1F2; box-shadow: 0 0 15px #1DA1F2; border-radius:10px; margin-bottom:15px;'>
-                <h3 style='color:white; margin-top:0;'>{icon} {name}</h3>
-                <a href='https://twitter.com/{handle}' target='_blank' style='display:inline-block; padding:15px 30px; background:#1DA1F2; color:white; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN @{handle} ON 𝕏</a>
-            </div>"""
+            return f"<div style='text-align:center; padding:30px; background:#0f172a; border:2px solid #1DA1F2; box-shadow: 0 0 15px #1DA1F2; border-radius:10px; margin-bottom:15px;'><h3 style='color:white; margin-top:0;'>{icon} {name}</h3><a href='https://twitter.com/{handle}' target='_blank' style='display:inline-block; padding:15px 30px; background:#1DA1F2; color:white; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px; border:2px solid #1DA1F2; box-shadow: 0 0 15px #1DA1F2;'>OPEN @{handle} ON 𝕏</a></div>"
             
         c1, c2 = st.columns(2)
         with c1:
