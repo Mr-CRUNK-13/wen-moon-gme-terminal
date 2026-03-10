@@ -1130,7 +1130,7 @@ else:
                     animation: pulse-yellow 1.5s infinite;
                 }}
             </style>
-            <div style="background-color: #0f172a; padding: 20px; border-radius: 10px; border: 1px solid #0259c7;">
+            <div style="background-color: #0f172a; padding: 20px; border-radius: 10px; border: 2px solid #0259c7; box-shadow: 0 0 15px #0259c7;">
                 <h2 style="text-align: center; color: #00FF00; margin-bottom: 30px; animation: neon-text 1.5s infinite; font-family: monospace;">📊 WEN MOON SUMMARY</h2>
                 <div style="text-align: center; margin-bottom: 30px;">
                     <h3 class="neon-yellow" style="margin: 0; font-size: 32px;">TOTAL HOLDERS</h3>
