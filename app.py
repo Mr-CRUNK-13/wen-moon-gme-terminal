@@ -1131,10 +1131,10 @@ else:
                 }}
             </style>
             <div style="background-color: #0f172a; padding: 20px; border-radius: 10px; border: 2px solid #0259c7; box-shadow: 0 0 15px #0259c7;">
-                <h2 style="text-align: center; color: #00FF00; margin-bottom: 30px; animation: neon-text 1.5s infinite; font-family: monospace;">📊 WEN MOON SUMMARY</h2>
-                <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="text-align: center; color: #00FF00; margin-bottom: 15px; animation: neon-text 1.5s infinite; font-family: monospace;">📊 WEN MOON SUMMARY</h2>
+                <div style="text-align: center; margin-bottom: 15px;">
                     <h3 class="neon-yellow" style="margin: 0; font-size: 32px;">TOTAL HOLDERS</h3>
-                    <p class="neon-yellow" style="font-size: 62px; font-weight: bold; margin: 10px 0 0 0;">{total_holders:,}</p>
+                    <p class="neon-yellow" style="font-size: 62px; font-weight: bold; margin: 5px 0 0 0;">{total_holders:,}</p>
                 </div>
                 <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 0px; gap: 20px; text-align: center;">
                     <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; flex: 1; min-width: 250px;">
