@@ -778,8 +778,8 @@ else:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🌐 INVESTOR PORTALS</h2>", unsafe_allow_html=True)
         w_t1, w_t2, w_t3, w_t4, w_t5, w_t6, w_t7, w_t8 = st.tabs(["👔 Investors", "📊 ChartEx", "🎀 RedStriped", "🐋 Whales", "🦍 Reddit", "🐳 WhaleWisdom", "📈 TradingView", "📰 Yahoo"])
         
-        def portal_btn(title, desc, url):
-            return f"<div style='text-align:center; padding:50px; background:#0f172a; border:2px solid #00FF00; box-shadow: 0 0 15px #00FF00; border-radius:10px;'><h3 style='color:white;'>{title}</h3><p style='color:#ccc; font-size:18px;'>{desc}</p><a href='{url}' target='_blank' style='display:inline-block; margin-top:20px; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px; border:2px solid #00FF00; box-shadow: 0 0 15px #00FF00;'>OPEN SECURE LINK</a></div>"
+          def portal_btn(title, desc, url):
+            return f"<div style='text-align:center; padding:20px; background:#0f172a; border:2px solid #00FF00; box-shadow: 0 0 15px #00FF00; border-radius:10px;'><h3 style='color:white; margin: 0 0 10px 0;'>{title}</h3><p style='color:#ccc; font-size:18px; margin-bottom: 20px;'>{desc}</p><a href='{url}' target='_blank' style='display:inline-block; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px; border:2px solid #00FF00; box-shadow: 0 0 15px #00FF00;'>OPEN SECURE LINK</a></div>"
             
         with w_t1: st.markdown(portal_btn("GAMESTOP INVESTORS", "Official corporate and SEC filings.", "https://investor.gamestop.com/"), unsafe_allow_html=True)
         with w_t2: st.markdown(portal_btn("CHARTEXCHANGE", "Live Borrow Fee and Dark Pool data.", "https://chartexchange.com/symbol/nyse-gme/borrow-fee/"), unsafe_allow_html=True)
