@@ -763,33 +763,36 @@ else:
             st.markdown(x_btn("GameStop", "GameStop", "🎮"), unsafe_allow_html=True)
             st.markdown(x_btn("PowerPacks", "PowerPacks", "🃏"), unsafe_allow_html=True)
             
+            # --- TAB 16 : 📺 GME YouTube ---
     # --- TAB 16 : 📺 GME YouTube ---
     with tab16:
-            st.markdown("<h2 style='text-align:center; color:#FF0000; font-family:monospace; animation: neon-flash-red 1.5s infinite;'>📺 GME YOUTUBE HUB</h2>", unsafe_allow_html=True)
-            
-            st.markdown("""
-            <style>
-                .neon-video {
-                    border: 2px solid #FF0000 !important;
-                    box-shadow: 0 0 15px #FF0000 !important;
-                    border-radius: 10px;
-                    margin-bottom: 20px;
-                }
-                @media screen and (orientation: landscape) {
-                    .neon-video { height: 400px !important; }
-                }
-            </style>
-            <iframe class="neon-video" width="100%" height="220" src="https://www.youtube.com/embed/videoseries?list=PL8E5BqjEa7V15KI2Rwf1tRYsd90zfMktN" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            """, unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align:center; color:#FF0000; font-family:monospace; animation: neon-flash-red 1.5s infinite;'>📺 GME YOUTUBE HUB</h2>", unsafe_allow_html=True)
 
-            st.markdown("""<div style='display:flex; justify-content:center; margin-bottom:20px;'><div style='background:#0f172a; border:2px solid #FF0000; box-shadow: 0 0 15px #FF0000; padding:15px; border-radius:10px; width:100%; max-width:300px; text-align:center;'><h4 style='color:#FF0000; margin-top:0;'>🎬 ROARING KITTY - GME MIX</h4></div></div>""", unsafe_allow_html=True)
+        st.markdown("""
+        <style>
+            .neon-video {
+                border: 2px solid #FF0000 !important;
+                box-shadow: 0 0 15px #FF0000 !important;
+                border-radius: 10px;
+                margin-bottom: 20px;
+            }
+            @media screen and (orientation: landscape) {
+                .neon-video { height: 400px !important; }
+            }
+        </style>
+        <iframe class="neon-video" width="100%" height="220" src="https://www.youtube.com/embed/videoseries?list=PL8E5BqjEa7V15KI2Rwf1tRYsd90zfMktN" frameborder="0" allowfullscreen></iframe>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""<div style='display:flex; justify-content:center; margin-bottom:20px;'><div style='background:#0f172a; border:2px solid #FF0000; box-shadow: 0 0 15px #FF0000; padding:15px; border-radius:10px; width:100%; max-width:300px; text-align:center;'><h4 style='color:#FF0000; margin-top:0;'>🎬 ROARING KITTY - GME MIX</h4></div></div>""", unsafe_allow_html=True)
 
         def yt_btn(url, name, icon):
-            return f"<div style='text-align:center; padding:30px; background:#0f172a; border:2px solid #FF0000; box-shadow: 0 0 15px #FF0000; border-radius:10px; margin-bottom:15px;'><h3 style='color:white; margin-top:0;'>{icon} {name}</h3><a href='{url}' target='_blank' style='display:inline-block; padding:15px 30px; background:#FF0000; color:white; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN ON YOUTUBE</a></div>"
-        
+            return f"<div style='text-align:center; padding:30px; background:#0f172a; border:2px solid #FF0000; box-shadow: 0 0 15px #FF0000; border-radius:10px; margin-bottom:15px;'><h3 style='color:white; margin-top:0;'>{icon} {name}</h3><a href='{url}' target='_blank' style='display:inline-block; padding:15px 30px; background:#FF0000; color:white; text-decoration:none; border-radius:5px; font-weight:bold;'>OPEN ON YOUTUBE</a></div>"
+
         c16_1, c16_2 = st.columns(2)
-        with c16_1: st.markdown(yt_btn("https://youtube.com/@roaringkitty", "Roaring Kitty", "🐱"), unsafe_allow_html=True)
-        with c16_2: st.markdown(yt_btn("https://youtube.com/@gamestop", "GameStop", "🎮"), unsafe_allow_html=True)
+        with c16_1:
+            st.markdown(yt_btn("https://youtube.com/@roaringkitty", "Roaring Kitty", "🐱"), unsafe_allow_html=True)
+        with c16_2:
+            st.markdown(yt_btn("https://youtube.com/@gamestop", "GameStop", "🎮"), unsafe_allow_html=True)
 
     # --- TAB 17 : 💎🙌13 Music ---
     with tab17:
