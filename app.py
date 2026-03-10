@@ -1060,7 +1060,9 @@ else:
             ar.text(0.1, 0.25, f"P/L: ${w_pl:+,.2f} ({w_pct_pl:+.2f}%)", color="#00FF00" if w_pl>=0 else "#FF0000", fontsize=84, ha="left", weight="bold")
             ar.annotate("", xy=(0.08, 0.5), xytext=(-0.19, 0.5), arrowprops=dict(arrowstyle="->", color="#006400", lw=20))
 
+            st.markdown('<div style="border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; border-radius: 15px; padding: 10px; background: #0e1621; margin-bottom: 20px;">', unsafe_allow_html=True)
             st.pyplot(fig4, bbox_inches='tight', pad_inches=0.1); plt.close(fig4)
+            st.markdown('</div>', unsafe_allow_html=True)
         
         with ph4.container():
             html_d = f"""<div class='table-wrapper'><table class='ldb-t'>
@@ -1117,7 +1119,9 @@ else:
             ar_c.text(0.1, 0.25, f"P/L: ${c_pl_w:+,.2f} ({c_w_pct:+.2f}%)", color="#00FF00" if c_pl_w>=0 else "#FF0000", fontsize=84, ha="left", weight="bold")
             ar_c.annotate("", xy=(0.08, 0.5), xytext=(-0.19, 0.5), arrowprops=dict(arrowstyle="->", color="#006400", lw=20))
 
+            st.markdown('<div style="border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; border-radius: 15px; padding: 10px; background: #0e1621; margin-bottom: 20px;">', unsafe_allow_html=True)
             st.pyplot(fig_c4, bbox_inches='tight', pad_inches=0.1); plt.close(fig_c4)
+            st.markdown('</div>', unsafe_allow_html=True)
                 
         with ph6.container():
             html_w = f"""<div class='table-wrapper'><table class='ldb-t'>
