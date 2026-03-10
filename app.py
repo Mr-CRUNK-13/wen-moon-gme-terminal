@@ -547,13 +547,18 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         </div>
         """, unsafe_allow_html=True)
 
-        # --- DRS PROGRESS BAR ---
+        # --- DRS PROGRESS BARS (SHARES & WARRANTS) ---
         drs_percent = (st.session_state.drs_osq / st.session_state.osq * 100) if st.session_state.osq > 0 else 0
+        drs_w_percent = (st.session_state.drs_owq / st.session_state.owq * 100) if st.session_state.owq > 0 else 0
         st.markdown(f"""
         <div style="width: 100%; background-color: #050505; border-radius: 10px; height: 12px; border: 1px solid #9b51e0; box-shadow: 0 0 10px #9b51e0; overflow: hidden; margin-bottom: 5px;">
         <div style="width: {drs_percent}%; background-color: #9b51e0; height: 100%; box-shadow: 0 0 10px #9b51e0;"></div>
         </div>
-        <p style="color: #9b51e0; font-size: 0.7em; text-align: right; font-weight: bold; margin: 0;">{drs_percent:.1f}% OF SHARES LOCKED</p>
+        <p style="color: #9b51e0; font-size: 0.7em; text-align: right; font-weight: bold; margin: 0 0 10px 0;">{drs_percent:.1f}% OF SHARES LOCKED</p>
+        <div style="width: 100%; background-color: #050505; border-radius: 10px; height: 12px; border: 1px solid #b026ff; box-shadow: 0 0 10px #b026ff; overflow: hidden; margin-bottom: 5px;">
+        <div style="width: {drs_w_percent}%; background-color: #b026ff; height: 100%; box-shadow: 0 0 10px #b026ff;"></div>
+        </div>
+        <p style="color: #b026ff; font-size: 0.7em; text-align: right; font-weight: bold; margin: 0;">{drs_w_percent:.1f}% OF WARRANTS LOCKED</p>
         """, unsafe_allow_html=True)
         
         # --- PERSONAL DRS WEEKLY/MONTHLY VISUALS ---
