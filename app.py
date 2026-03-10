@@ -459,32 +459,29 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             # --- YOUR HOLDINGS BLOCK ---
             html_holdings = f"""
             <div style="background-color: #0e1621; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                <h2 style="text-align: center; color: #00FF00; margin-top: 0; font-family: monospace; animation: neon-blink 1.5s infinite alternate; text-shadow: 0 0 10px #00FF00;">💎🙌 YOUR HOLDINGS</h2>
-                
-                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; margin-top: 20px;">
-                    <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; flex: 1; min-width: 140px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
-                        <p style="color: #00FF00; font-size: 18px; font-weight: bold; margin: 0 0 5px 0;">GME SHARES</p>
-                        <div style="width: 100%; word-break: break-all;">
-                            <span style="color: #00FF00; font-weight: bold; font-size: clamp(30px, 8vw, 55px); line-height: 1.1;">{h_osq:,}</span>
-                        </div>
-                        <p style="color: #00FF00; font-size: 16px; margin: 5px 0 0 0;">Avg Cost: ${h_osp:,.2f}</p>
-                    </div>
-                    
-                    <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; border: 2px solid #006400; box-shadow: 0 0 15px #006400; flex: 1; min-width: 140px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
-                        <p style="color: #006400; font-size: 18px; font-weight: bold; margin: 0 0 5px 0;">GME WARRANTS</p>
-                        <div style="width: 100%; word-break: break-all;">
-                            <span style="color: #006400; font-weight: bold; font-size: clamp(30px, 8vw, 55px); line-height: 1.1;">{h_owq:,}</span>
-                        </div>
-                        <p style="color: #006400; font-size: 16px; margin: 5px 0 0 0;">Avg Cost: ${h_owp:,.3f}</p>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 25px;">
-                    <p style="color: #006400; font-size: 16px; font-weight: bold; text-align: center; margin: 0 0 5px 0;">WARRANTS: {w_pct:.1f}% OF LIVE VALUE</p>
-                    <div style="width: 100%; background-color: #050505; border-radius: 10px; height: 12px; border: 1px solid #00FF00; box-shadow: 0 0 10px #00FF00; overflow: hidden;">
-                        <div style="width: {w_pct}%; background-color: #006400; height: 100%; box-shadow: 0 0 10px #006400;"></div>
-                    </div>
-                </div>
+            <h2 style="text-align: center; color: #00FF00; margin-top: 0; font-family: monospace; animation: neon-blink 1.5s infinite alternate; text-shadow: 0 0 10px #00FF00;">💎🙌 YOUR HOLDINGS</h2>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; margin-top: 20px;">
+            <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; flex: 1; min-width: 140px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+            <p style="color: #00FF00; font-size: 18px; font-weight: bold; margin: 0 0 5px 0;">GME SHARES</p>
+            <div style="width: 100%; word-break: break-all;">
+            <span style="color: #00FF00; font-weight: bold; font-size: clamp(30px, 8vw, 55px); line-height: 1.1;">{h_osq:,}</span>
+            </div>
+            <p style="color: #00FF00; font-size: 16px; margin: 5px 0 0 0;">Avg Cost: ${h_osp:,.2f}</p>
+            </div>
+            <div style="background-color: #0f172a; padding: 20px; border-radius: 8px; border: 2px solid #006400; box-shadow: 0 0 15px #006400; flex: 1; min-width: 140px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+            <p style="color: #006400; font-size: 18px; font-weight: bold; margin: 0 0 5px 0;">GME WARRANTS</p>
+            <div style="width: 100%; word-break: break-all;">
+            <span style="color: #006400; font-weight: bold; font-size: clamp(30px, 8vw, 55px); line-height: 1.1;">{h_owq:,}</span>
+            </div>
+            <p style="color: #006400; font-size: 16px; margin: 5px 0 0 0;">Avg Cost: ${h_owp:,.3f}</p>
+            </div>
+            </div>
+            <div style="margin-top: 25px;">
+            <p style="color: #006400; font-size: 16px; font-weight: bold; text-align: center; margin: 0 0 5px 0;">WARRANTS: {w_pct:.1f}% OF LIVE VALUE</p>
+            <div style="width: 100%; background-color: #050505; border-radius: 10px; height: 12px; border: 1px solid #00FF00; box-shadow: 0 0 10px #00FF00; overflow: hidden;">
+            <div style="width: {w_pct}%; background-color: #006400; height: 100%; box-shadow: 0 0 10px #006400;"></div>
+            </div>
+            </div>
             </div>
             """
             st.markdown(html_holdings, unsafe_allow_html=True)
