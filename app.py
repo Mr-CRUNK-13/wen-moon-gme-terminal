@@ -555,6 +555,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             </div>
             <p style='color: #9b51e0; font-size: 0.7em; text-align: right;'>{drs_percent:.1f}% OF SHARES LOCKED</p>
         """, unsafe_allow_html=True)
+        
         # --- PERSONAL DRS WEEKLY/MONTHLY VISUALS ---
         p_d_w_s = st.session_state.get('weekly_drs_s', 0)
         p_d_m_s = st.session_state.get('monthly_drs_s', 0)
@@ -563,19 +564,19 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
 
         st.markdown(f"""
         <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 2px solid #9b51e0; box-shadow: 0 0 15px #9b51e0; margin-top: 0px;">
-            <h3 style="color: #9b51e0; text-align: center; font-family: monospace; text-shadow: 0 0 5px #9b51e0;">🟣 RECENT SECURED DRS</h3>
-            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
-                <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #9b51e0; flex: 1; min-width: 120px; text-align: center;">
-                    <p style="color: #9b51e0; font-weight: bold; margin: 0 0 10px 0;">WEEKLY</p>
-                    <p style="color: white; margin: 0;">Shares: <strong style="color: #9b51e0;">+{p_d_w_s:,}</strong></p>
-                    <p style="color: white; margin: 0;">Warrants: <strong style="color: #b026ff;">+{p_d_w_w:,}</strong></p>
-                </div>
-                <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 1px solid #b026ff; flex: 1; min-width: 120px; text-align: center;">
-                    <p style="color: #b026ff; font-weight: bold; margin: 0 0 10px 0;">MONTHLY</p>
-                    <p style="color: white; margin: 0;">Shares: <strong style="color: #9b51e0;">+{p_d_m_s:,}</strong></p>
-                    <p style="color: white; margin: 0;">Warrants: <strong style="color: #b026ff;">+{p_d_m_w:,}</strong></p>
-                </div>
-            </div>
+        <h3 style="color: #9b51e0; text-align: center; font-family: monospace; text-shadow: 0 0 5px #9b51e0;">🟣 RECENT SECURED DRS</h3>
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
+        <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 2px solid #9b51e0; box-shadow: 0 0 15px #9b51e0; flex: 1; min-width: 120px; text-align: center;">
+        <p style="color: #9b51e0; font-weight: bold; margin: 0 0 10px 0;">WEEKLY</p>
+        <p style="color: white; margin: 0;">Shares: <strong style="color: #9b51e0;">+{p_d_w_s:,}</strong></p>
+        <p style="color: white; margin: 0;">Warrants: <strong style="color: #b026ff;">+{p_d_w_w:,}</strong></p>
+        </div>
+        <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 2px solid #b026ff; box-shadow: 0 0 15px #b026ff; flex: 1; min-width: 120px; text-align: center;">
+        <p style="color: #b026ff; font-weight: bold; margin: 0 0 10px 0;">MONTHLY</p>
+        <p style="color: white; margin: 0;">Shares: <strong style="color: #9b51e0;">+{p_d_m_s:,}</strong></p>
+        <p style="color: white; margin: 0;">Warrants: <strong style="color: #b026ff;">+{p_d_m_w:,}</strong></p>
+        </div>
+        </div>
         </div>
         """, unsafe_allow_html=True)
 
