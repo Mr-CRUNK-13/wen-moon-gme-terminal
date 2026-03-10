@@ -765,10 +765,24 @@ else:
             
     # --- TAB 16 : 📺 GME YouTube ---
     with tab16:
-        st.markdown("<h2 style='text-align:center; color:#FF0000; font-family:monospace; animation: neon-flash-red 1.5s infinite;'>📺 GME YOUTUBE HUB</h2>", unsafe_allow_html=True)
-        
-        components.html("""<iframe width="100%" height="100%" src="https://www.youtube.com/embed/videoseries?list=PL8E5BqjEa7V0KYhYAq18oYJ6GVMTFKZyR" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border-radius:10px; border:2px solid #FF0000; box-shadow: 0 0 15px rgba(255,0,0,0.5);"></iframe>""", height=250)
-        st.markdown("""<div style='display:flex; justify-content:center; margin-bottom:20px;'><div style='background:#0f172a; padding:15px; border-radius:10px; border:2px solid #FF0000; width:100%; max-width:300px; text-align:center; box-shadow: 0 0 15px #FF0000;'><h4 style='color:#FF0000; margin-top:0;'>🎬 ROARING KITTY - GME MIX</h4><div style='display:flex; gap:10px; justify-content:center; margin-top:15px;'><a href='https://youtube.com/playlist?list=PL8E5BqjEa7V0KYhYAq18oYJ6GVMTFKZyR' target='_blank' style='flex:1; padding:10px; background:rgba(255,0,0,0.1); border:1px solid #FF0000; color:#FF0000; text-decoration:none; font-weight:bold; border-radius:5px;'>🔴 YT VIDEO</a><a href='https://music.youtube.com/playlist?list=PL8E5BqjEa7V0KYhYAq18oYJ6GVMTFKZyR' target='_blank' style='flex:1; padding:10px; background:rgba(176,38,255,0.1); border:1px solid #b026ff; color:#b026ff; text-decoration:none; font-weight:bold; border-radius:5px;'>🎵 YT MUSIC</a></div></div></div>""", unsafe_allow_html=True)
+            st.markdown("<h2 style='text-align:center; color:#FF0000; font-family:monospace; animation: neon-flash-red 1.5s infinite;'>📺 GME YOUTUBE HUB</h2>", unsafe_allow_html=True)
+            
+            st.markdown("""
+            <style>
+                .neon-video {
+                    border: 2px solid #FF0000 !important;
+                    box-shadow: 0 0 15px #FF0000 !important;
+                    border-radius: 10px;
+                    margin-bottom: 20px;
+                }
+                @media screen and (orientation: landscape) {
+                    .neon-video { height: 400px !important; }
+                }
+            </style>
+            <iframe class="neon-video" width="100%" height="220" src="https://www.youtube.com/embed/videoseries?list=PL8E5BqjEa7V15KI2Rwf1tRYsd90zfMktN" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            """, unsafe_allow_html=True)
+
+            st.markdown("""<div style='display:flex; justify-content:center; margin-bottom:20px;'><div style='background:#0f172a; border:2px solid #FF0000; box-shadow: 0 0 15px #FF0000; padding:15px; border-radius:10px; width:100%; max-width:300px; text-align:center;'><h4 style='color:#FF0000; margin-top:0;'>🎬 ROARING KITTY - GME MIX</h4></div></div>""", unsafe_allow_html=True)
 
         def yt_btn(url, name, icon):
             return f"<div style='text-align:center; padding:30px; background:#0f172a; border:2px solid #FF0000; box-shadow: 0 0 15px #FF0000; border-radius:10px; margin-bottom:15px;'><h3 style='color:white; margin-top:0;'>{icon} {name}</h3><a href='{url}' target='_blank' style='display:inline-block; padding:15px 30px; background:#FF0000; color:white; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px;'>OPEN ON YOUTUBE</a></div>"
