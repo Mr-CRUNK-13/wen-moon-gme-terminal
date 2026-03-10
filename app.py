@@ -1085,14 +1085,14 @@ else:
 
             for idx, t in enumerate(lb_tabs_t):
                 with t:
-                    if idx >= 3: # 🟣 DRS TABS (3, 4, 5)
+                    if idx >= 3:
                         sort_k = "drs_tv" if idx == 3 else "drs_mv" if idx == 4 else "drs_wv"
                         ttl = "DRS TOTAL" if idx == 3 else "DRS MONTHLY" if idx == 4 else "DRS WEEKLY"
                         
                         q_s_key = "drs_sq" if idx == 3 else "drs_m_s" if idx == 4 else "drs_w_s"
                         q_w_key = "drs_wq" if idx == 3 else "drs_m_w" if idx == 4 else "drs_w_w"
                         
-                        html = f"<div class='table-wrapper'><table class='ldb-t' style='border: 2px solid #9b51e0; box-shadow: 0 0 15px #9b51e0;'><tr><th style='color:#9b51e0;'>RANK</th><th style='color:#9b51e0;'>APE</th><th style='color:#9b51e0;'>{ttl} VALUE</th><th style='color:#9b51e0;'>LOCKED S.</th><th style='color:#9b51e0;'>LOCKED W.</th><th style='color:#9b51e0;'>TROPHIES</th></tr>"
+                        html = f"<div class='table-wrapper' style='border: 2px solid #9b51e0; box-shadow: 0 0 15px #9b51e0;'><table class='ldb-t' style='border: none;'><tr><th style='color:#9b51e0;'>RANK</th><th style='color:#9b51e0;'>APE</th><th style='color:#9b51e0;'>{ttl} VALUE</th><th style='color:#9b51e0;'>LOCKED S.</th><th style='color:#9b51e0;'>LOCKED W.</th><th style='color:#9b51e0;'>TROPHIES</th></tr>"
                         s_db = sorted(real_db, key=lambda x: x.get(sort_k, 0), reverse=True)
                         for i, r in enumerate(s_db):
                             rnk = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
