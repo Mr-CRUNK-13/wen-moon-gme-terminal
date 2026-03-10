@@ -1060,7 +1060,7 @@ else:
             ar.text(0.1, 0.25, f"P/L: ${w_pl:+,.2f} ({w_pct_pl:+.2f}%)", color="#00FF00" if w_pl>=0 else "#FF0000", fontsize=84, ha="left", weight="bold")
             ar.annotate("", xy=(0.08, 0.5), xytext=(-0.19, 0.5), arrowprops=dict(arrowstyle="->", color="#006400", lw=20))
 
-             with st.container():
+            with st.container():
                 st.markdown('<div id="p3-neon-anchor" style="display:none;"></div><style>div[data-testid="stVerticalBlock"]:has(> div #p3-neon-anchor) { border: 2px solid #00FF00 !important; box-shadow: 0 0 15px #00FF00 !important; border-radius: 15px !important; padding: 10px !important; background: #0e1621 !important; margin-bottom: 20px !important; }</style>', unsafe_allow_html=True)
                 st.pyplot(fig4, bbox_inches='tight', pad_inches=0.1); plt.close(fig4)
 
