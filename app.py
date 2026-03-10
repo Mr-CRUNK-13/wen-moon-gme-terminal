@@ -411,6 +411,14 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         color: #b026ff !important;
         font-weight: bold;
     }
+
+    /* FIX FOR YOUTUBE VIDEO IN LANDSCAPE MODE */
+    @media screen and (orientation: landscape) {
+        iframe {
+            height: 400px !important;
+        }
+    }
+
     </style>
     """, unsafe_allow_html=True)
 
