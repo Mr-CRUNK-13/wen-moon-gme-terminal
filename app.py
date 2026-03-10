@@ -1290,18 +1290,18 @@ else:
             c_d_m_w = sum(r.get("drs_m_w", 0) for r in real_db)
 
             st.markdown(f"""
-            <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 2px solid {{color_drs_s}}; box-shadow: 0 0 15px {{color_drs_s}}; margin-top: 20px;">
-                <h3 style="color: {{color_drs_s}}; text-align: center; font-family: monospace; text-shadow: 0 0 5px {{color_drs_s}};">🟣 RECENT SECURED DRS</h3>
+            <div style="background-color: rgba(155, 81, 224, 0.05); padding: 20px; border-radius: 10px; border: 2px solid {color_drs_s}; box-shadow: 0 0 15px {color_drs_s}; margin-top: 20px;">
+                <h3 style="color: {color_drs_s}; text-align: center; font-family: monospace; text-shadow: 0 0 5px {color_drs_s};">🟣 RECENT SECURED DRS</h3>
                 <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px;">
-                    <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 2px solid {{color_drs_s}}; box-shadow: 0 0 15px {{color_drs_s}}; flex: 1; min-width: 120px; text-align: center;">
-                        <p style="color: {{color_drs_s}}; font-weight: bold; margin: 0 0 10px 0;">WEEKLY</p>
-                        <p style="color: white; margin: 0;">Shares: <strong style="color: {{color_drs_s}};">+{{c_d_w_s:,}}</strong></p>
-                        <p style="color: white; margin: 0;">Warrants: <strong style="color: {{color_drs_w}};">+{{c_d_w_w:,}}</strong></p>
+                    <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 2px solid {color_drs_s}; box-shadow: 0 0 15px {color_drs_s}; flex: 1; min-width: 120px; text-align: center;">
+                        <p style="color: {color_drs_s}; font-weight: bold; margin: 0 0 10px 0;">WEEKLY</p>
+                        <p style="color: white; margin: 0;">Shares: <strong style="color: {color_drs_s};">+{c_d_w_s:,}</strong></p>
+                        <p style="color: white; margin: 0;">Warrants: <strong style="color: {color_drs_w};">+{c_d_w_w:,}</strong></p>
                     </div>
-                    <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 2px solid {{color_drs_w}}; box-shadow: 0 0 15px {{color_drs_w}}; flex: 1; min-width: 120px; text-align: center;">
-                        <p style="color: {{color_drs_w}}; font-weight: bold; margin: 0 0 10px 0;">MONTHLY</p>
-                        <p style="color: white; margin: 0;">Shares: <strong style="color: {{color_drs_s}};">+{{c_d_m_s:,}}</strong></p>
-                        <p style="color: white; margin: 0;">Warrants: <strong style="color: {{color_drs_w}};">+{{c_d_m_w:,}}</strong></p>
+                    <div style="background-color: #0e1621; padding: 15px; border-radius: 8px; border: 2px solid {color_drs_w}; box-shadow: 0 0 15px {color_drs_w}; flex: 1; min-width: 120px; text-align: center;">
+                        <p style="color: {color_drs_w}; font-weight: bold; margin: 0 0 10px 0;">MONTHLY</p>
+                        <p style="color: white; margin: 0;">Shares: <strong style="color: {color_drs_s};">+{c_d_m_s:,}</strong></p>
+                        <p style="color: white; margin: 0;">Warrants: <strong style="color: {color_drs_w};">+{c_d_m_w:,}</strong></p>
                     </div>
                 </div>
             </div>
