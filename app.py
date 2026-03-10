@@ -550,10 +550,10 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         # --- DRS PROGRESS BAR ---
         drs_percent = (st.session_state.drs_osq / st.session_state.osq * 100) if st.session_state.osq > 0 else 0
         st.markdown(f"""
-            <div style='width: 100%; background-color: #222; border-radius: 10px; height: 10px;'>
-                <div style='width: {drs_percent}%; background-color: #9b51e0; height: 10px; border-radius: 10px; box-shadow: 0 0 10px #9b51e0;'></div>
-            </div>
-            <p style='color: #9b51e0; font-size: 0.7em; text-align: right;'>{drs_percent:.1f}% OF SHARES LOCKED</p>
+        <div style="width: 100%; background-color: #050505; border-radius: 10px; height: 12px; border: 1px solid #9b51e0; box-shadow: 0 0 10px #9b51e0; overflow: hidden; margin-bottom: 5px;">
+        <div style="width: {drs_percent}%; background-color: #9b51e0; height: 100%; box-shadow: 0 0 10px #9b51e0;"></div>
+        </div>
+        <p style="color: #9b51e0; font-size: 0.7em; text-align: right; font-weight: bold; margin: 0;">{drs_percent:.1f}% OF SHARES LOCKED</p>
         """, unsafe_allow_html=True)
         
         # --- PERSONAL DRS WEEKLY/MONTHLY VISUALS ---
