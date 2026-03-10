@@ -884,7 +884,7 @@ else:
 
         def social_btn(url, name, color, icon, is_discord=False):
             link = f"href='{url}' target='_blank'" if not is_discord else "href='#' onclick='return false;'"
-            return f"<div style='text-align:center; padding:20px; background:#0f172a; border:2px solid {color}; border-radius:10px; margin-bottom:15px; box-shadow: 0 0 10px {color};'><h3 style='color:white; margin:0 0 10px 0;'>{icon} {name}</h3><a {link} style='display:inline-block; padding:12px 25px; background:rgba(0,0,0,0.5); border:1px solid {color}; color:{color}; font-weight:bold; text-decoration:none; border-radius:5px; font-size:18px; width:100%; box-sizing:border-box;'>{'mr_crunk_13' if is_discord else 'OPEN LINK'}</a></div>"
+            return f"<div style='text-align:center; padding:20px; background:#0f172a; border:2px solid {color}; border-radius:10px; margin-bottom:15px; box-shadow: 0 0 15px {color};'><h3 style='color:white; margin:0 0 10px 0;'>{icon} {name}</h3><a {link} style='display:inline-block; padding:12px 25px; background:rgba(0,0,0,0.5); border:2px solid {color}; color:{color}; font-weight:bold; text-decoration:none; border-radius:5px; font-size:18px; width:100%; box-sizing:border-box; border: 2px solid {color}; box-shadow: 0 0 15px {color};'>{'mr_crunk_13' if is_discord else 'OPEN LINK'}</a></div>"
             
         c18_1, c18_2 = st.columns(2)
         with c18_1:
