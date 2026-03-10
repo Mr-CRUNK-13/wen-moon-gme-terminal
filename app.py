@@ -415,7 +415,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
     /* FIX FOR YOUTUBE VIDEO IN LANDSCAPE MODE */
     @media screen and (orientation: landscape) {
         iframe {
-            height: 550px !important;
+            height: 900px !important;
         }
     }
 
