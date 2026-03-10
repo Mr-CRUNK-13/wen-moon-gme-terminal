@@ -495,19 +495,19 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
 
             html_personal = f"""
             <div style="background-color: #0e1621; padding: 20px; border-radius: 10px; border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; margin-bottom: 0px;">
-                <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold; text-align:center;">🔥 YOUR RECENT PURCHASES</h4>
-                <div style="display: flex; justify-content: space-around; margin-top: 15px; flex-wrap: wrap; gap: 10px;">
-                    <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #00FF00; flex: 1; min-width: 120px; text-align: center;">
-                        <p style="color: #00FF00; font-size: 18px; margin: 0 0 10px 0; font-weight: bold;">WEEKLY</p>
-                        <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{p_w_s:,}</strong></p>
-                        <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{p_w_w:,}</strong></p>
-                    </div>
-                    <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #006400; flex: 1; min-width: 120px; text-align: center;">
-                        <p style="color: #006400; font-size: 18px; margin: 0 0 10px 0; font-weight: bold;">MONTHLY</p>
-                        <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{p_m_s:,}</strong></p>
-                        <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{p_m_w:,}</strong></p>
-                    </div>
-                </div>
+            <h4 style="color: #00FF00; margin-top: 0; font-size: 24px; font-weight: bold; text-align:center;">🔥 YOUR RECENT PURCHASES</h4>
+            <div style="display: flex; justify-content: space-around; margin-top: 15px; flex-wrap: wrap; gap: 15px;">
+            <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; flex: 1; min-width: 120px; text-align: center;">
+            <p style="color: #00FF00; font-size: 18px; margin: 0 0 10px 0; font-weight: bold;">WEEKLY</p>
+            <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{p_w_s:,}</strong></p>
+            <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{p_w_w:,}</strong></p>
+            </div>
+            <div style="background-color: #0f172a; padding: 15px; border-radius: 8px; border: 2px solid #006400; box-shadow: 0 0 15px #006400; flex: 1; min-width: 120px; text-align: center;">
+            <p style="color: #006400; font-size: 18px; margin: 0 0 10px 0; font-weight: bold;">MONTHLY</p>
+            <p style="margin: 5px 0; font-size: 16px; color: white;">Shares: <strong>+{p_m_s:,}</strong></p>
+            <p style="margin: 5px 0; font-size: 16px; color: white;">Warrants: <strong>+{p_m_w:,}</strong></p>
+            </div>
+            </div>
             </div>
             """
             st.markdown(html_personal, unsafe_allow_html=True)
