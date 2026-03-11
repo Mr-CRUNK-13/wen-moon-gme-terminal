@@ -773,7 +773,7 @@ else:
         
         def tv_widget(symbol, cid):
             return f"""
-            <div class="tradingview-widget-container" style="height: 700px; width: 100%;">
+            <div class="tradingview-widget-container" style="height: 100vh; width: 100%;">
               <div id="{cid}" style="height: 100%; width: 100%;"></div>
               <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
               <script type="text/javascript">
