@@ -272,15 +272,15 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         st.session_state.ape_name = st.text_input("Nickname (Optional)", value=st.session_state.ape_name)
         st.markdown("### 🏦 CURRENT HOLDINGS")
         col1, col2 = st.columns(2)
-        col1, col2 = st.columns(2)
         with col1:
             st.number_input("Current Shares", min_value=0, key="ui_osq")
             st.number_input("Avg Cost ($)", format="%.3f", key="ui_osp")
         with col2:
             st.number_input("Current Warrants", min_value=0, key="ui_owq")
             st.number_input("Warrant Avg ($)", format="%.3f", key="ui_owp")
-            # DUMMY BUTTON TO FORCE REFRESH/SYNC
-            st.button("SAVE CURRENT HOLDINGS", use_container_width=True)
+            
+        # DUMMY BUTTON TO FORCE REFRESH/SYNC
+        st.button("SAVE CURRENT HOLDINGS", use_container_width=True)
             
         # Immediately copy manual UI edits to shielded memory
         st.session_state.osq = st.session_state.ui_osq
@@ -315,8 +315,9 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             st.number_input("Current DRS Shares", min_value=0, key="ui_drs_osq")
         with col_d2:
             st.number_input("Current DRS Warrants", min_value=0, key="ui_drs_owq")
-            # DUMMY BUTTON FOR DRS SYNC HACK
-            st.button("SAVE DRS HOLDINGS", use_container_width=True)
+            
+        # DUMMY BUTTON FOR DRS SYNC HACK
+        st.button("SAVE DRS HOLDINGS", use_container_width=True)
 
         # Apply security max check directly on UI edits
         st.session_state.drs_osq = min(st.session_state.ui_drs_osq, st.session_state.osq)
@@ -424,6 +425,37 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
 
     col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
     with col_l2:
+        # --- SMART LANDSCAPE STRETCH & RESIZE ---
+        st.markdown("""
+        <div id="home-stretch" style="display:none;"></div>
+        <style>
+            @media screen and (orientation: landscape) {
+                div[data-testid="column"]:has(#home-stretch) {
+                    width: 100% !important;
+                    min-width: 100% !important;
+                    flex: 1 1 100% !important;
+                }
+                div[data-testid="column"]:has(+ div[data-testid="column"] #home-stretch) { display: none !important; }
+                div[data-testid="column"]:has(#home-stretch) + div[data-testid="column"] { display: none !important; }
+
+                div[data-testid="column"]:has(#home-stretch) button[kind="primary"] p { font-size: 38px !important; }
+                div[data-testid="column"]:has(#home-stretch) button[kind="secondary"] p { font-size: 28px !important; }
+                div[data-testid="column"]:has(#home-stretch) h2 { font-size: 42px !important; }
+                div[data-testid="column"]:has(#home-stretch) h3 { font-size: 32px !important; }
+                div[data-testid="column"]:has(#home-stretch) h4 { font-size: 32px !important; }
+                
+                div[data-testid="column"]:has(#home-stretch) span[style*="font-size: 14px"] { font-size: 20px !important; }
+                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 16px"] { font-size: 22px !important; }
+                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 18px"] { font-size: 26px !important; }
+                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 32px"] { font-size: 60px !important; }
+                
+                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 0.7em"] { font-size: 1.2em !important; }
+                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 0.8em"] { font-size: 1.3em !important; }
+                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 1.1em"] { font-size: 1.5em !important; }
+            }
+        </style>
+        """, unsafe_allow_html=True)
+
         # FUSED: No space between 🙌💎 and 🚀🌍
         if st.button("LAUNCH WEN MOON SYSTEM\n🙌💎🚀🌍!", type="primary", use_container_width=True):
             st.session_state.launched = True
