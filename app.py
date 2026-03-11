@@ -438,7 +438,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 div[data-testid="column"]:has(+ div[data-testid="column"] #home-stretch) { display: none !important; }
                 div[data-testid="column"]:has(#home-stretch) + div[data-testid="column"] { display: none !important; }
 
-                div[data-testid="column"]:has(#home-stretch) button[kind="primary"] p { font-size: 38px !important; }
+                div[data-testid="column"]:has(#home-stretch) button[kind="primary"] p { font-size: 38px !important; line-height: 1.2 !important; }
                 div[data-testid="column"]:has(#home-stretch) button[kind="secondary"] p { font-size: 28px !important; }
                 div[data-testid="column"]:has(#home-stretch) h2 { font-size: 42px !important; }
                 div[data-testid="column"]:has(#home-stretch) h3 { font-size: 32px !important; }
