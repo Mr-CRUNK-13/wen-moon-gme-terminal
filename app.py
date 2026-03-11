@@ -423,35 +423,15 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
     </style>
     """, unsafe_allow_html=True)
 
-    col_l1, col_l2, col_l3 = st.columns([1, 2, 1])
-    with col_l2:
-        # --- SMART LANDSCAPE STRETCH & RESIZE ---
+    with st.container():
+        # --- SMART LANDSCAPE FONTS ---
         st.markdown("""
-        <div id="home-stretch" style="display:none;"></div>
         <style>
             @media screen and (orientation: landscape) {
-                div[data-testid="column"]:has(#home-stretch) {
-                    width: 100% !important;
-                    min-width: 100% !important;
-                    flex: 1 1 100% !important;
-                }
-                div[data-testid="column"]:has(+ div[data-testid="column"] #home-stretch) { display: none !important; }
-                div[data-testid="column"]:has(#home-stretch) + div[data-testid="column"] { display: none !important; }
-
-                div[data-testid="column"]:has(#home-stretch) button[kind="primary"] p { font-size: 38px !important; line-height: 1.2 !important; }
-                div[data-testid="column"]:has(#home-stretch) button[kind="secondary"] p { font-size: 28px !important; }
-                div[data-testid="column"]:has(#home-stretch) h2 { font-size: 42px !important; }
-                div[data-testid="column"]:has(#home-stretch) h3 { font-size: 32px !important; }
-                div[data-testid="column"]:has(#home-stretch) h4 { font-size: 32px !important; }
-                
-                div[data-testid="column"]:has(#home-stretch) span[style*="font-size: 14px"] { font-size: 20px !important; }
-                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 16px"] { font-size: 22px !important; }
-                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 18px"] { font-size: 26px !important; }
-                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 32px"] { font-size: 60px !important; }
-                
-                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 0.7em"] { font-size: 1.2em !important; }
-                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 0.8em"] { font-size: 1.3em !important; }
-                div[data-testid="column"]:has(#home-stretch) p[style*="font-size: 1.1em"] { font-size: 1.5em !important; }
+                button[kind="primary"] p { font-size: 38px !important; line-height: 1.2 !important; }
+                button[kind="secondary"] p { font-size: 28px !important; }
+                h2 { font-size: 42px !important; }
+                h4 { font-size: 32px !important; }
             }
         </style>
         """, unsafe_allow_html=True)
