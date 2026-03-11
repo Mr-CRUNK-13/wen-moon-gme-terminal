@@ -983,6 +983,7 @@ else:
                 .{s_id}-dec {{ font-size:140px !important; }}
                 .{s_id}-sub {{ font-size:42px !important; text-align:right; margin-top:-65px !important; }}
                 .{s_id}-icn-w {{ transform: scale(1.5); margin-bottom:10px !important; }}
+                .{s_id}-icn-w img {{ margin-bottom: 40px !important; }}
             }}
         </style>
         <div class='{s_id}-box'>
