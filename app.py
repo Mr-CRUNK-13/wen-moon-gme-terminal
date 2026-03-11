@@ -1238,6 +1238,8 @@ else:
             w_s, w_w = st.session_state.get("weekly_s", 0), st.session_state.get("weekly_w", 0)
             m_s, m_w = st.session_state.get("monthly_s", 0), st.session_state.get("monthly_w", 0)
 
+            c_w_pct_val = (c_v_w / c_t_v * 100) if c_t_v > 0 else 0.0
+
             # --- DYNAMIC HTML DASHBOARD (WEN MOON TOTALS & RECENT PURCHASES) ---
             html_summary = f"""
             <style>
@@ -1269,6 +1271,12 @@ else:
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Total Warrants: <strong style="color: white;">{c_w:,.0f}</strong></p>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Cost: <strong style="color: white;">${c_pw_val:,.2f}</strong></p>
                         <p style="margin: 10px 0; font-size: 18px; color: #ccc;">Avg Warrants / Person: <strong style="color: white;">{avg_w_per_person:,.0f}</strong></p>
+                        <div style="margin-top: 25px;">
+                            <p style="color: #006400; font-size: 16px; font-weight: bold; text-align: center; margin: 0 0 5px 0;">WARRANTS: {c_w_pct_val:.1f}% OF LIVE VALUE</p>
+                            <div style="width: 100%; background-color: #050505; border-radius: 10px; height: 12px; border: 1px solid #00FF00; box-shadow: 0 0 10px #00FF00; overflow: hidden;">
+                                <div style="width: {c_w_pct_val}%; background-color: #006400; height: 100%; box-shadow: 0 0 10px #006400;"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div style="background-color: #0e1621; padding: 20px; border-radius: 8px; border: 2px solid #FFD700; box-shadow: 0 0 15px #FFD700; margin-top: 20px;">
@@ -1330,6 +1338,21 @@ else:
                     🚀 <strong>{drs_apes_count}</strong> APES HAVE LOCKED THEIR SHARES 🟣
                 </p>
             </div>
+            """, unsafe_allow_html=True)
+            
+            # --- 🟣 WEN MOON DRS PROGRESS BARS ---
+            c_drs_s_pct = (total_comm_drs_s / c_s * 100) if c_s > 0 else 0
+            c_drs_w_pct = (total_comm_drs_w / c_w * 100) if c_w > 0 else 0
+            
+            st.markdown(f"""
+            <div style="width: 100%; background-color: #050505; border-radius: 10px; height: 12px; border: 1px solid {color_drs_s}; box-shadow: 0 0 10px {color_drs_s}; overflow: hidden; margin-bottom: 5px; margin-top: 15px;">
+            <div style="width: {c_drs_s_pct}%; background-color: {color_drs_s}; height: 100%; box-shadow: 0 0 10px {color_drs_s};"></div>
+            </div>
+            <p style="color: {color_drs_s}; font-size: 0.7em; text-align: right; font-weight: bold; margin: 0 0 10px 0;">{c_drs_s_pct:.1f}% OF SHARES LOCKED</p>
+            <div style="width: 100%; background-color: #050505; border-radius: 10px; height: 12px; border: 1px solid {color_drs_w}; box-shadow: 0 0 10px {color_drs_w}; overflow: hidden; margin-bottom: 5px;">
+            <div style="width: {c_drs_w_pct}%; background-color: {color_drs_w}; height: 100%; box-shadow: 0 0 10px {color_drs_w};"></div>
+            </div>
+            <p style="color: {color_drs_w}; font-size: 0.7em; text-align: right; font-weight: bold; margin: 0;">{c_drs_w_pct:.1f}% OF WARRANTS LOCKED</p>
             """, unsafe_allow_html=True)
 
             # --- COMMUNITY DRS WEEKLY/MONTHLY VISUALS ---
