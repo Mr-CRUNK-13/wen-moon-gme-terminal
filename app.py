@@ -941,39 +941,84 @@ else:
         
         if not chart.empty:
             fig, ax = plt.subplots(figsize=(10, 2.0), facecolor='black'); ax.set_facecolor('black')
+    def draw_live(price, prev, chart, vol=0, sym="GME"):
+        pct = ((price - prev) / prev) * 100 if prev > 0 else 0
+        diff, clr = price - prev, ("#00FF00" if price >= prev else "#FF0000")
+        price_str = f"{price:.2f}"
+        p_int, p_dec = price_str.split('.')
+        diff_sign = "+" if diff >= 0 else "-"
+        abs_diff = abs(diff)
+        
+        sz = min(100 + (abs(pct) * 10), 180)
+        anim_class = "nuclear-neon" if pct >= 0 else "neon-flash-red"
+        icn = f"<div style='animation: {anim_class} 1.5s infinite;'><div style='font-size:{sz}px;'>🚀</div></div>" if pct >= 0 else f"<img src='data:image/jpeg;base64,{get_b64('Screenshot_20260216_163106_Discord.jpg')}' style='height:{sz}px; animation:{anim_class} 1.5s infinite;'>"
+        
+        s_id = sym.replace("-", "")
+        
+        html_live = f"""
+        <style>
+            .{s_id}-box {{ display:flex; justify-content:center; align-items:center; gap:20px; margin-top:30px; }}
+            .{s_id}-dlr {{ font-size:50px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; vertical-align:top; }}
+            .{s_id}-int {{ font-size:100px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; }}
+            .{s_id}-dec {{ font-size:80px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; }}
+            .{s_id}-sub {{ color:{clr}; margin-top:0px; font-size:24px; font-weight:bold; }}
+            .{s_id}-icn-w {{ display:flex; align-items:center; justify-content:center; }}
+            
+            @media screen and (orientation: landscape) {{
+                .{s_id}-box {{ justify-content:space-between !important; align-items:flex-end !important; padding:0 10% !important; margin-top:125px !important; }}
+                .{s_id}-dlr {{ font-size:87px !important; }}
+                .{s_id}-int {{ font-size:175px !important; }}
+                .{s_id}-dec {{ font-size:140px !important; }}
+                .{s_id}-sub {{ font-size:42px !important; text-align:right; margin-top:-65px !important; }}
+                .{s_id}-icn-w {{ transform: scale(1.5); margin-bottom:10px !important; }}
+            }}
+        </style>
+        <div class='{s_id}-box'>
+            <div style='text-align:right; white-space:nowrap;'>
+                <span class='{s_id}-dlr'>$</span><span class='{s_id}-int'>{p_int}.</span><span class='{s_id}-dec'>{p_dec}</span>
+                <div class='{s_id}-sub'>{diff_sign}{abs_diff:.2f} {pct:+.2f}%</div>
+            </div>
+            <div class='{s_id}-icn-w'>{icn}</div>
+        </div>
+        """
+        st.markdown(html_live, unsafe_allow_html=True)
+        
+        if not chart.empty:
+            fig, ax = plt.subplots(figsize=(10, 2.0), facecolor='black'); ax.set_facecolor('black')
             v = chart.dropna().values
             ax.bar(np.arange(len(v)), v - np.min(v)*0.99, bottom=np.min(v)*0.99, color=clr, width=0.8); ax.axis('off')
             st.pyplot(fig, bbox_inches='tight', pad_inches=0); plt.close(fig)
-            try:
-                tk = yf.Ticker(sym)
-                fi = tk.fast_info
-                inf = tk.info
-                d_high = fi.day_high
-                d_low = fi.day_low
-                d_prev = fi.previous_close
-                d_avg = inf.get('averageVolume', inf.get('averageDailyVolume10Day', 'N/A'))
-            except:
-                d_high, d_low, d_prev, d_avg = 'N/A', 'N/A', 'N/A', 'N/A'
-
-            def fmt_d(val, is_dol=False):
-                if val == 'N/A' or val is None or str(val).lower() == 'nan': return "N/A"
-                try: 
-                    if sym == "GME-WT": return f"${float(val):,.3f}" if is_dol else f"{float(val):,.0f}"
-                    else: return f"${float(val):,.2f}" if is_dol else f"{float(val):,.0f}"
-                except: return str(val)
-
-            avg_html = f"<div>AVG VOLUME: {fmt_d(d_avg)}</div>" if (sym == 'GME' or d_avg != 'N/A') else ""
             
-            html_vol = (
-                f"<div style='text-align:center; color:#888; font-family:monospace; margin-top:5px; line-height:1.6; font-size:18px;'>"
-                f"<div>TODAY'S VOLUME: {vol:,.0f}</div>"
-                f"{avg_html}"
-                f"<div>DAY HIGH: {fmt_d(d_high, True)}</div>"
-                f"<div>DAY LOW: {fmt_d(d_low, True)}</div>"
-                f"<div>PREV CLOSE: {fmt_d(d_prev, True)}</div>"
-                f"</div>"
-            )
-            st.markdown(html_vol, unsafe_allow_html=True)
+        try:
+            tk = yf.Ticker(sym)
+            fi = tk.fast_info
+            inf = tk.info
+            d_high = fi.day_high
+            d_low = fi.day_low
+            d_prev = fi.previous_close
+            d_avg = inf.get('averageVolume', inf.get('averageDailyVolume10Day', 'N/A'))
+        except:
+            d_high, d_low, d_prev, d_avg = 'N/A', 'N/A', 'N/A', 'N/A'
+
+        def fmt_d(val, is_dol=False):
+            if val == 'N/A' or val is None or str(val).lower() == 'nan': return "N/A"
+            try: 
+                if sym == "GME-WT": return f"${float(val):,.3f}" if is_dol else f"{float(val):,.0f}"
+                else: return f"${float(val):,.2f}" if is_dol else f"{float(val):,.0f}"
+            except: return str(val)
+
+        avg_html = f"<div>AVG VOLUME: {fmt_d(d_avg)}</div>" if (sym == 'GME' or d_avg != 'N/A') else ""
+        
+        html_vol = (
+            f"<div style='text-align:center; color:#888; font-family:monospace; margin-top:5px; line-height:1.6; font-size:18px;'>"
+            f"<div>TODAY'S VOLUME: {vol:,.0f}</div>"
+            f"{avg_html}"
+            f"<div>DAY HIGH: {fmt_d(d_high, True)}</div>"
+            f"<div>DAY LOW: {fmt_d(d_low, True)}</div>"
+            f"<div>PREV CLOSE: {fmt_d(d_prev, True)}</div>"
+            f"</div>"
+        )
+        st.markdown(html_vol, unsafe_allow_html=True)
 
     def render_content():
         plt.close('all') 
