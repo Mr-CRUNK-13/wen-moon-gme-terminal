@@ -603,7 +603,38 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         fig_drs_p.update_layout(barmode='group', template='plotly_dark', plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', margin=dict(l=20, r=20, t=40, b=20), height=300, legend=dict(y=1.09))
         st.plotly_chart(fig_drs_p, use_container_width=True)
 
+st.markdown("""
+<style>
+@keyframes neon-drs {
+    0% { box-shadow: inset 0 0 5px #a200ff; border-top: 1px solid #a200ff; border-bottom: 1px solid #a200ff; }
+    50% { box-shadow: inset 0 0 20px #a200ff; border-top: 1px solid #d080ff; border-bottom: 1px solid #d080ff; }
+    100% { box-shadow: inset 0 0 5px #a200ff; border-top: 1px solid #a200ff; border-bottom: 1px solid #a200ff; }
+}
+@keyframes neon-gold {
+    0% { box-shadow: inset 0 0 5px #FFD700; border-top: 1px solid #FFD700; border-bottom: 1px solid #FFD700; }
+    50% { box-shadow: inset 0 0 20px #FFD700; border-top: 1px solid #FFF8DC; border-bottom: 1px solid #FFF8DC; }
+    100% { box-shadow: inset 0 0 5px #FFD700; border-top: 1px solid #FFD700; border-bottom: 1px solid #FFD700; }
+}
+@keyframes neon-silver {
+    0% { box-shadow: inset 0 0 5px #C0C0C0; border-top: 1px solid #C0C0C0; border-bottom: 1px solid #C0C0C0; }
+    50% { box-shadow: inset 0 0 20px #C0C0C0; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; }
+    100% { box-shadow: inset 0 0 5px #C0C0C0; border-top: 1px solid #C0C0C0; border-bottom: 1px solid #C0C0C0; }
+}
+@keyframes neon-bronze {
+    0% { box-shadow: inset 0 0 5px #CD7F32; border-top: 1px solid #CD7F32; border-bottom: 1px solid #CD7F32; }
+    50% { box-shadow: inset 0 0 20px #CD7F32; border-top: 1px solid #FFA07A; border-bottom: 1px solid #FFA07A; }
+    100% { box-shadow: inset 0 0 5px #CD7F32; border-top: 1px solid #CD7F32; border-bottom: 1px solid #CD7F32; }
+}
+
+.pulse-drs td { animation: neon-drs 2s infinite; }
+.pulse-gold td { animation: neon-gold 2s infinite; }
+.pulse-silver td { animation: neon-silver 2s infinite; }
+.pulse-bronze td { animation: neon-bronze 2s infinite; }
+</style>
+""", unsafe_allow_html=True)
+
 # --- 2.5 LEADERBOARD SCREEN ---
+
 elif st.session_state.get('show_leaderboard', False):
     wen_b64 = get_b64('Screenshot_20260216_163106_Discord.jpg')
     st.markdown(f"<div style='text-align:center;'><h1 style='font-size:40px; color:#00FF00; animation:neon-text 1.5s infinite;'>🏆 LEADERBOARD <img src='data:image/jpeg;base64,{wen_b64}' style='height:50px; vertical-align:middle; animation:neon-img 1.5s infinite;'></h1></div>", unsafe_allow_html=True)
