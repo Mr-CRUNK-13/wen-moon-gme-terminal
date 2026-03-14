@@ -687,15 +687,29 @@ elif st.session_state.get('show_leaderboard', False):
                     rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
                     name_style = "class='drs-winner'" if i == 0 and r.get(sort_key, 0) > 0 else ""
                     user_trophies = "🟣" if r.get('drs_tv', 0) > 0 else ""
-                    html += f"<tr><td>{rank_str}</td><td><span {name_style}>{r['name']}</span></td><td style='color:#9b51e0;'>${r.get(sort_key, 0):,.2f}</td><td>{r.get(q_s_key, 0):,}</td><td>{r.get(q_w_key, 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
+                    
+                    neon_class = ""
+                    if i <= 2 and r.get(sort_key, 0) > 0:
+                        neon_class = "pulse-drs"
+                        
+                    html += f"<tr class='{neon_class}'><td>{rank_str}</td><td><span {name_style}>{r['name']}</span></td><td style='color:#9b51e0;'>${r.get(sort_key, 0):,.2f}</td><td>{r.get(q_s_key, 0):,}</td><td>{r.get(q_w_key, 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
                 st.markdown(html + "</table></div>", unsafe_allow_html=True)
-            else: # 🌍 STANDARD TABS (0, 1, 2)
+            else: 
                 html = "<div class='table-wrapper'><table class='ldb-t'><tr><th>RANK</th><th>APE</th><th>TOTAL VALUE</th><th>SHARES</th><th>WARRANTS</th><th>TROPHIES</th></tr>"
                 sorted_db = sorted(real_db, key=lambda x: x.get("tv", 0), reverse=True)
                 for i, r in enumerate(sorted_db):
                     rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
                     user_trophies = "🟣" if r.get('drs_tv', 0) > 0 else ""
-                    html += f"<tr><td>{rank_str}</td><td><strong>{r['name']}</strong></td><td style='color:#00FF00;'>${r.get('tv', 0):,.2f}</td><td>{r.get('sq', 0):,}</td><td>{r.get('wq', 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
+                    
+                    neon_class = ""
+                    if i == 0:
+                        neon_class = "pulse-gold"
+                    elif i == 1:
+                        neon_class = "pulse-silver"
+                    elif i == 2:
+                        neon_class = "pulse-bronze"
+                        
+                    html += f"<tr class='{neon_class}'><td>{rank_str}</td><td><strong>{r['name']}</strong></td><td style='color:#00FF00;'>${r.get('tv', 0):,.2f}</td><td>{r.get('sq', 0):,}</td><td>{r.get('wq', 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
                 st.markdown(html + "</table></div>", unsafe_allow_html=True)
 
 # --- 3. TERMINAL & LIVE ENGINE ---
