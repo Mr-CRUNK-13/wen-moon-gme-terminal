@@ -1562,7 +1562,7 @@ else:
                 </style>
                 <div class="est-g">
                     <div class="eb"><h4>Q4 2025 (Next)</h4><p>Rev: $1.47B<span class="sep"> | </span><span class="eps-val">EPS: $0.37</span></p></div>
-                    <div class="eb"><h4>FY 2026 (Proj)</h4><p>Rev: $4.16B<span class="sep"> | </span><span class="eps-val">EPS: $0.99</span></p></div>
+                    <div class="eb"><h4>FY 2025 (Proj)</h4><p>Rev: $4.16B<span class="sep"> | </span><span class="eps-val">EPS: $0.99</span></p></div>
                 </div>
                 <h3 style='color:#00FF00; text-align:center; margin-top:20px;'>5-Year Consensus History</h3>
                 """
@@ -1572,29 +1572,33 @@ else:
                     {"p": "Q3 2025", "ee": 0.20, "ae": 0.24, "er": "893.6M", "ar": "821.0M", "fy": False},
                     {"p": "Q2 2025", "ee": 0.16, "ae": 0.25, "er": "823.2M", "ar": "972.2M", "fy": False},
                     {"p": "Q1 2025", "ee": 0.04, "ae": 0.17, "er": "754.2M", "ar": "732.4M", "fy": False},
-                    {"p": "FY 2024", "ee": 0.01, "ae": 0.34, "er": "5.27B",  "ar": "5.27B",  "fy": True},
+                    {"p": "FY 2024", "ee": -0.21, "ae": 0.34, "er": "4.36B",  "ar": "3.82B",  "fy": True},
                     {"p": "Q4 2024", "ee": 0.08, "ae": 0.30, "er": "1.50B",  "ar": "1.28B",  "fy": False},
                     {"p": "Q3 2024", "ee": -0.06, "ae": 0.06, "er": "919.9M", "ar": "860.3M", "fy": False},
                     {"p": "Q2 2024", "ee": -0.09, "ae": 0.01, "er": "895.6M", "ar": "798.0M", "fy": False},
                     {"p": "Q1 2024", "ee": -0.14, "ae": -0.03, "er": "1.05B",  "ar": "881.8M", "fy": False},
-                    {"p": "FY 2023", "ee": -0.15, "ae": 0.02, "er": "5.40B",  "ar": "5.27B",  "fy": True},
+                    {"p": "FY 2023", "ee": -0.91, "ae": -0.64, "er": "5.47B",  "ar": "5.27B",  "fy": True},
                     {"p": "Q4 2023", "ee": -0.12, "ae": -0.14, "er": "1.79B",  "ar": "1.79B",  "fy": False},
                     {"p": "Q3 2023", "ee": -0.13, "ae": 0.16, "er": "1.18B",  "ar": "1.08B",  "fy": False},
                     {"p": "Q2 2023", "ee": -0.28, "ae": -0.31, "er": "1.14B",  "ar": "1.16B",  "fy": False},
                     {"p": "Q1 2023", "ee": -0.38, "ae": -0.35, "er": "1.36B",  "ar": "1.24B",  "fy": False},
-                    {"p": "FY 2022", "ee": -1.30, "ae": -1.03, "er": "5.90B",  "ar": "5.93B",  "fy": True},
+                    {"p": "FY 2022", "ee": -0.46, "ae": -1.52, "er": "6.12B",  "ar": "5.94B",  "fy": True},
                     {"p": "Q4 2022", "ee": -0.37, "ae": -0.52, "er": "2.18B",  "ar": "2.23B",  "fy": False},
                     {"p": "Q3 2022", "ee": 0.21, "ae": -0.46, "er": "1.35B",  "ar": "1.19B",  "fy": False},
                     {"p": "Q2 2022", "ee": -0.13, "ae": -0.35, "er": "1.27B",  "ar": "1.14B",  "fy": False},
                     {"p": "Q1 2022", "ee": -0.17, "ae": -0.19, "er": "1.32B",  "ar": "1.38B",  "fy": False},
-                    {"p": "FY 2021", "ee": -1.50, "ae": -1.31, "er": "5.80B",  "ar": "6.01B",  "fy": True},
+                    {"p": "FY 2021", "ee": -0.37, "ae": -0.25, "er": "5.92B",  "ar": "6.01B",  "fy": True},
                     {"p": "Q4 2021", "ee": -0.21, "ae": -0.11, "er": "2.22B",  "ar": "2.25B",  "fy": False},
                     {"p": "Q3 2021", "ee": 0.34, "ae": 0.34, "er": "1.30B",  "ar": "1.30B",  "fy": False},
                     {"p": "Q2 2021", "ee": -0.21, "ae": -0.13, "er": "1.12B",  "ar": "1.18B",  "fy": False},
                     {"p": "Q1 2021", "ee": -0.29, "ae": -0.35, "er": "1.28B",  "ar": "1.28B",  "fy": False},
-                    {"p": "FY 2020", "ee": -2.20, "ae": -2.08, "er": "5.00B",  "ar": "5.09B",  "fy": True},
-                    {"p": "Q4 2020", "ee": -0.32, "ae": -0.40, "er": "2.21B",  "ar": "2.12B",  "fy": False}
+                    {"p": "FY 2020", "ee": -0.45, "ae": -0.90, "er": "5.41B",  "ar": "5.09B",  "fy": True},
+                    {"p": "Q4 2020", "ee": 0.34, "ae": 0.30, "er": "2.21B",  "ar": "2.12B",  "fy": False},
+                    {"p": "Q3 2020", "ee": -0.21, "ae": -0.13, "er": "1.09B",  "ar": "1.01B",  "fy": False},
+                    {"p": "Q2 2020", "ee": -0.28, "ae": -0.43, "er": "1.02B",  "ar": "942.0M", "fy": False},
+                    {"p": "Q1 2020", "ee": -0.30, "ae": -0.64, "er": "1.09B",  "ar": "1.02B",  "fy": False}
                 ]
+
                 
                 html_hist = "<div class='table-wrapper' style='max-height:400px; overflow-y:auto; overflow-x:auto;'><table class='hist-t'><tr><th>Period</th><th>Est EPS</th><th>Act EPS</th><th>EPS Surp</th><th>Est Rev</th><th>Act Rev</th><th>Rev Surp</th></tr>"
                 
