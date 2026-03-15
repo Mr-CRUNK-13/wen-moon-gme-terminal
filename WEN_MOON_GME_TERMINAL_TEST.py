@@ -9,11 +9,33 @@ import plotly.graph_objects as go
 import base64
 from datetime import datetime
 
+from datetime import datetime
+from streamlit_cookies_manager import EncryptedCookieManager
+
 # --- 1. CONFIGURATION & STATE INIT ---
 st.set_page_config(page_title="GME TERMINAL", page_icon="Screenshot_20260216_163106_Discord.jpg", layout="wide", initial_sidebar_state="collapsed")
 
+# --- COOKIE MANAGER INITIALIZATION ---
+cookies = EncryptedCookieManager(prefix="gme_ape_", password="wen_moon_secret")
+if not cookies.ready():
+    st.stop()
+
+# --- LOAD DATA FROM COOKIES TO SESSION STATE ---
 if 'osq' not in st.session_state: 
-    st.session_state.update(osq=0, osp=0.0, owq=0, owp=0.0, ape_name="", launched=False, show_leaderboard=False, recent_s=0, recent_w=0)
+    st.session_state.osq = int(cookies.get("osq", 0))
+    st.session_state.osp = float(cookies.get("osp", 0.0))
+    st.session_state.owq = int(cookies.get("owq", 0))
+    st.session_state.owp = float(cookies.get("owp", 0.0))
+    
+    st.session_state.drs_osq = int(cookies.get("drs_osq", 0))
+    st.session_state.drs_owq = int(cookies.get("drs_owq", 0))
+    
+    st.session_state.ape_name = cookies.get("ape_name", "")
+    
+    st.session_state.launched = False
+    st.session_state.show_leaderboard = False
+    st.session_state.recent_s = 0
+    st.session_state.recent_w = 0
 
 # Variables for Weekly/Monthly accumulation tracking
 if 'weekly_s' not in st.session_state:
