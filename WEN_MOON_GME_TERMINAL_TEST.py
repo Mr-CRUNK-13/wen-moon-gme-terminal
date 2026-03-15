@@ -770,8 +770,7 @@ else:
     <style>
         div[data-testid='stExpander'] { display: none !important; }
         button[kind="primary"], button[kind="secondary"] { display: none !important; }
-        div[data-testid="stTabs"] ~ div { display: none !important; }
-        div[data-testid="stTabs"] { margin-top: -35px !important; }        
+        div[data-testid="stTabs"] ~ div { display: none !important; }       
     </style>
     """, unsafe_allow_html=True)
 
