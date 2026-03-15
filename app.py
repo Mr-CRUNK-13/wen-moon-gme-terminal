@@ -610,33 +610,25 @@ elif st.session_state.get('show_leaderboard', False):
     
     st.markdown("""
     <style>
-    @keyframes pulse-purple { 0% { text-shadow: 0 0 5px #9b51e0; } 50% { text-shadow: 0 0 15px #b026ff, 0 0 25px #9b51e0; } 100% { text-shadow: 0 0 5px #9b51e0; } } .drs-winner { animation: pulse-purple 1.5s infinite; color: #b026ff !important; font-weight: bold; }
-    
-    @keyframes neon-drs {
-        0% { box-shadow: inset 0 0 5px #a200ff; border-top: 1px solid #a200ff; border-bottom: 1px solid #a200ff; }
-        50% { box-shadow: inset 0 0 20px #a200ff; border-top: 1px solid #d080ff; border-bottom: 1px solid #d080ff; }
-        100% { box-shadow: inset 0 0 5px #a200ff; border-top: 1px solid #a200ff; border-bottom: 1px solid #a200ff; }
-    }
-    @keyframes neon-gold {
-        0% { box-shadow: inset 0 0 5px #FFD700; border-top: 1px solid #FFD700; border-bottom: 1px solid #FFD700; }
-        50% { box-shadow: inset 0 0 20px #FFD700; border-top: 1px solid #FFF8DC; border-bottom: 1px solid #FFF8DC; }
-        100% { box-shadow: inset 0 0 5px #FFD700; border-top: 1px solid #FFD700; border-bottom: 1px solid #FFD700; }
-    }
-    @keyframes neon-silver {
-        0% { box-shadow: inset 0 0 5px #C0C0C0; border-top: 1px solid #C0C0C0; border-bottom: 1px solid #C0C0C0; }
-        50% { box-shadow: inset 0 0 20px #C0C0C0; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; }
-        100% { box-shadow: inset 0 0 5px #C0C0C0; border-top: 1px solid #C0C0C0; border-bottom: 1px solid #C0C0C0; }
-    }
-    @keyframes neon-bronze {
-        0% { box-shadow: inset 0 0 5px #CD7F32; border-top: 1px solid #CD7F32; border-bottom: 1px solid #CD7F32; }
-        50% { box-shadow: inset 0 0 20px #CD7F32; border-top: 1px solid #FFA07A; border-bottom: 1px solid #FFA07A; }
-        100% { box-shadow: inset 0 0 5px #CD7F32; border-top: 1px solid #CD7F32; border-bottom: 1px solid #CD7F32; }
-    }
+    @keyframes neon-drs { 0% { box-shadow: inset 0 0 5px #a200ff; border-top: 1px solid #a200ff; border-bottom: 1px solid #a200ff; } 50% { box-shadow: inset 0 0 20px #a200ff; border-top: 1px solid #d080ff; border-bottom: 1px solid #d080ff; } 100% { box-shadow: inset 0 0 5px #a200ff; border-top: 1px solid #a200ff; border-bottom: 1px solid #a200ff; } }
+    @keyframes neon-gold { 0% { box-shadow: inset 0 0 5px #FFD700; border-top: 1px solid #FFD700; border-bottom: 1px solid #FFD700; } 50% { box-shadow: inset 0 0 20px #FFD700; border-top: 1px solid #FFF8DC; border-bottom: 1px solid #FFF8DC; } 100% { box-shadow: inset 0 0 5px #FFD700; border-top: 1px solid #FFD700; border-bottom: 1px solid #FFD700; } }
+    @keyframes neon-silver { 0% { box-shadow: inset 0 0 5px #C0C0C0; border-top: 1px solid #C0C0C0; border-bottom: 1px solid #C0C0C0; } 50% { box-shadow: inset 0 0 20px #C0C0C0; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; } 100% { box-shadow: inset 0 0 5px #C0C0C0; border-top: 1px solid #C0C0C0; border-bottom: 1px solid #C0C0C0; } }
+    @keyframes neon-bronze { 0% { box-shadow: inset 0 0 5px #CD7F32; border-top: 1px solid #CD7F32; border-bottom: 1px solid #CD7F32; } 50% { box-shadow: inset 0 0 20px #CD7F32; border-top: 1px solid #FFA07A; border-bottom: 1px solid #FFA07A; } 100% { box-shadow: inset 0 0 5px #CD7F32; border-top: 1px solid #CD7F32; border-bottom: 1px solid #CD7F32; } }
+
+    @keyframes pulse-purple { 0% { text-shadow: 0 0 5px #9b51e0; } 50% { text-shadow: 0 0 15px #b026ff, 0 0 25px #9b51e0; } 100% { text-shadow: 0 0 5px #9b51e0; } }
+    @keyframes pulse-gold-text { 0% { text-shadow: 0 0 5px #FFD700; } 50% { text-shadow: 0 0 15px #FFF8DC, 0 0 25px #FFD700; } 100% { text-shadow: 0 0 5px #FFD700; } }
+    @keyframes pulse-silver-text { 0% { text-shadow: 0 0 5px #C0C0C0; } 50% { text-shadow: 0 0 15px #FFFFFF, 0 0 25px #C0C0C0; } 100% { text-shadow: 0 0 5px #C0C0C0; } }
+    @keyframes pulse-bronze-text { 0% { text-shadow: 0 0 5px #CD7F32; } 50% { text-shadow: 0 0 15px #FFA07A, 0 0 25px #CD7F32; } 100% { text-shadow: 0 0 5px #CD7F32; } }
 
     .pulse-drs td { animation: neon-drs 2s infinite; }
     .pulse-gold td { animation: neon-gold 2s infinite; }
     .pulse-silver td { animation: neon-silver 2s infinite; }
     .pulse-bronze td { animation: neon-bronze 2s infinite; }
+
+    .text-drs { animation: pulse-purple 1.5s infinite; color: #b026ff !important; font-weight: bold; }
+    .text-gold { animation: pulse-gold-text 1.5s infinite; color: #FFD700 !important; font-weight: bold; }
+    .text-silver { animation: pulse-silver-text 1.5s infinite; color: #C0C0C0 !important; font-weight: bold; }
+    .text-bronze { animation: pulse-bronze-text 1.5s infinite; color: #CD7F32 !important; font-weight: bold; }
     </style>
     """, unsafe_allow_html=True)
     
@@ -685,14 +677,15 @@ elif st.session_state.get('show_leaderboard', False):
                 sorted_db = sorted(real_db, key=lambda x: x.get(sort_key, 0), reverse=True)
                 for i, r in enumerate(sorted_db):
                     rank_str = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
-                    name_style = "class='drs-winner'" if i == 0 and r.get(sort_key, 0) > 0 else ""
                     user_trophies = "🟣" if r.get('drs_tv', 0) > 0 else ""
                     
                     neon_class = ""
+                    text_class = ""
                     if i <= 2 and r.get(sort_key, 0) > 0:
                         neon_class = "pulse-drs"
+                        text_class = "class='text-drs'"
                         
-                    html += f"<tr class='{neon_class}'><td>{rank_str}</td><td><span {name_style}>{r['name']}</span></td><td style='color:#9b51e0;'>${r.get(sort_key, 0):,.2f}</td><td>{r.get(q_s_key, 0):,}</td><td>{r.get(q_w_key, 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
+                    html += f"<tr class='{neon_class}'><td>{rank_str}</td><td><span {text_class}>{r['name']}</span></td><td style='color:#9b51e0;'>${r.get(sort_key, 0):,.2f}</td><td>{r.get(q_s_key, 0):,}</td><td>{r.get(q_w_key, 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
                 st.markdown(html + "</table></div>", unsafe_allow_html=True)
             else: 
                 html = "<div class='table-wrapper'><table class='ldb-t'><tr><th>RANK</th><th>APE</th><th>TOTAL VALUE</th><th>SHARES</th><th>WARRANTS</th><th>TROPHIES</th></tr>"
@@ -702,14 +695,18 @@ elif st.session_state.get('show_leaderboard', False):
                     user_trophies = "🟣" if r.get('drs_tv', 0) > 0 else ""
                     
                     neon_class = ""
+                    text_class = ""
                     if i == 0:
                         neon_class = "pulse-gold"
+                        text_class = "class='text-gold'"
                     elif i == 1:
                         neon_class = "pulse-silver"
+                        text_class = "class='text-silver'"
                     elif i == 2:
                         neon_class = "pulse-bronze"
+                        text_class = "class='text-bronze'"
                         
-                    html += f"<tr class='{neon_class}'><td>{rank_str}</td><td><strong>{r['name']}</strong></td><td style='color:#00FF00;'>${r.get('tv', 0):,.2f}</td><td>{r.get('sq', 0):,}</td><td>{r.get('wq', 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
+                    html += f"<tr class='{neon_class}'><td>{rank_str}</td><td><span {text_class}>{r['name']}</span></td><td style='color:#00FF00;'>${r.get('tv', 0):,.2f}</td><td>{r.get('sq', 0):,}</td><td>{r.get('wq', 0):,}</td><td style='font-size:20px;'>{user_trophies}</td></tr>"
                 st.markdown(html + "</table></div>", unsafe_allow_html=True)
 
 # --- 3. TERMINAL & LIVE ENGINE ---
@@ -1240,7 +1237,31 @@ else:
             st.markdown(html_w, unsafe_allow_html=True)
 
         with ph7.container():
-            # --- 6-TAB TERMINAL LEADERBOARD WITH TROPHY COLUMN ---
+                 # --- 6-TAB TERMINAL LEADERBOARD WITH TROPHY COLUMN ---
+            st.markdown("""
+            <style>
+            @keyframes neon-drs { 0% { box-shadow: inset 0 0 5px #a200ff; border-top: 1px solid #a200ff; border-bottom: 1px solid #a200ff; } 50% { box-shadow: inset 0 0 20px #a200ff; border-top: 1px solid #d080ff; border-bottom: 1px solid #d080ff; } 100% { box-shadow: inset 0 0 5px #a200ff; border-top: 1px solid #a200ff; border-bottom: 1px solid #a200ff; } }
+            @keyframes neon-gold { 0% { box-shadow: inset 0 0 5px #FFD700; border-top: 1px solid #FFD700; border-bottom: 1px solid #FFD700; } 50% { box-shadow: inset 0 0 20px #FFD700; border-top: 1px solid #FFF8DC; border-bottom: 1px solid #FFF8DC; } 100% { box-shadow: inset 0 0 5px #FFD700; border-top: 1px solid #FFD700; border-bottom: 1px solid #FFD700; } }
+            @keyframes neon-silver { 0% { box-shadow: inset 0 0 5px #C0C0C0; border-top: 1px solid #C0C0C0; border-bottom: 1px solid #C0C0C0; } 50% { box-shadow: inset 0 0 20px #C0C0C0; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; } 100% { box-shadow: inset 0 0 5px #C0C0C0; border-top: 1px solid #C0C0C0; border-bottom: 1px solid #C0C0C0; } }
+            @keyframes neon-bronze { 0% { box-shadow: inset 0 0 5px #CD7F32; border-top: 1px solid #CD7F32; border-bottom: 1px solid #CD7F32; } 50% { box-shadow: inset 0 0 20px #CD7F32; border-top: 1px solid #FFA07A; border-bottom: 1px solid #FFA07A; } 100% { box-shadow: inset 0 0 5px #CD7F32; border-top: 1px solid #CD7F32; border-bottom: 1px solid #CD7F32; } }
+
+            @keyframes pulse-purple { 0% { text-shadow: 0 0 5px #9b51e0; } 50% { text-shadow: 0 0 15px #b026ff, 0 0 25px #9b51e0; } 100% { text-shadow: 0 0 5px #9b51e0; } }
+            @keyframes pulse-gold-text { 0% { text-shadow: 0 0 5px #FFD700; } 50% { text-shadow: 0 0 15px #FFF8DC, 0 0 25px #FFD700; } 100% { text-shadow: 0 0 5px #FFD700; } }
+            @keyframes pulse-silver-text { 0% { text-shadow: 0 0 5px #C0C0C0; } 50% { text-shadow: 0 0 15px #FFFFFF, 0 0 25px #C0C0C0; } 100% { text-shadow: 0 0 5px #C0C0C0; } }
+            @keyframes pulse-bronze-text { 0% { text-shadow: 0 0 5px #CD7F32; } 50% { text-shadow: 0 0 15px #FFA07A, 0 0 25px #CD7F32; } 100% { text-shadow: 0 0 5px #CD7F32; } }
+
+            .pulse-drs td { animation: neon-drs 2s infinite; }
+            .pulse-gold td { animation: neon-gold 2s infinite; }
+            .pulse-silver td { animation: neon-silver 2s infinite; }
+            .pulse-bronze td { animation: neon-bronze 2s infinite; }
+
+            .text-drs { animation: pulse-purple 1.5s infinite; color: #b026ff !important; font-weight: bold; }
+            .text-gold { animation: pulse-gold-text 1.5s infinite; color: #FFD700 !important; font-weight: bold; }
+            .text-silver { animation: pulse-silver-text 1.5s infinite; color: #C0C0C0 !important; font-weight: bold; }
+            .text-bronze { animation: pulse-bronze-text 1.5s infinite; color: #CD7F32 !important; font-weight: bold; }
+            </style>
+            """, unsafe_allow_html=True)
+
             lb_tabs_t = st.tabs(["🌍 GENERAL", "📅 MONTHLY", "📆 WEEKLY", "🟣 DRS TOTAL", "🗓️ DRS MONTHLY", "⏳ DRS WEEKLY"])
             
             try:
@@ -1250,7 +1271,6 @@ else:
             except:
                 live_p_n, live_p_w = 24.50, 4.30
 
-            # Calculate temporal DRS values
             d_tv = (st.session_state.drs_osq * live_p_n) + (st.session_state.drs_owq * live_p_w)
             d_m_v = (st.session_state.get('monthly_drs_s', 0) * live_p_n) + (st.session_state.get('monthly_drs_w', 0) * live_p_w)
             d_w_v = (st.session_state.get('weekly_drs_s', 0) * live_p_n) + (st.session_state.get('weekly_drs_w', 0) * live_p_w)
@@ -1267,19 +1287,6 @@ else:
                 "drs_m_w": st.session_state.get('monthly_drs_w', 0)
             }]
 
-            st.markdown("""
-            <style>
-            @keyframes neon-drs { 0% { box-shadow: inset 0 0 5px #a200ff; border-top: 1px solid #a200ff; border-bottom: 1px solid #a200ff; } 50% { box-shadow: inset 0 0 20px #a200ff; border-top: 1px solid #d080ff; border-bottom: 1px solid #d080ff; } 100% { box-shadow: inset 0 0 5px #a200ff; border-top: 1px solid #a200ff; border-bottom: 1px solid #a200ff; } }
-            @keyframes neon-gold { 0% { box-shadow: inset 0 0 5px #FFD700; border-top: 1px solid #FFD700; border-bottom: 1px solid #FFD700; } 50% { box-shadow: inset 0 0 20px #FFD700; border-top: 1px solid #FFF8DC; border-bottom: 1px solid #FFF8DC; } 100% { box-shadow: inset 0 0 5px #FFD700; border-top: 1px solid #FFD700; border-bottom: 1px solid #FFD700; } }
-            @keyframes neon-silver { 0% { box-shadow: inset 0 0 5px #C0C0C0; border-top: 1px solid #C0C0C0; border-bottom: 1px solid #C0C0C0; } 50% { box-shadow: inset 0 0 20px #C0C0C0; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; } 100% { box-shadow: inset 0 0 5px #C0C0C0; border-top: 1px solid #C0C0C0; border-bottom: 1px solid #C0C0C0; } }
-            @keyframes neon-bronze { 0% { box-shadow: inset 0 0 5px #CD7F32; border-top: 1px solid #CD7F32; border-bottom: 1px solid #CD7F32; } 50% { box-shadow: inset 0 0 20px #CD7F32; border-top: 1px solid #FFA07A; border-bottom: 1px solid #FFA07A; } 100% { box-shadow: inset 0 0 5px #CD7F32; border-top: 1px solid #CD7F32; border-bottom: 1px solid #CD7F32; } }
-            .pulse-drs td { animation: neon-drs 2s infinite; }
-            .pulse-gold td { animation: neon-gold 2s infinite; }
-            .pulse-silver td { animation: neon-silver 2s infinite; }
-            .pulse-bronze td { animation: neon-bronze 2s infinite; }
-            </style>
-            """, unsafe_allow_html=True)
-
             for idx, t in enumerate(lb_tabs_t):
                 with t:
                     if idx >= 3:
@@ -1293,14 +1300,15 @@ else:
                         s_db = sorted(real_db, key=lambda x: x.get(sort_k, 0), reverse=True)
                         for i, r in enumerate(s_db):
                             rnk = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else str(i+1)
-                            n_style = "class='drs-winner'" if i == 0 and r.get(sort_k, 0) > 0 else ""
                             trphs = "🟣" if r.get('drs_tv', 0) > 0 else ""
                             
                             neon_class = ""
+                            text_class = ""
                             if i <= 2 and r.get(sort_k, 0) > 0:
                                 neon_class = "pulse-drs"
+                                text_class = "class='text-drs'"
                                 
-                            html += f"<tr class='{neon_class}'><td>{rnk}</td><td><span {n_style}>{r['name']}</span></td><td style='color:#9b51e0;'>${r.get(sort_k, 0):,.2f}</td><td>{r.get(q_s_key, 0):,}</td><td>{r.get(q_w_key, 0):,}</td><td style='font-size:20px;'>{trphs}</td></tr>"
+                            html += f"<tr class='{neon_class}'><td>{rnk}</td><td><span {text_class}>{r['name']}</span></td><td style='color:#9b51e0;'>${r.get(sort_k, 0):,.2f}</td><td>{r.get(q_s_key, 0):,}</td><td>{r.get(q_w_key, 0):,}</td><td style='font-size:20px;'>{trphs}</td></tr>"
                         st.markdown(html + "</table></div>", unsafe_allow_html=True)
                     else: 
                         html = "<div class='table-wrapper'><table class='ldb-t'><tr><th>RANK</th><th>APE</th><th>TOTAL VALUE</th><th>SHARES</th><th>WARRANTS</th><th>TROPHIES</th></tr>"
@@ -1310,14 +1318,18 @@ else:
                             trphs = "🟣" if r.get('drs_tv', 0) > 0 else ""
                             
                             neon_class = ""
+                            text_class = ""
                             if i == 0:
                                 neon_class = "pulse-gold"
+                                text_class = "class='text-gold'"
                             elif i == 1:
                                 neon_class = "pulse-silver"
+                                text_class = "class='text-silver'"
                             elif i == 2:
                                 neon_class = "pulse-bronze"
+                                text_class = "class='text-bronze'"
                                 
-                            html += f"<tr class='{neon_class}'><td>{rnk}</td><td><strong>{r['name']}</strong></td><td style='color:#00FF00;'>${r.get('tv', 0):,.2f}</td><td>{r.get('sq', 0):,}</td><td>{r.get('wq', 0):,}</td><td style='font-size:20px;'>{trphs}</td></tr>"
+                            html += f"<tr class='{neon_class}'><td>{rnk}</td><td><span {text_class}>{r['name']}</span></td><td style='color:#00FF00;'>${r.get('tv', 0):,.2f}</td><td>{r.get('sq', 0):,}</td><td>{r.get('wq', 0):,}</td><td style='font-size:20px;'>{trphs}</td></tr>"
                         st.markdown(html + "</table></div>", unsafe_allow_html=True)
 
         with ph8.container():
