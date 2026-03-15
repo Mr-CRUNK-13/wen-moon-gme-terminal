@@ -157,7 +157,7 @@ st.markdown("""
     @keyframes neon-flash-red { 0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px #FF0000); } 50% { opacity: 0.4; filter: drop-shadow(0 0 30px #FF0000); } }
     .title-container { text-align: center; margin-bottom: 20px; margin-top: -10px; }
     .gme-title { font-size: 60px; line-height: 1.1; animation: neon-text 1.5s infinite; white-space: nowrap; margin: 0; }
-    @media screen and (max-width: 600px) { .gme-title { font-size: 38px; } }
+    @media screen and (max-width: 9000px) { .gme-title { font-size: 38px; } }
     .table-wrapper { overflow-x: auto; max-width: 100%; border-radius: 10px; border: 2px solid #0259c7; box-shadow: 0 0 15px #0259c7; margin-top: 10px; }
     .ldb-t { width: 100%; border-collapse: collapse; color: white; font-family: monospace; text-align: center; }
     .ldb-t th { background: #001f3f; color: #00FF00; padding: 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }
