@@ -301,14 +301,21 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             st.number_input("Current Warrants", min_value=0, key="ui_owq")
             st.number_input("Warrant Avg ($)", format="%.3f", key="ui_owp")
             
-        # DUMMY BUTTON TO FORCE REFRESH/SYNC
-        st.button("SAVE CURRENT HOLDINGS", use_container_width=True)
+         # SAVE BUTTON FOR COOKIES STORAGE
+        if st.button("SAVE CURRENT HOLDINGS", use_container_width=True):
+            st.session_state.osq = st.session_state.ui_osq
+            st.session_state.osp = st.session_state.ui_osp
+            st.session_state.owq = st.session_state.ui_owq
+            st.session_state.owp = st.session_state.ui_owp
+            st.session_state.ape_name = st.session_state.ape_name
             
-        # Immediately copy manual UI edits to shielded memory
-        st.session_state.osq = st.session_state.ui_osq
-        st.session_state.osp = st.session_state.ui_osp
-        st.session_state.owq = st.session_state.ui_owq
-        st.session_state.owp = st.session_state.ui_owp
+            cookies["osq"] = str(st.session_state.osq)
+            cookies["osp"] = str(st.session_state.osp)
+            cookies["owq"] = str(st.session_state.owq)
+            cookies["owp"] = str(st.session_state.owp)
+            cookies["ape_name"] = st.session_state.ape_name
+            cookies.save()
+            st.success("DATA SAVED TO DEVICE ! 💎🙌")
 
         st.markdown("---")
         st.markdown("### 🛒 NEW TRANSACTION")
@@ -338,12 +345,15 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         with col_d2:
             st.number_input("Current DRS Warrants", min_value=0, key="ui_drs_owq")
             
-        # DUMMY BUTTON FOR DRS SYNC HACK
-        st.button("SAVE DRS HOLDINGS", use_container_width=True)
-
-        # Apply security max check directly on UI edits
-        st.session_state.drs_osq = min(st.session_state.ui_drs_osq, st.session_state.osq)
-        st.session_state.drs_owq = min(st.session_state.ui_drs_owq, st.session_state.owq)
+        # SAVE DRS TO COOKIES
+        if st.button("SAVE DRS HOLDINGS", use_container_width=True):
+            st.session_state.drs_osq = min(st.session_state.ui_drs_osq, st.session_state.osq)
+            st.session_state.drs_owq = min(st.session_state.ui_drs_owq, st.session_state.owq)
+            
+            cookies["drs_osq"] = str(st.session_state.drs_osq)
+            cookies["drs_owq"] = str(st.session_state.drs_owq)
+            cookies.save()
+            st.success("DRS SAVED TO DEVICE ! 🟣")
 
         st.markdown("---")
         st.markdown("<h4 style='color: #9b51e0;'>🟣 NEW DRS TRANSFER</h4>", unsafe_allow_html=True)
