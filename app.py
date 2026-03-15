@@ -634,8 +634,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- 2.5 LEADERBOARD SCREEN ---
-
-    elif st.session_state.get('show_leaderboard', False):
+elif st.session_state.get('show_leaderboard', False):
     wen_b64 = get_b64('Screenshot_20260216_163106_Discord.jpg')
     st.markdown(f"<div style='text-align:center;'><h1 style='font-size:40px; color:#00FF00; animation:neon-text 1.5s infinite;'>🏆 LEADERBOARD <img src='data:image/jpeg;base64,{wen_b64}' style='height:50px; vertical-align:middle; animation:neon-img 1.5s infinite;'></h1></div>", unsafe_allow_html=True)
     st.markdown("<style>@keyframes pulse-purple { 0% { text-shadow: 0 0 5px #9b51e0; } 50% { text-shadow: 0 0 15px #b026ff, 0 0 25px #9b51e0; } 100% { text-shadow: 0 0 5px #9b51e0; } } .drs-winner { animation: pulse-purple 1.5s infinite; color: #b026ff !important; font-weight: bold; }</style>", unsafe_allow_html=True)
