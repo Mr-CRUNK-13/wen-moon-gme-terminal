@@ -149,6 +149,9 @@ with st.sidebar:
 # --- CSS ---
 st.markdown("""
 <style>
+    /* TARGET: Remove invisible iframe spacing */
+    div[data-testid="stElementContainer"]:has(iframe[height="0"]) { display: none !important; margin: 0 !important; padding: 0 !important; }
+
     .block-container { padding-top: 1rem !important; padding-bottom: 0rem !important; }
     body, .stApp { background-color: #050505 !important; color: white; }
     #MainMenu, footer, header {visibility: hidden;}
