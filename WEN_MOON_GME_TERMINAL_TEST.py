@@ -148,20 +148,16 @@ components.html("""
 # --- CSS ---
 st.markdown("""
 <style>
-    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
-    body, .stApp, [data-testid="stAppViewContainer"] { background-color: #050505 !important; color: white; }
-    #MainMenu, footer { visibility: hidden !important; }
-    header, [data-testid="stHeader"] { display: none !important; }
-    
+    .block-container { padding-top: 1rem !important; padding-bottom: 0rem !important; }
+    body, .stApp { background-color: #050505 !important; color: white; }
+    #MainMenu, footer, header {visibility: hidden;}
     @keyframes neon-text { 0%, 100% { color: white; text-shadow: none; } 50% { color: #00FF00; text-shadow: 0 0 15px #00FF00; } }
     @keyframes neon-img { 0%, 100% { filter: drop-shadow(0 0 0px transparent); } 50% { filter: drop-shadow(0 0 25px #00FF00); } }
     @keyframes nuclear-neon { 0%, 100% { filter: drop-shadow(0 0 5px #00FF00); transform: translateY(0px) scale(1); } 50% { filter: drop-shadow(0 0 25px #00FF00); transform: translateY(-15px) scale(1.1); } }
     @keyframes neon-flash-red { 0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px #FF0000); } 50% { opacity: 0.4; filter: drop-shadow(0 0 30px #FF0000); } }
-    
     .title-container { text-align: center; margin-bottom: 20px; margin-top: -10px; }
     .gme-title { font-size: 60px; line-height: 1.1; animation: neon-text 1.5s infinite; white-space: nowrap; margin: 0; }
     @media screen and (max-width: 600px) { .gme-title { font-size: 38px; } }
-    
     .table-wrapper { overflow-x: auto; max-width: 100%; border-radius: 10px; border: 2px solid #0259c7; box-shadow: 0 0 15px #0259c7; margin-top: 10px; }
     .ldb-t { width: 100%; border-collapse: collapse; color: white; font-family: monospace; text-align: center; }
     .ldb-t th { background: #001f3f; color: #00FF00; padding: 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }
@@ -178,14 +174,14 @@ st.markdown("""
     
     /* Main Tabs Label Size */
     .stTabs [data-baseweb="tab"] p {
-        font-size: 22px !important;
+        font-size: 22px !important; /* <--- MODIFY MAIN SIZE HERE */
     }
     
     /* Sub-Tabs Label Size (20% smaller than main) */
     .stTabs .stTabs [data-baseweb="tab"] p {
-        font-size: 18px !important;
+        font-size: 18px !important; /* <--- MODIFY SUB SIZE HERE */
     }
-    div[data-testid="stExpander"] summary p { font-size: 22px !important; }
+        div[data-testid="stExpander"] summary p { font-size: 22px !important; }
 </style>
 """, unsafe_allow_html=True)
 
