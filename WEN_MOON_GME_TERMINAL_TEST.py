@@ -148,17 +148,21 @@ components.html("""
 # --- CSS ---
 st.markdown("""
 <style>
-    body, .stApp, [data-testid="stAppViewContainer"], main { background-color: #050505 !important; color: white !important; }
-    .block-container, [data-testid="stAppViewBlockContainer"] { padding-top: 0px !important; padding-bottom: 0px !important; margin-top: 0px !important; }
-    [data-testid="stHeader"], header { display: none !important; }
-    #MainMenu, footer { visibility: hidden !important; display: none !important; }
+    .block-container { padding-top: 0rem !important; padding-bottom: 0rem; max-width: 100%; }
+    body, .stApp { background-color: #050505 !important; color: white; }
+    #MainMenu, footer { visibility: hidden; }
+    header { display: none !important; }
+    
     @keyframes neon-text { 0%, 100% { color: white; text-shadow: none; } 50% { color: #00FF00; text-shadow: 0 0 15px #00FF00; } }
     @keyframes neon-img { 0%, 100% { filter: drop-shadow(0 0 0px transparent); } 50% { filter: drop-shadow(0 0 25px #00FF00); } }
     @keyframes nuclear-neon { 0%, 100% { filter: drop-shadow(0 0 5px #00FF00); transform: translateY(0px) scale(1); } 50% { filter: drop-shadow(0 0 25px #00FF00); transform: translateY(-15px) scale(1.1); } }
     @keyframes neon-flash-red { 0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px #FF0000); } 50% { opacity: 0.4; filter: drop-shadow(0 0 30px #FF0000); } }
+    
     .title-container { text-align: center; margin-bottom: 20px; margin-top: -10px; }
     .gme-title { font-size: 60px; line-height: 1.1; animation: neon-text 1.5s infinite; white-space: nowrap; margin: 0; }
-    @media screen and (max-width: 600px) { .full-container { margin-top: -32px !important; } } @media screen and (orientation: landscape) { .full-container { height: auto !important; justify-content: flex-start !important; padding-top: 0px !important; } }
+    
+    @media screen and (max-width: 600px) { .full-container { margin-top: -32px !important; } }
+    @media screen and (orientation: landscape) and (max-height: 500px) { .full-container { height: auto !important; justify-content: flex-start !important; padding-top: 20px !important; } }
     .table-wrapper { overflow-x: auto; max-width: 100%; border-radius: 10px; border: 2px solid #0259c7; box-shadow: 0 0 15px #0259c7; margin-top: 10px; }
     .ldb-t { width: 100%; border-collapse: collapse; color: white; font-family: monospace; text-align: center; }
     .ldb-t th { background: #001f3f; color: #00FF00; padding: 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }
