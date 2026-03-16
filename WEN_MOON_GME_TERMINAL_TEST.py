@@ -149,9 +149,9 @@ components.html("""
 st.markdown("""
 <style>
     .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
-    body, .stApp { background-color: #050505 !important; color: white; }
+    body, .stApp, [data-testid="stAppViewContainer"] { background-color: #050505 !important; color: white; }
     #MainMenu, footer { visibility: hidden !important; }
-    header { display: none !important; }
+    header, [data-testid="stHeader"] { display: none !important; }
     
     @keyframes neon-text { 0%, 100% { color: white; text-shadow: none; } 50% { color: #00FF00; text-shadow: 0 0 15px #00FF00; } }
     @keyframes neon-img { 0%, 100% { filter: drop-shadow(0 0 0px transparent); } 50% { filter: drop-shadow(0 0 25px #00FF00); } }
