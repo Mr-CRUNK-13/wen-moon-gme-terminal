@@ -845,7 +845,7 @@ else:
         def portal_btn(title, desc, url):
             return f"<div style='text-align:center; padding:20px; background:#0f172a; border:2px solid #00FF00; box-shadow: 0 0 15px #00FF00; border-radius:10px;'><h3 style='color:white; margin: 0 0 10px 0;'>{title}</h3><p style='color:#ccc; font-size:18px; margin-bottom: 20px;'>{desc}</p><a href='{url}' target='_blank' style='display:inline-block; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px; border:2px solid #00FF00; box-shadow: 0 0 15px #00FF00;'>OPEN SECURE LINK</a></div>"
             
-        with w_t1: st.markdown(portal_btn("GAMESTOP INVESTORS", "Official corporate and SEC filings.", "https://investor.gamestop.com/"), unsafe_allow_html=True)
+        with w_t1: st.markdown(portal_btn("GAMESTOP INVESTORS", "Official corporate information.", "https://investor.gamestop.com/") + "<div style='height: 20px;'></div>" + portal_btn("SEC EDGAR DATABASE", "Official SEC filings and reports.", "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001326380&owner=include&count=40&hidefilings=0"), unsafe_allow_html=True)
         with w_t2: st.markdown(portal_btn("CHARTEXCHANGE", "Live Borrow Fee and Dark Pool data.", "https://chartexchange.com/symbol/nyse-gme/borrow-fee/"), unsafe_allow_html=True)
         with w_t3: st.markdown(portal_btn("RED STRIPED TIE", "Direct access to community data.", "https://redstripedtie.com/_/GME?view=largest_trades"), unsafe_allow_html=True)
         with w_t4: st.markdown(portal_btn("UNUSUAL WHALES", "Track options market activity.", "https://unusualwhales.com/stock/GME"), unsafe_allow_html=True)
