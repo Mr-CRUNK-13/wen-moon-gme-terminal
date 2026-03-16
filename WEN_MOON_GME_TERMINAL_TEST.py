@@ -148,10 +148,13 @@ components.html("""
 # --- CSS ---
 st.markdown("""
 <style>
-    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
+    /* 👻 PHANTOM KILLER: Destroys invisible boxes from Cookies, Scripts, and CSS */
+    div.element-container:has(iframe[height="0"]), div[data-testid="stElementContainer"]:has(iframe[height="0"]) { display: none !important; margin: 0px !important; padding: 0px !important; }
+    div.element-container:has(style), div[data-testid="stElementContainer"]:has(style) { display: none !important; margin: 0px !important; padding: 0px !important; }
+
+    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; margin-top: 0px !important; }
     body, .stApp { background-color: #050505 !important; color: white; }
-    #MainMenu, footer { visibility: hidden !important; }
-    header { display: none !important; }
+    #MainMenu, footer, header { display: none !important; }
     @keyframes neon-text { 0%, 100% { color: white; text-shadow: none; } 50% { color: #00FF00; text-shadow: 0 0 15px #00FF00; } }
     @keyframes neon-img { 0%, 100% { filter: drop-shadow(0 0 0px transparent); } 50% { filter: drop-shadow(0 0 25px #00FF00); } }
     @keyframes nuclear-neon { 0%, 100% { filter: drop-shadow(0 0 5px #00FF00); transform: translateY(0px) scale(1); } 50% { filter: drop-shadow(0 0 25px #00FF00); transform: translateY(-15px) scale(1.1); } }
