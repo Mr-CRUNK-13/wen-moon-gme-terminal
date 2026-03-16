@@ -148,9 +148,9 @@ components.html("""
 # --- CSS ---
 st.markdown("""
 <style>
-    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; margin-top: -15px !important; }
-    body, .stApp { background-color: #050505 !important; color: white; }
-    [data-testid="stHeader"], header { display: none !important; height: 0px !important; }
+    html, body, .stApp, [data-testid="stAppViewContainer"], .main { background-color: #050505 !important; color: white; }
+    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; margin-top: -50px !important; }
+    [data-testid="stHeader"], header { display: none !important; position: absolute !important; top: -100px !important; }
     #MainMenu, footer { display: none !important; }
     @keyframes neon-text { 0%, 100% { color: white; text-shadow: none; } 50% { color: #00FF00; text-shadow: 0 0 15px #00FF00; } }
     @keyframes neon-img { 0%, 100% { filter: drop-shadow(0 0 0px transparent); } 50% { filter: drop-shadow(0 0 25px #00FF00); } }
