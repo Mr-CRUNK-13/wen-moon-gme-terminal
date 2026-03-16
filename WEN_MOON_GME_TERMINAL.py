@@ -126,7 +126,7 @@ components.html("""
 # --- CSS ---
 st.markdown("""
 <style>
-    .block-container { padding-top: 1rem !important; padding-bottom: 0rem !important; }
+    .block-container { padding-top: 1rem !important; padding-bottom: 5rem !important; }
     body, .stApp { background-color: #050505 !important; color: white; }
     #MainMenu, footer, header {visibility: hidden;}
     @keyframes neon-text { 0%, 100% { color: white; text-shadow: none; } 50% { color: #00FF00; text-shadow: 0 0 15px #00FF00; } }
