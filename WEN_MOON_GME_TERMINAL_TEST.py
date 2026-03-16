@@ -152,7 +152,7 @@ st.markdown("""
     /* TARGET: Remove invisible iframe spacing */
     div[data-testid="stElementContainer"]:has(iframe[height="0"]) { display: none !important; margin: 0 !important; padding: 0 !important; }
 
-    .block-container { padding-top: 0rem !important; margin-top: -3rem !important; padding-bottom: 5rem !important; }
+    .block-container { padding-top: 0rem !important; margin-top: -1rem !important; padding-bottom: 5rem !important; }
     body, .stApp { background-color: #050505 !important; color: white; }
     #MainMenu, footer, header {visibility: hidden;}
     @keyframes neon-text { 0%, 100% { color: white; text-shadow: none; } 50% { color: #00FF00; text-shadow: 0 0 15px #00FF00; } }
