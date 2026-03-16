@@ -148,10 +148,10 @@ components.html("""
 # --- CSS ---
 st.markdown("""
 <style>
-    html, body, .stApp, [data-testid="stAppViewContainer"], .main { background-color: #050505 !important; color: white; }
-    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; margin-top: -50px !important; }
-    [data-testid="stHeader"], header { display: none !important; position: absolute !important; top: -100px !important; }
-    #MainMenu, footer { display: none !important; }
+    body, .stApp, [data-testid="stAppViewContainer"], main { background-color: #050505 !important; color: white !important; }
+    .block-container, [data-testid="stAppViewBlockContainer"] { padding-top: 0px !important; padding-bottom: 0px !important; margin-top: 0px !important; }
+    [data-testid="stHeader"], header { display: none !important; }
+    #MainMenu, footer { visibility: hidden !important; display: none !important; }
     @keyframes neon-text { 0%, 100% { color: white; text-shadow: none; } 50% { color: #00FF00; text-shadow: 0 0 15px #00FF00; } }
     @keyframes neon-img { 0%, 100% { filter: drop-shadow(0 0 0px transparent); } 50% { filter: drop-shadow(0 0 25px #00FF00); } }
     @keyframes nuclear-neon { 0%, 100% { filter: drop-shadow(0 0 5px #00FF00); transform: translateY(0px) scale(1); } 50% { filter: drop-shadow(0 0 25px #00FF00); transform: translateY(-15px) scale(1.1); } }
