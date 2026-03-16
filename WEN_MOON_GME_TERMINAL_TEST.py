@@ -148,9 +148,10 @@ components.html("""
 # --- CSS ---
 st.markdown("""
 <style>
-    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
+    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; margin-top: -15px !important; }
     body, .stApp { background-color: #050505 !important; color: white; }
-    #MainMenu, footer, header {visibility: hidden;}
+    [data-testid="stHeader"], header { display: none !important; height: 0px !important; }
+    #MainMenu, footer { display: none !important; }
     @keyframes neon-text { 0%, 100% { color: white; text-shadow: none; } 50% { color: #00FF00; text-shadow: 0 0 15px #00FF00; } }
     @keyframes neon-img { 0%, 100% { filter: drop-shadow(0 0 0px transparent); } 50% { filter: drop-shadow(0 0 25px #00FF00); } }
     @keyframes nuclear-neon { 0%, 100% { filter: drop-shadow(0 0 5px #00FF00); transform: translateY(0px) scale(1); } 50% { filter: drop-shadow(0 0 25px #00FF00); transform: translateY(-15px) scale(1.1); } }
