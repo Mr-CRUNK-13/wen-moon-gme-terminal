@@ -1702,7 +1702,7 @@ else:
                     font-size: 13px;
                     text-align: center;
                     color: #FFFFFF;
-                    margin-bottom: 0px;
+                    margin-bottom: 0px !important;
                 }
                 .crunk-table th {
                     padding: 6px 12px;
