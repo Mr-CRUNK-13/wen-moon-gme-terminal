@@ -1713,8 +1713,8 @@ else:
                 }
                 .crunk-table td {
                     padding: 10px;
-                    border-bottom: 1px solid #00FF00;
-                    border-right: 1px solid #00FF00;
+                    border-bottom: 1px solid #000000;
+                    border-right: 1px solid #000000;
                     font-weight: bold;
                     white-space: nowrap;
                 }
