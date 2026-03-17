@@ -1704,7 +1704,7 @@ else:
                     color: #FFFFFF;
                 }
                 .crunk-table th {
-                    padding: 12px;
+                    padding: 6px 12px;
                     background-color: #0f172a;
                     border-bottom: 2px solid #00FF00;
                     border-right: 1px solid #00FF00;
@@ -1712,7 +1712,7 @@ else:
                     white-space: nowrap;
                 }
                 .crunk-table td {
-                    padding: 10px;
+                    padding: 5px 10px;
                     border-bottom: 1px solid #000000;
                     border-right: 1px solid #000000;
                     font-weight: bold;
