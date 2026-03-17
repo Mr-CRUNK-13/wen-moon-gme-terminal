@@ -1699,7 +1699,7 @@ else:
                     width: 100%;
                     border-collapse: collapse;
                     font-family: monospace;
-                    font-size: 18px;
+                    font-size: 15px;
                     text-align: center;
                     color: #FFFFFF;
                 }
