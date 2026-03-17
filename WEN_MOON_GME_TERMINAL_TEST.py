@@ -1699,9 +1699,10 @@ else:
                     width: 100%;
                     border-collapse: collapse;
                     font-family: monospace;
-                    font-size: 12px;
+                    font-size: 13px;
                     text-align: center;
                     color: #FFFFFF;
+                    margin-bottom: 0px;
                 }
                 .crunk-table th {
                     padding: 6px 12px;
