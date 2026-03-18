@@ -1643,7 +1643,7 @@ else:
             fin_t1, fin_t2, fin_t3 = st.tabs(["📊 REVENUE & EPS", "🔮 ANALYST CONSENSUS", "🗃️ RAW STATEMENTS"])
             
             with fin_t1:
-            st.markdown("<h3 style='color:#00FF00; text-align:center;'>Historical Revenue & Net Income</h4>", unsafe_allow_html=True)
+                st.markdown("<h3 style='color:#00FF00; text-align:center;'>Historical Revenue & Net Income</h4>", unsafe_allow_html=True)
                 if not fin.empty and 'Total Revenue' in fin.index:
                     try:
                         revs = fin.loc['Total Revenue'].dropna().iloc[::-1]
