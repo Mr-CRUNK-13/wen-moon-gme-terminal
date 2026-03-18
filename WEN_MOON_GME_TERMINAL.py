@@ -1798,6 +1798,14 @@ else:
                 st.markdown(html_est + html_hist, unsafe_allow_html=True)
                     
             with fin_t3:
+                st.markdown("""
+                <style>
+                .ldb-t { margin-bottom: 0px !important; }
+                .table-wrapper { margin-bottom: 0px !important; padding-bottom: 0px !important; }
+                .ldb-t tr:last-child td { border-bottom: none !important; }
+                </style>
+                """, unsafe_allow_html=True)
+
                 def df_to_html(df, title):
                     if df.empty: return f"<p style='color:white;'>{title} data not available.</p>"
                     cols = [str(c)[:10] for c in df.columns[:3]]
