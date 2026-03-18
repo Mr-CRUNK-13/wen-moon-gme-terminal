@@ -1656,63 +1656,6 @@ else:
                         st.plotly_chart(fig_fin, use_container_width=True)
                     except: st.info("Chart data formatting error.")
                 else: st.info("Historical visual data unavailable.")
-                           # --- FULL YEAR EARNINGS & REVENUE (2025 & 2024) ---
-                fy_tables_html = """
-                <h3 style='color:#00FF00; text-align:center; margin-top:40px; margin-bottom:20px;'>FULL YEAR EARNINGS & REVENUE</h3>
-                <style>
-                .fy-wrapper {
-                    overflow-x: auto;
-                    margin-bottom: 30px;
-                    border: 2px solid #00FF00;
-                    box-shadow: 0 0 15px #00FF00;
-                    border-radius: 10px;
-                    background-color: #0f172a;
-                }
-                .fy-table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    font-family: monospace;
-                    font-size: 13px;
-                    text-align: center;
-                    color: #FFFFFF;
-                    margin-bottom: 0px !important;
-                }
-                .fy-table th {
-                    padding: 6px 12px;
-                    background-color: #0f172a;
-                    border-bottom: 2px solid #00FF00;
-                    border-right: 1px solid #00FF00;
-                    font-weight: bold;
-                    white-space: nowrap;
-                }
-                .fy-table td {
-                    padding: 5px 10px;
-                    border-bottom: 1px solid #000000;
-                    border-right: 1px solid #000000;
-                    font-weight: bold;
-                    white-space: nowrap;
-                }
-                .fy-table th:last-child, .fy-table td:last-child { border-right: none; }
-                .fy-table tr:last-child td { border-bottom: none; }
-                .fy-table td:first-child { text-align: left; background-color: #0f172a; }
-                .bg-pos { background-color: #00FF00 !important; color: #FFFFFF !important; }
-                .bg-neg { background-color: #FF3333 !important; color: #FFFFFF !important; }
-                .bg-dark { background-color: #0f172a !important; color: #FFFFFF !important; }
-                </style>
-                
-                <div class="fy-wrapper">
-                    <table class="fy-table">
-                        <tr><th>2025</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>FY 2025</th><th>% of sales</th></tr>
-                        <tr><td class="bg-dark">Hardware and accessories</td><td class="bg-pos">$345M</td><td class="bg-pos">$592M</td><td class="bg-pos">$367M</td><td class="bg-pos">$620M</td><td class="bg-pos">$1,924M</td><td class="bg-pos">51,12</td></tr>
-                        <tr><td class="bg-dark">Software revenue</td><td class="bg-pos">$175M</td><td class="bg-pos">$152M</td><td class="bg-pos">$198M</td><td class="bg-pos">$220M</td><td class="bg-pos">$745M</td><td class="bg-pos">19,79</td></tr>
-                        <tr><td class="bg-dark">Collectibles revenue</td><td class="bg-pos">$211M</td><td class="bg-pos">$228M</td><td class="bg-pos">$256M</td><td class="bg-pos">$400M</td><td class="bg-pos">$1,095M</td><td class="bg-pos">29,09</td></tr>
-                        <tr><td class="bg-dark">Total Revenue</td><td class="bg-pos">$731M</td><td class="bg-pos">$972M</td><td class="bg-pos">$821M</td><td class="bg-pos">$1,240M</td><td class="bg-pos">$3,764M</td><td class="bg-pos">100</td></tr>
-                        <tr><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark">% of revenue</td></tr>
-                        <tr><td class="bg-dark">Cost of sales</td><td class="bg-neg">($479.6M)</td><td class="bg-neg">($689.1M)</td><td class="bg-neg">($547.6M)</td><td class="bg-neg">($845M)</td><td class="bg-neg">($2,561.3M)</td><td class="bg-neg">(68,05)</td></tr>
-                        <tr><td class="bg-dark">Operating costs</td><td class="bg-neg">($228.1M)</td><td class="bg-neg">($218.8M)</td><td class="bg-neg">($221.4M)</td><td class="bg-neg">($260M)</td><td class="bg-neg">($928.3M)</td><td class="bg-neg">(24,66)</td></tr>
-                        <tr><td class="bg-dark">Operating income (losses)</td><td class="bg-neg">($10.8M)</td><td class="bg-pos">$66.4M</td><td class="bg-pos">$41.3M</td><td class="bg-pos">$115M</td><td class="bg-pos">$211.9M</td><td class="bg-pos">5,63</td></tr>
-                        <tr><td class="bg-dark">Interest income</td><td class="bg-pos">$56.9M</td><td class="bg-pos">$79.6M</td><td class="bg-pos">$49.0M</td><td class="bg-pos">$85M</td><td class="bg-pos">$270.5M</td><td class="bg-pos">7,19</td></tr>
-                        <tr><td class="bg-dark">Unreal. gains (losses) BTC</td><td class="bg-pos">$0M</td><td class="bg-pos">$28.6M</td><td class="bg-neg">($9.2M)</td><td class="bg-neg">($150M)</td><td class="bg-neg">($130.6M)</td><td class="bg-neg">(3,47)</td></tr>
                 # --- FULL YEAR EARNINGS & REVENUE (2025 to 2019) ---
                 fy_tables_html = """
                 <h3 style='color:#00FF00; text-align:center; margin-top:40px; margin-bottom:20px;'>FULL YEAR EARNINGS & REVENUE</h3>
