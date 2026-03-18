@@ -1805,7 +1805,12 @@ else:
                     for c in cols: html += f"<th>{c}</th>"
                     html += "</tr>"
                     for idx, row in df.iloc[:10, :3].iterrows():
-                        html += f"<tr><td style='text-align:left; font-weight:bold; color:#00FF00;'>{idx}</td>"
+                        display_name = str(idx)
+                        display_name = display_name.replace("Net Income From Continuing Operation Net Minority Interest", "Net Income")
+                        display_name = display_name.replace("Total Unusual Items Excluding Goodwill", "Total Unusual Items Excl. Goodwill")
+                        display_name = display_name.replace("Total Unsual Items Excluding Goodwill", "Total Unsual Items Excl. Goodwill")
+                        
+                        html += f"<tr><td style='text-align:left; font-weight:bold; color:#00FF00;'>{display_name}</td>"
                         for val in row:
                             try: html += f"<td>${float(val):,.0f}</td>"
                             except: html += f"<td>{val}</td>"
