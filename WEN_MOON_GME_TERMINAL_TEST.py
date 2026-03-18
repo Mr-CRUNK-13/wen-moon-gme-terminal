@@ -1894,6 +1894,14 @@ else:
                 st.markdown(html_est + html_hist, unsafe_allow_html=True)
                     
             with fin_t3:
+                st.markdown("""
+                <style>
+                .ldb-t { margin-bottom: 0px !important; }
+                .table-wrapper { margin-bottom: 0px !important; padding-bottom: 0px !important; }
+                .ldb-t tr:last-child td { border-bottom: none !important; }
+                </style>
+                """, unsafe_allow_html=True)
+
                 def df_to_html(df, title):
                     if df.empty: return f"<p style='color:white;'>{title} data not available.</p>"
                     cols = [str(c)[:10] for c in df.columns[:3]]
@@ -1901,7 +1909,12 @@ else:
                     for c in cols: html += f"<th>{c}</th>"
                     html += "</tr>"
                     for idx, row in df.iloc[:10, :3].iterrows():
-                        html += f"<tr><td style='text-align:left; font-weight:bold; color:#00FF00;'>{idx}</td>"
+                        display_name = str(idx)
+                        display_name = display_name.replace("Net Income From Continuing Operation Net Minority Interest", "Net Income")
+                        display_name = display_name.replace("Total Unusual Items Excluding Goodwill", "Total Unusual Items Excl. Goodwill")
+                        display_name = display_name.replace("Total Unsual Items Excluding Goodwill", "Total Unsual Items Excl. Goodwill")
+                        
+                        html += f"<tr><td style='text-align:left; font-weight:bold; color:#00FF00;'>{display_name}</td>"
                         for val in row:
                             try: html += f"<td>${float(val):,.0f}</td>"
                             except: html += f"<td>{val}</td>"
