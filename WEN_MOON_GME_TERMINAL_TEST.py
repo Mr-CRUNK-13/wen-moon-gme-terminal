@@ -1695,8 +1695,8 @@ else:
                 .fy-table th:last-child, .fy-table td:last-child { border-right: none; }
                 .fy-table tr:last-child td { border-bottom: none; }
                 .fy-table td:first-child { text-align: left; background-color: #0f172a; }
-                .fy-table td.bg-pos { background-color: #00FF00 !important; color: #000000 !important; font-size: 16px !important; }
-                .fy-table td.bg-neg { background-color: #FF3333 !important; color: #000000 !important; font-size: 16px !important; }
+                .fy-table td.bg-pos { background-color: #00FF00 !important; color: #000000 !important; font-size: 15px !important; padding: 4px 4px !important; }
+                .fy-table td.bg-neg { background-color: #FF3333 !important; color: #000000 !important; font-size: 15px !important; padding: 4px 4px !important; }
                 .fy-table td.bg-dark { background-color: #0f172a !important; color: #FFFFFF !important; }
                 </style>
                 
