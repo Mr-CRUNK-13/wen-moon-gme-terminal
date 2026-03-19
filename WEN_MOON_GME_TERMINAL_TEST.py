@@ -1594,7 +1594,7 @@ else:
                 <style>
                 .opt-t { width: 100%; border-collapse: collapse; color: white; font-family: monospace; text-align: center; margin-bottom: 0px !important; }
                 .opt-t th { background: #001f3f; color: #00FF00; padding: 9px 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }
-                .opt-t td { background: #0f172a; padding: 9px 12px; border-bottom: 1px solid #0259c7; white-space: nowrap; }
+                .opt-t td { background: #0f172a; padding: 8px 12px; border-bottom: 1px solid #0259c7; white-space: nowrap; }
                 </style>
                 """, unsafe_allow_html=True)
 
