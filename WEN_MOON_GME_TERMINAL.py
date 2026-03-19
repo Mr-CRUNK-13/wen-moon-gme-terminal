@@ -789,10 +789,10 @@ else:
         earn_dates = safe_get('earnings_dates', pd.DataFrame())
         return opts, fin, bs, cf, ins, earn_dates
 
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12, tab13, tab14, tab15, tab16, tab17, tab18 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11, tab12, tab13, tab14, tab15, tab16, tab17, tab18, tab19 = st.tabs([
         "📊 GME", "📈 WARRANT", "💎 PORTFOLIO", "📋 DATA", "🌘 WEN MOON", "🗃️ WM DATA", "🏆 LEADERBOARD", "📊 WM SUMMARY", 
         "🧬 GME PRO", "⛓️ OPTIONS CHAIN", "🏦 FINANCIALS", "🕵️ INSIDERS", "📈 PRO CHARTS", "🌐 WEB PORTALS", "🐦 𝕏",
-        "📺 GME YouTube", "💎🙌13 Music", "💎🙌 By Mr-CRUNK-13"
+        "📺 GME YouTube", "💎🙌13 Music", "💎🙌 By Mr-CRUNK-13", "🛡️ OPEN SOURCE"
     ])
 
     with tab1: ph1 = st.empty()
@@ -954,6 +954,30 @@ else:
             st.markdown(social_btn("https://x.com/MrCRUNK13", "𝕏", "#1DA1F2", "🐦"), unsafe_allow_html=True)
             
         st.markdown(social_btn("mr_crunk_13", "Discord ID", "#5865F2", "👾", True), unsafe_allow_html=True)
+
+    # --- TAB 19 : OPEN SOURCE ---
+    with tab19:
+        st.markdown("<br><br>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🛡️ OPEN SOURCE ENGINE</h2>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align:center; color:#ccc; font-size:18px;'>Absolute transparency. Inspect the Terminal source code below. No hidden trackers, no external databases.</p>", unsafe_allow_html=True)
+        
+        html_btn = """
+        <div style="display: flex; justify-content: center; margin-top: 15px; margin-bottom: 30px;">
+            <a href="https://github.com/Mr-CRUNK-13/wen-moon-gme-terminal" target="_blank" style="text-decoration: none;">
+                <div style="background-color: #0f172a; border: 2px solid #00FF00; box-shadow: 0 0 10px #00FF00; border-radius: 8px; padding: 10px 20px; cursor: pointer;">
+                    <span style="color: #00FF00; font-family: monospace; font-size: 16px; font-weight: bold;">🔍 VIEW ON GITHUB</span>
+                </div>
+            </a>
+        </div>
+        """
+        st.markdown(html_btn, unsafe_allow_html=True)
+
+        try:
+            with open(__file__, "r", encoding="utf-8") as f:
+                source_code = f.read()
+            st.code(source_code, language="python")
+        except Exception as e:
+            st.error("Source code currently unavailable.")        
 
     def draw_live(price, prev, chart, vol=0, sym="GME"):
         pct = ((price - prev) / prev) * 100 if prev > 0 else 0
