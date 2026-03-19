@@ -52,10 +52,15 @@ if 'drs_osq' not in st.session_state:
     st.session_state.update(drs_osq=0, drs_owq=0, weekly_drs_s=0, weekly_drs_w=0, monthly_drs_s=0, monthly_drs_w=0)
     st.session_state.update(ui_drs_osq=0, ui_drs_owq=0, in_drs_t_sq=0, in_drs_t_wq=0)
 
-def get_b64(path):
-    try:
-        with open(path, "rb") as f: return base64.b64encode(f.read()).decode()
-    except: return ""
+# --- FORCE FAVICON CHROME (HACK ANTI-CACHE) ---
+wen_ico = get_b64("Screenshot_20260216_163106_Discord.jpg")
+if wen_ico:
+    components.html(f"""<script>
+        const link = window.parent.document.querySelector("link[rel~='icon']") || window.parent.document.createElement('link');
+        link.rel = 'icon';
+        link.href = "data:image/jpeg;base64,{wen_ico}";
+        window.parent.document.head.appendChild(link);
+    </script>""", height=0, width=0)
 
 # --- SECRET HOME BUTTON LOGIC ---
 with st.sidebar:
