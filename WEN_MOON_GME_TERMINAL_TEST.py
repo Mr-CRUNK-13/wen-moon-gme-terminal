@@ -1001,7 +1001,7 @@ else:
             
         st.markdown(social_btn("mr_crunk_13", "Discord ID", "#5865F2", "👾", True), unsafe_allow_html=True)
 
-            # --- TAB 19 : OPEN SOURCE ---
+    # --- TAB 19 : OPEN SOURCE ---
     with tab19:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🛡️ OPEN SOURCE ENGINE</h2>", unsafe_allow_html=True)
         st.markdown("<p style='text-align:center; color:#ccc; font-size:18px;'>Absolute transparency. Inspect the Terminal source code below. No hidden trackers, no external databases. Your data stays on your device.</p>", unsafe_allow_html=True)
@@ -1009,7 +1009,11 @@ else:
         try:
             with open(__file__, "r", encoding="utf-8") as f:
                 source_code = f.read()
-            st.code(source_code, language="python")
+            
+            safe_code = source_code.replace('<', '&lt;').replace('>', '&gt;')
+            st.markdown(f'''
+            <textarea readonly spellcheck="false" style="width: 100%; height: 600px; background-color: #050505; color: #00FF00; border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; border-radius: 10px; font-family: monospace; font-size: 12px; padding: 15px; white-space: pre; resize: none; outline: none;">{safe_code}</textarea>
+            ''', unsafe_allow_html=True)
         except Exception as e:
             st.error("Source code currently unavailable.")
 
