@@ -1695,9 +1695,9 @@ else:
                 .fy-table th:last-child, .fy-table td:last-child { border-right: none; }
                 .fy-table tr:last-child td { border-bottom: none; }
                 .fy-table td:first-child { text-align: left; background-color: #0f172a; }
-                .bg-pos { background-color: #00FF00 !important; color: #000000 !important; }
-                .bg-neg { background-color: #FF3333 !important; color: #000000 !important; }
-                .bg-dark { background-color: #0f172a !important; color: #FFFFFF !important; }
+                .fy-table td.bg-pos { background-color: #00FF00 !important; color: #000000 !important; }
+                .fy-table td.bg-neg { background-color: #FF3333 !important; color: #000000 !important; }
+                .fy-table td.bg-dark { background-color: #0f172a !important; color: #FFFFFF !important; }
                 </style>
                 
                 <div class="fy-wrapper">
