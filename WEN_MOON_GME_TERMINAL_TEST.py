@@ -1878,7 +1878,7 @@ else:
                     white-space: nowrap;
                 }
                 .crunk-table td {
-                    padding: 5px 10px;
+                    padding: 4px 9px;
                     border-bottom: 1px solid #000000;
                     border-right: 1px solid #000000;
                     font-weight: bold;
@@ -1887,25 +1887,26 @@ else:
                 .crunk-table th:last-child, .crunk-table td:last-child { border-right: none; }
                 .crunk-table tr:last-child td { border-bottom: none; }
                 .crunk-table td:first-child { text-align: left; background-color: #0f172a; }
-                .bg-pos { background-color: #00FF00 !important; color: #FFFFFF !important; }
-                .bg-neg { background-color: #FF3333 !important; color: #FFFFFF !important; }
-                .bg-dark { background-color: #0f172a !important; color: #FFFFFF !important; }
+                .crunk-table td.bg-pos { background-color: #00FF00 !important; color: #000000 !important; font-size: 15px !important; padding: 2px 3px !important; }
+                .crunk-table td.bg-neg { background-color: #FF3333 !important; color: #000000 !important; font-size: 15px !important; padding: 2px 3px !important; }
+                .crunk-table td.bg-dark { background-color: #0f172a !important; color: #FFFFFF !important; }
                 </style>
                 
                 <div class="crunk-wrapper">
                     <table class="crunk-table">
-                        <tr><th>2025</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>FY 2025</th><th>% of sales</th></tr>
+                        <tr><th>2025</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>FY 2025</th><th>% of revenue</th></tr>
                         <tr><td class="bg-dark">Hardware and accessories</td><td class="bg-pos">$345M</td><td class="bg-pos">$592M</td><td class="bg-pos">$367M</td><td class="bg-pos">$620M</td><td class="bg-pos">$1,924M</td><td class="bg-pos">51,12</td></tr>
                         <tr><td class="bg-dark">Software revenue</td><td class="bg-pos">$175M</td><td class="bg-pos">$152M</td><td class="bg-pos">$198M</td><td class="bg-pos">$220M</td><td class="bg-pos">$745M</td><td class="bg-pos">19,79</td></tr>
                         <tr><td class="bg-dark">Collectibles revenue</td><td class="bg-pos">$211M</td><td class="bg-pos">$228M</td><td class="bg-pos">$256M</td><td class="bg-pos">$400M</td><td class="bg-pos">$1,095M</td><td class="bg-pos">29,09</td></tr>
                         <tr><td class="bg-dark">Total Revenue</td><td class="bg-pos">$731M</td><td class="bg-pos">$972M</td><td class="bg-pos">$821M</td><td class="bg-pos">$1,240M</td><td class="bg-pos">$3,764M</td><td class="bg-pos">100</td></tr>
-                        <tr><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark">% of revenue</td></tr>
                         <tr><td class="bg-dark">Cost of sales</td><td class="bg-neg">($479.6M)</td><td class="bg-neg">($689.1M)</td><td class="bg-neg">($547.6M)</td><td class="bg-neg">($845M)</td><td class="bg-neg">($2,561.3M)</td><td class="bg-neg">(68,05)</td></tr>
                         <tr><td class="bg-dark">Operating costs</td><td class="bg-neg">($228.1M)</td><td class="bg-neg">($218.8M)</td><td class="bg-neg">($221.4M)</td><td class="bg-neg">($260M)</td><td class="bg-neg">($928.3M)</td><td class="bg-neg">(24,66)</td></tr>
                         <tr><td class="bg-dark">Operating income (losses)</td><td class="bg-neg">($10.8M)</td><td class="bg-pos">$66.4M</td><td class="bg-pos">$41.3M</td><td class="bg-pos">$115M</td><td class="bg-pos">$211.9M</td><td class="bg-pos">5,63</td></tr>
                         <tr><td class="bg-dark">Interest income</td><td class="bg-pos">$56.9M</td><td class="bg-pos">$79.6M</td><td class="bg-pos">$49.0M</td><td class="bg-pos">$85M</td><td class="bg-pos">$270.5M</td><td class="bg-pos">7,19</td></tr>
-                        <tr><td class="bg-dark">Unreal. gains (losses) BTC</td><td class="bg-pos">$0M</td><td class="bg-pos">$28.6M</td><td class="bg-neg">($9.2M)</td><td class="bg-neg">($150M)</td><td class="bg-neg">($130.6M)</td><td class="bg-neg">(3,47)</td></tr>
+                        <tr><td class="bg-dark">Unreal. gains (losses) BTC</td><td class="bg-dark"></td><td class="bg-pos">$28.6M</td><td class="bg-neg">($9.2M)</td><td class="bg-neg">($150M)</td><td class="bg-neg">($130.6M)</td><td class="bg-neg">(3,47)</td></tr>
                         <tr><td class="bg-dark">Net income</td><td class="bg-pos">$44.8M</td><td class="bg-pos">$168.6M</td><td class="bg-pos">$77.1M</td><td class="bg-pos">$50M</td><td class="bg-pos">$340.5M</td><td class="bg-pos">9,05</td></tr>
+                        <tr><td class="bg-dark">Total cash</td><td class="bg-pos">$6,400.0M</td><td class="bg-pos">$8,700.0M</td><td class="bg-pos">$8,800.0M</td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td></tr>
+                        <tr><td class="bg-dark">Total debt</td><td class="bg-neg">($1,315.0M)</td><td class="bg-neg">($4,160.0M)</td><td class="bg-neg">($4,400.0M)</td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td></tr>
                     </table>
                 </div>
 
