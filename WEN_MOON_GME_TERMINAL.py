@@ -1795,7 +1795,7 @@ else:
                     .eb { background: #0e1621; border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; border-radius: 8px; padding: 10px; text-align: center; }
                     .eb h4 { color: #00FF00; margin: 0 0 5px 0; font-size: 14px; }
                     .eb p { color: white; font-size: 18px; font-weight: bold; margin: 0; }
-                    .hist-t { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 12px; text-align: right; margin-top: 10px; }
+                    .hist-t { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 12px; text-align: right; margin-top: 0px !important; margin-bottom: 0px !important; }
                     .hist-t th { background: #001f3f; color: #00FF00; padding: 8px; border-bottom: 1px solid #00FF00; text-align: center; white-space: nowrap; }
                     .hist-t th:first-child { text-align: left; }
                     .hist-t td { background: #0f172a; padding: 8px; border-bottom: 1px solid #1e293b; color: white; white-space: nowrap; text-align: center; }
