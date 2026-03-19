@@ -1003,20 +1003,20 @@ else:
 
     # --- TAB 19 : OPEN SOURCE ---
     with tab19:
+        st.markdown("<br><br>", unsafe_allow_html=True)
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🛡️ OPEN SOURCE ENGINE</h2>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align:center; color:#ccc; font-size:18px;'>Absolute transparency. The WEN MOON Terminal is 100% Open Source. No hidden trackers, no external databases. Your data stays on your device.</p>", unsafe_allow_html=True)
-        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align:center; color:#ccc; font-size:18px;'>Absolute transparency. The WEN MOON Terminal is 100% Open Source.</p>", unsafe_allow_html=True)
         
-        github_btn = """
-        <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 40px;">
+        html_btn = """
+        <div style="display: flex; justify-content: center; margin-top: 30px; margin-bottom: 50px;">
             <a href="https://github.com/Mr-CRUNK-13/wen-moon-gme-terminal" target="_blank" style="text-decoration: none;">
-                <div style="background-color: #0f172a; border: 2px solid #00FF00; box-shadow: 0 0 20px #00FF00; border-radius: 10px; padding: 20px 40px; display: inline-flex; align-items: center; justify-content: center;">
-                    <span style="color: #00FF00; font-family: monospace; font-size: 22px; font-weight: bold;">🔍 INSPECT SOURCE CODE ON GITHUB</span>
+                <div style="background-color: #0f172a; border: 2px solid #00FF00; box-shadow: 0 0 15px #00FF00; border-radius: 10px; padding: 15px 30px; cursor: pointer;">
+                    <span style="color: #00FF00; font-family: monospace; font-size: 20px; font-weight: bold;">🔍 INSPECT SOURCE CODE ON GITHUB</span>
                 </div>
             </a>
         </div>
         """
-        st.markdown(github_btn, unsafe_allow_html=True)
+        st.markdown(html_btn, unsafe_allow_html=True)
 
     def draw_live(price, prev, chart, vol=0, sym="GME"):
         pct = ((price - prev) / prev) * 100 if prev > 0 else 0
