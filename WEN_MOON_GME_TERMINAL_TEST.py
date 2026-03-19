@@ -1533,7 +1533,7 @@ else:
                     return f"{v:,.0f}"
                 except: return str(val)
 
-            ptab1, ptab2, ptab3 = st.tabs(["🏛️ GME FUNDAMENTALS", "📜 WARRANTS DATA", "📊 NET INCOME"])
+            ptab1, ptab2, ptab3 = st.tabs(["🏛️ GME FUNDAMENTALS", "📜 WARRANTS DATA", "📊 NET & OPERATING INCOME"])
             
             with ptab1:
                 html_gme = f"""
@@ -1590,14 +1590,25 @@ else:
                 st.markdown(html_wt, unsafe_allow_html=True)
 
             with ptab3:
-                st.markdown("<h4 style='color:white; text-align:center;'>GameStop Net Income per Fiscal Quarter (M$)</h4>", unsafe_allow_html=True)
+                st.markdown("""
+                <style>
+                .opt-t { width: 100%; border-collapse: collapse; color: white; font-family: monospace; text-align: center; }
+                .opt-t th { background: #001f3f; color: #00FF00; padding: 11px 12px; border-bottom: 2px solid #0259c7; white-space: nowrap; }
+                .opt-t td { background: #0f172a; padding: 11px 12px; border-bottom: 1px solid #0259c7; white-space: nowrap; }
+                </style>
+                """, unsafe_allow_html=True)
+
+                st.markdown("<h3 style='color:#00FF00; text-align:center;'>GameStop Net Income per Fiscal Quarter (M$)</h3>", unsafe_allow_html=True)
                 inc_data = [
                     {"Year": "2025", "Q1": 45, "Q2": 169, "Q3": 77, "Q4": None, "Total": 291},
                     {"Year": "2024", "Q1": -32, "Q2": 15, "Q3": 17, "Q4": 131, "Total": 131},
                     {"Year": "2023", "Q1": -51, "Q2": -3, "Q3": -3, "Q4": 63, "Total": 7},
-                    {"Year": "2022", "Q1": -158, "Q2": -109, "Q3": -95, "Q4": 48, "Total": -313}
+                    {"Year": "2022", "Q1": -158, "Q2": -109, "Q3": -95, "Q4": 48, "Total": -313},
+                    {"Year": "2021", "Q1": -67, "Q2": -62, "Q3": -105, "Q4": -148, "Total": -381},
+                    {"Year": "2020", "Q1": -166, "Q2": -111, "Q3": -19, "Q4": 81, "Total": -215},
+                    {"Year": "2019", "Q1": 7, "Q2": -415, "Q3": -83, "Q4": 21, "Total": -471}
                 ]
-                html_inc = "<div class='table-wrapper'><table class='ldb-t'><tr><th>Fiscal Year</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Results</th></tr>"
+                html_inc = "<div class='table-wrapper' style='margin-bottom: 20px;'><table class='opt-t'><tr><th>Fiscal Year</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Results</th></tr>"
                 for r in inc_data:
                     html_inc += f"<tr><td>{r['Year']}</td>"
                     for q in ["Q1", "Q2", "Q3", "Q4", "Total"]:
@@ -1607,7 +1618,31 @@ else:
                             c = "rgba(0, 255, 0, 0.25)" if val > 0 else "rgba(255, 0, 0, 0.25)" if val < 0 else "transparent"
                             html_inc += f"<td style='background-color:{c}; color:white; font-size:20px; font-weight:bold;'>{val if val < 0 else f'+{val}'}M</td>"
                     html_inc += "</tr>"
-                st.markdown(html_inc + "</table></div>", unsafe_allow_html=True)
+                html_inc += "</table></div>"
+                st.markdown(html_inc, unsafe_allow_html=True)
+                
+                st.markdown("<h3 style='color:#00FF00; text-align:center;'>GameStop Operating Income per Fiscal Quarter (M$)</h3>", unsafe_allow_html=True)
+                op_data = [
+                    {"Year": "2025", "Q1": -11, "Q2": 66, "Q3": 41, "Q4": None, "Total": 97},
+                    {"Year": "2024", "Q1": -51, "Q2": -22, "Q3": -25, "Q4": 78, "Total": -19},
+                    {"Year": "2023", "Q1": -58, "Q2": -19, "Q3": -15, "Q4": 64, "Total": -29},
+                    {"Year": "2022", "Q1": -153, "Q2": -105, "Q3": -96, "Q4": 46, "Total": -308},
+                    {"Year": "2021", "Q1": -40, "Q2": -58, "Q3": -103, "Q4": -161, "Total": -362},
+                    {"Year": "2020", "Q1": -103, "Q2": -96, "Q3": -83, "Q4": 29, "Total": -253},
+                    {"Year": "2019", "Q1": 18, "Q2": -449, "Q3": -43, "Q4": 136, "Total": -400}
+                ]
+                html_op = "<div class='table-wrapper'><table class='opt-t'><tr><th>Fiscal Year</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Results</th></tr>"
+                for r in op_data:
+                    html_op += f"<tr><td>{r['Year']}</td>"
+                    for q in ["Q1", "Q2", "Q3", "Q4", "Total"]:
+                        val = r[q]
+                        if val is None: html_op += "<td></td>"
+                        else:
+                            c = "rgba(0, 255, 0, 0.25)" if val > 0 else "rgba(255, 0, 0, 0.25)" if val < 0 else "transparent"
+                            html_op += f"<td style='background-color:{c}; color:white; font-size:20px; font-weight:bold;'>{val if val < 0 else f'+{val}'}M</td>"
+                    html_op += "</tr>"
+                html_op += "</table></div>"
+                st.markdown(html_op, unsafe_allow_html=True)
 
         with ph10.container():
             st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>⛓️ OPTIONS CHAIN TERMINAL (ATM CENTERED)</h2>", unsafe_allow_html=True)
