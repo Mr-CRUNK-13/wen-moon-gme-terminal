@@ -1030,51 +1030,6 @@ else:
         anim_class = "nuclear-neon" if pct >= 0 else "neon-flash-red"
         icn = f"<div style='animation: {anim_class} 1.5s infinite;'><div style='font-size:{sz}px;'>🚀</div></div>" if pct >= 0 else f"<img src='data:image/jpeg;base64,{get_b64('Screenshot_20260216_163106_Discord.jpg')}' style='height:{sz}px; animation:{anim_class} 1.5s infinite;'>"
         
-        html_live = f"""
-        <style>
-            .l-box {{ display:flex; justify-content:center; align-items:center; gap:20px; margin-top:30px; }}
-            .l-dlr {{ font-size:50px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; vertical-align:top; }}
-            .l-int {{ font-size:100px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; }}
-            .l-dec {{ font-size:80px; color:{clr}; text-shadow:0 0 20px {clr}; font-weight:bold; }}
-            .l-sub {{ color:{clr}; margin-top:0px; font-size:24px; font-weight:bold; }}
-            .l-icn-w {{ display:flex; align-items:center; justify-content:center; }}
-            
-            @media screen and (orientation: landscape) {{
-                .l-box {{ justify-content:space-between !important; align-items:flex-end !important; padding:0 10% !important; margin-top:125px !important; }}
-                .l-dlr {{ font-size:87px !important; }}
-                .l-int {{ font-size:175px !important; }}
-                .l-dec {{ font-size:140px !important; }}
-                .l-sub {{ font-size:42px !important; text-align:right; margin-top:-65px !important; }}
-                .l-icn-w {{ transform: scale(1.5); margin-bottom:10px !important; }}
-            }}
-        </style>
-        <div class='l-box'>
-            <div style='text-align:right; white-space:nowrap;'>
-                <span class='l-dlr'>$</span><span class='l-int'>{p_int}.</span><span class='l-dec'>{p_dec}</span>
-                <div class='l-sub'>{diff_sign}{abs_diff:.2f} {pct:+.2f}%</div>
-            </div>
-            <div class='l-icn-w'>{icn}</div>
-        </div>
-        """
-        st.markdown(html_live, unsafe_allow_html=True)
-        
-        if not chart.empty:
-            fig, ax = plt.subplots(figsize=(10, 2.0), facecolor='black'); ax.set_facecolor('black')
-        
-        if not chart.empty:
-            fig, ax = plt.subplots(figsize=(10, 2.0), facecolor='black'); ax.set_facecolor('black')
-    def draw_live(price, prev, chart, vol=0, sym="GME"):
-        pct = ((price - prev) / prev) * 100 if prev > 0 else 0
-        diff, clr = price - prev, ("#00FF00" if price >= prev else "#FF0000")
-        price_str = f"{price:.2f}"
-        p_int, p_dec = price_str.split('.')
-        diff_sign = "+" if diff >= 0 else "-"
-        abs_diff = abs(diff)
-        
-        sz = min(100 + (abs(pct) * 10), 180)
-        anim_class = "nuclear-neon" if pct >= 0 else "neon-flash-red"
-        icn = f"<div style='animation: {anim_class} 1.5s infinite;'><div style='font-size:{sz}px;'>🚀</div></div>" if pct >= 0 else f"<img src='data:image/jpeg;base64,{get_b64('Screenshot_20260216_163106_Discord.jpg')}' style='height:{sz}px; animation:{anim_class} 1.5s infinite;'>"
-        
         s_id = sym.replace("-", "")
         
         html_live = f"""
