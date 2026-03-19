@@ -8,13 +8,14 @@ from matplotlib.gridspec import GridSpec
 import plotly.graph_objects as go
 import base64
 from datetime import datetime
+from PIL import Image
 
 from datetime import datetime
 from streamlit_cookies_manager import EncryptedCookieManager
 
 # --- 1. CONFIGURATION & STATE INIT ---
-st.set_page_config(page_title="GME TERMINAL", page_icon="Screenshot_20260216_163106_Discord.jpg", layout="wide", initial_sidebar_state="collapsed")
-
+img_icon = Image.open("Screenshot_20260216_163106_Discord.jpg")
+st.set_page_config(page_title="GME TERMINAL", page_icon=img_icon, layout="wide", initial_sidebar_state="collapsed")
 # --- COOKIE MANAGER INITIALIZATION ---
 cookies = EncryptedCookieManager(prefix="gme_ape_", password="wen_moon_secret")
 if not cookies.ready():
