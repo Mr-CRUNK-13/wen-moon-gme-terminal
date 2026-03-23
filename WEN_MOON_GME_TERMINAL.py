@@ -1666,19 +1666,22 @@ else:
             fin_t1, fin_t2, fin_t3 = st.tabs(["📊 REVENUE & EPS", "🔮 ANALYST CONSENSUS", "🗃️ RAW STATEMENTS"])
             
             with fin_t1:
-                st.markdown("<h3 style='color:#00FF00; text-align:center;'>Historical Revenue & Net Income</h4>", unsafe_allow_html=True)
-                if not fin.empty and 'Total Revenue' in fin.index:
-                    try:
-                        revs = fin.loc['Total Revenue'].dropna().iloc[::-1]
-                        fig_fin = go.Figure()
-                        fig_fin.add_trace(go.Bar(x=revs.index.astype(str), y=revs.values, name='Total Revenue', marker_color='#0259c7'))
-                        if 'Net Income' in fin.index:
-                            net = fin.loc['Net Income'].dropna().iloc[::-1]
-                            fig_fin.add_trace(go.Scatter(x=net.index.astype(str), y=net.values, mode='lines+markers', name='Net Income', line=dict(color='#00FF00', width=4)))
-                        fig_fin.update_layout(template="plotly_dark", plot_bgcolor='#050505', paper_bgcolor='#050505', margin=dict(l=0, r=0, t=30, b=0))
-                        st.plotly_chart(fig_fin, use_container_width=True)
-                    except: st.info("Chart data formatting error.")
-                else: st.info("Historical visual data unavailable.")
+                st.markdown("<h3 style='color:#00FF00; text-align:center;'>Historical Revenue & Net Income</h3>", unsafe_allow_html=True)
+                
+                # --- OPERATION 7-YEAR VISION (STATIC DATA SYNCED WITH TABLES) ---
+                years_7 = ['2019', '2020', '2021', '2022', '2023', '2024', '2025']
+                rev_7 = [6466300000, 5089800000, 6010700000, 5927100000, 5272800000, 3823000000, 3764000000]
+                net_7 = [-470900000, -215300000, -381300000, -313100000, 6700000, 131300000, 340500000]
+                
+                try:
+                    fig_fin = go.Figure()
+                    fig_fin.add_trace(go.Bar(x=years_7, y=rev_7, name='Total Revenue', marker_color='#0259c7'))
+                    fig_fin.add_trace(go.Scatter(x=years_7, y=net_7, mode='lines+markers', name='Net Income', line=dict(color='#00FF00', width=4)))
+                    fig_fin.update_layout(template="plotly_dark", plot_bgcolor='#050505', paper_bgcolor='#050505', margin=dict(l=0, r=0, t=30, b=0))
+                    st.plotly_chart(fig_fin, use_container_width=True)
+                except Exception as e: 
+                    st.info("Chart data formatting error.")
+
                 # --- FULL YEAR EARNINGS & REVENUE (2025 to 2019) ---
                 fy_tables_html = """
                 <h3 style='color:#00FF00; text-align:center; margin-top:40px; margin-bottom:20px;'>FULL YEAR EARNINGS & REVENUE</h3>
