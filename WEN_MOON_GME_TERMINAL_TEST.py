@@ -886,7 +886,7 @@ else:
     # --- TAB 14 : WEB PORTALS (Static) ---
     with tab14:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🌐 INVESTOR PORTALS</h2>", unsafe_allow_html=True)
-        w_t1, w_t2, w_t3, w_t4, w_t5, w_t6, w_t7, w_t8 = st.tabs(["👔 Investors", "📊 ChartEx", "🎀 RedStriped", "🐋 Whales", "🦍 Reddit", "🐳 WhaleWisdom", "📈 TradingView", "📰 Yahoo"])
+        w_t1, w_t2, w_t3, w_t4, w_t5, w_t6, w_t7, w_t8, w_t9 = st.tabs(["👔 Investors", "📊 ChartEx", "🎀 RedStriped", "🐋 Whales", "🦍 Reddit", "🐳 WhaleWisdom", "📈 TradingView", "📰 Yahoo", "📚 GmeWiki"])
         
         def portal_btn(title, desc, url):
             return f"<div style='text-align:center; padding:20px; background:#0f172a; border:2px solid #00FF00; box-shadow: 0 0 15px #00FF00; border-radius:10px;'><h3 style='color:white; margin: 0 0 10px 0;'>{title}</h3><p style='color:#ccc; font-size:18px; margin-bottom: 20px;'>{desc}</p><a href='{url}' target='_blank' style='display:inline-block; padding:15px 30px; background:#00FF00; color:black; font-weight:bold; text-decoration:none; border-radius:5px; font-size:20px; border:2px solid #00FF00; box-shadow: 0 0 15px #00FF00;'>OPEN SECURE LINK</a></div>"
@@ -899,6 +899,7 @@ else:
         with w_t6: st.markdown(portal_btn("WHALEWISDOM (WARRANTS)", "Track institutional holders of GME Warrants.", "https://whalewisdom.com/stock/gmews"), unsafe_allow_html=True)
         with w_t7: st.markdown(portal_btn("TRADINGVIEW", "Advanced technical analysis platform.", "https://www.tradingview.com/symbols/NYSE-GME/"), unsafe_allow_html=True)
         with w_t8: st.markdown(portal_btn("YAHOO FINANCE", "Comprehensive financial overview.", "https://finance.yahoo.com/quote/GME/"), unsafe_allow_html=True)
+        with w_t9: st.markdown(portal_btn("GMEWIKI EARNINGS", "GameStop Financial Statements", "https://gmewiki.org/earnings"), unsafe_allow_html=True)
 
     # --- TAB 15 : 🐦 𝕏 (Twitter X - Static) ---
     with tab15:
