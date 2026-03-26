@@ -1910,7 +1910,7 @@ else:
                
                 # Verified Real History Data with Full Years (FY)
                 hist_data = [
-                    {"p": "FY 2025", "ee": 0.65, "ae": 0.77, "er": "3.76B", "ar": "3.63B", "fy": True},
+                    {"p": "FY 2025", "ee": 0.77, "ae": 1.15, "er": "4.16B", "ar": "3.63B", "fy": True},
                     {"p": "Q4 2025", "ee": 0.37, "ae": 0.49, "er": "1.47B", "ar": "1.10B", "fy": False},
                     {"p": "Q3 2025", "ee": 0.20, "ae": 0.24, "er": "893.6M", "ar": "821.0M", "fy": False},
                     {"p": "Q2 2025", "ee": 0.16, "ae": 0.25, "er": "823.2M", "ar": "972.2M", "fy": False},
