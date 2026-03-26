@@ -1646,7 +1646,7 @@ else:
                     marker_color='#9b51e0',
                     text=[f"{v}M" for v in drs_values],
                     textposition='auto',
-                    textfont=dict(size=18),
+                    textfont=dict(size=30),
                     name="DRS Shares (Millions)"
                 ))
                 
