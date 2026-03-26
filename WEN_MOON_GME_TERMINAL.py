@@ -1645,8 +1645,9 @@ else:
                     y=drs_values,
                     marker_color='#9b51e0',
                     text=[f"{v}M" for v in drs_values],
-                    textposition='auto',
-                    textfont=dict(size=60),
+                    textposition='outside',
+                    textfont=dict(size=16),
+                    cliponaxis=False,
                     name="DRS Shares (Millions)"
                 ))
                 
