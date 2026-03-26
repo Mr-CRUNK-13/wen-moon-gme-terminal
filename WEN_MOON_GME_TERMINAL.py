@@ -1589,7 +1589,7 @@ else:
 
                 st.markdown("<h3 style='color:#00FF00; text-align:center;'>GameStop Net Income per Fiscal Quarter (M$)</h3>", unsafe_allow_html=True)
                 inc_data = [
-                    {"Year": "2025", "Q1": 45, "Q2": 169, "Q3": 77, "Q4": None, "Total": 291},
+                    {"Year": "2025", "Q1": 45, "Q2": 169, "Q3": 77, "Q4": 128, "Total": 418},
                     {"Year": "2024", "Q1": -32, "Q2": 15, "Q3": 17, "Q4": 131, "Total": 131},
                     {"Year": "2023", "Q1": -51, "Q2": -3, "Q3": -3, "Q4": 63, "Total": 7},
                     {"Year": "2022", "Q1": -158, "Q2": -109, "Q3": -95, "Q4": 48, "Total": -313},
@@ -1612,7 +1612,7 @@ else:
                 
                 st.markdown("<h3 style='color:#00FF00; text-align:center;'>GameStop Operating Income per Fiscal Quarter (M$)</h3>", unsafe_allow_html=True)
                 op_data = [
-                    {"Year": "2025", "Q1": -11, "Q2": 66, "Q3": 41, "Q4": None, "Total": 97},
+                    {"Year": "2025", "Q1": -11, "Q2": 66, "Q3": 41, "Q4": 135, "Total": 232},
                     {"Year": "2024", "Q1": -51, "Q2": -22, "Q3": -25, "Q4": 78, "Total": -19},
                     {"Year": "2023", "Q1": -58, "Q2": -19, "Q3": -15, "Q4": 64, "Total": -29},
                     {"Year": "2022", "Q1": -153, "Q2": -105, "Q3": -96, "Q4": 46, "Total": -308},
