@@ -1701,8 +1701,8 @@ else:
                 
                 # --- OPERATION 7-YEAR VISION (STATIC DATA SYNCED WITH TABLES) ---
                 years_7 = ['2019', '2020', '2021', '2022', '2023', '2024', '2025']
-                rev_7 = [6466300000, 5089800000, 6010700000, 5927100000, 5272800000, 3823000000, 3764000000]
-                net_7 = [-470900000, -215300000, -381300000, -313100000, 6700000, 131300000, 340500000]
+                rev_7 = [6466300000, 5089800000, 6010700000, 5927100000, 5272800000, 3823000000, 3629900000]
+                net_7 = [-470900000, -215300000, -381300000, -313100000, 6700000, 131300000, 418400000]
                 
                 try:
                     fig_fin = go.Figure()
@@ -1760,18 +1760,18 @@ else:
                 <div class="fy-wrapper">
                     <table class="fy-table">
                         <tr><th>2025</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>FY 2025</th><th>% of revenue</th></tr>
-                        <tr><td class="bg-dark">Hardware and accessories</td><td class="bg-pos">$345M</td><td class="bg-pos">$592M</td><td class="bg-pos">$367M</td><td class="bg-pos">$620M</td><td class="bg-pos">$1,924M</td><td class="bg-pos">51,12</td></tr>
-                        <tr><td class="bg-dark">Software revenue</td><td class="bg-pos">$175M</td><td class="bg-pos">$152M</td><td class="bg-pos">$198M</td><td class="bg-pos">$220M</td><td class="bg-pos">$745M</td><td class="bg-pos">19,79</td></tr>
-                        <tr><td class="bg-dark">Collectibles revenue</td><td class="bg-pos">$211M</td><td class="bg-pos">$228M</td><td class="bg-pos">$256M</td><td class="bg-pos">$400M</td><td class="bg-pos">$1,095M</td><td class="bg-pos">29,09</td></tr>
-                        <tr><td class="bg-dark">Total Revenue</td><td class="bg-pos">$731M</td><td class="bg-pos">$972M</td><td class="bg-pos">$821M</td><td class="bg-pos">$1,240M</td><td class="bg-pos">$3,764M</td><td class="bg-pos">100</td></tr>
-                        <tr><td class="bg-dark">Cost of sales</td><td class="bg-neg">($479.6M)</td><td class="bg-neg">($689.1M)</td><td class="bg-neg">($547.6M)</td><td class="bg-neg">($845M)</td><td class="bg-neg">($2,561.3M)</td><td class="bg-neg">(68,05)</td></tr>
-                        <tr><td class="bg-dark">Operating costs</td><td class="bg-neg">($228.1M)</td><td class="bg-neg">($218.8M)</td><td class="bg-neg">($221.4M)</td><td class="bg-neg">($260M)</td><td class="bg-neg">($928.3M)</td><td class="bg-neg">(24,66)</td></tr>
-                        <tr><td class="bg-dark">Operating income (losses)</td><td class="bg-neg">($10.8M)</td><td class="bg-pos">$66.4M</td><td class="bg-pos">$41.3M</td><td class="bg-pos">$115M</td><td class="bg-pos">$211.9M</td><td class="bg-pos">5,63</td></tr>
-                        <tr><td class="bg-dark">Interest income</td><td class="bg-pos">$56.9M</td><td class="bg-pos">$79.6M</td><td class="bg-pos">$49.0M</td><td class="bg-pos">$85M</td><td class="bg-pos">$270.5M</td><td class="bg-pos">7,19</td></tr>
-                        <tr><td class="bg-dark">Unreal. gains (losses) BTC</td><td class="bg-dark"></td><td class="bg-pos">$28.6M</td><td class="bg-neg">($9.2M)</td><td class="bg-neg">($150M)</td><td class="bg-neg">($130.6M)</td><td class="bg-neg">(3,47)</td></tr>
-                        <tr><td class="bg-dark">Net income</td><td class="bg-pos">$44.8M</td><td class="bg-pos">$168.6M</td><td class="bg-pos">$77.1M</td><td class="bg-pos">$50M</td><td class="bg-pos">$340.5M</td><td class="bg-pos">9,05</td></tr>
-                        <tr><td class="bg-dark">Total cash</td><td class="bg-pos">$6,400.0M</td><td class="bg-pos">$8,700.0M</td><td class="bg-pos">$8,800.0M</td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td></tr>
-                        <tr><td class="bg-dark">Total debt</td><td class="bg-neg">($1,315.0M)</td><td class="bg-neg">($4,160.0M)</td><td class="bg-neg">($4,400.0M)</td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td></tr>
+                        <tr><td class="bg-dark">Hardware and accessories</td><td class="bg-pos">$345M</td><td class="bg-pos">$592M</td><td class="bg-pos">$367M</td><td class="bg-pos">$535.6M</td><td class="bg-pos">$1,840.4M</td><td class="bg-pos">50,70</td></tr>
+                        <tr><td class="bg-dark">Software revenue</td><td class="bg-pos">$175M</td><td class="bg-pos">$152M</td><td class="bg-pos">$198M</td><td class="bg-pos">$203.7M</td><td class="bg-pos">$729.3M</td><td class="bg-pos">20,09</td></tr>
+                        <tr><td class="bg-dark">Collectibles revenue</td><td class="bg-pos">$211M</td><td class="bg-pos">$228M</td><td class="bg-pos">$256M</td><td class="bg-pos">$365.0M</td><td class="bg-pos">$1,060.2M</td><td class="bg-pos">29,21</td></tr>
+                        <tr><td class="bg-dark">Total Revenue</td><td class="bg-pos">$731M</td><td class="bg-pos">$972M</td><td class="bg-pos">$821M</td><td class="bg-pos">$1,104.3M</td><td class="bg-pos">$3,629.9M</td><td class="bg-pos">100</td></tr>
+                        <tr><td class="bg-dark">Cost of sales</td><td class="bg-neg">($479.6M)</td><td class="bg-neg">($689.1M)</td><td class="bg-neg">($547.6M)</td><td class="bg-neg">($717.5M)</td><td class="bg-neg">($2,433.8M)</td><td class="bg-neg">(67,05)</td></tr>
+                        <tr><td class="bg-dark">Operating costs</td><td class="bg-neg">($228.1M)</td><td class="bg-neg">($218.8M)</td><td class="bg-neg">($221.4M)</td><td class="bg-neg">($241.5M)</td><td class="bg-neg">($910.2M)</td><td class="bg-neg">(25,07)</td></tr>
+                        <tr><td class="bg-dark">Operating income (losses)</td><td class="bg-neg">($10.8M)</td><td class="bg-pos">$66.4M</td><td class="bg-pos">$41.3M</td><td class="bg-pos">$135.2M</td><td class="bg-pos">$232.1M</td><td class="bg-pos">6,39</td></tr>
+                        <tr><td class="bg-dark">Interest income</td><td class="bg-pos">$56.9M</td><td class="bg-pos">$79.6M</td><td class="bg-pos">$49.0M</td><td class="bg-pos">$86.0M</td><td class="bg-pos">$271.5M</td><td class="bg-pos">7,48</td></tr>
+                        <tr><td class="bg-dark">Unreal. gains (losses) BTC</td><td class="bg-dark"></td><td class="bg-pos">$28.6M</td><td class="bg-neg">($9.2M)</td><td class="bg-neg">($151.0M)</td><td class="bg-neg">($131.6M)</td><td class="bg-neg">(3,63)</td></tr>
+                        <tr><td class="bg-dark">Net income</td><td class="bg-pos">$44.8M</td><td class="bg-pos">$168.6M</td><td class="bg-pos">$77.1M</td><td class="bg-pos">$127.9M</td><td class="bg-pos">$418.4M</td><td class="bg-pos">11,53</td></tr>
+                        <tr><td class="bg-dark">Total cash</td><td class="bg-pos">$6,400M</td><td class="bg-pos">$8,700M</td><td class="bg-pos">$8,800M</td><td class="bg-pos">$9,013M</td><td class="bg-dark"></td><td class="bg-dark"></td></tr>
+                        <tr><td class="bg-dark">Total debt</td><td class="bg-neg">($1,315M)</td><td class="bg-neg">($4,160M)</td><td class="bg-neg">($4,400M)</td><td class="bg-neg">($4,164M)</td><td class="bg-dark"></td><td class="bg-dark"></td></tr>
                     </table>
                 </div>
 
