@@ -1903,8 +1903,8 @@ else:
                     }
                 </style>
                 <div class="est-g">
-                    <div class="eb"><h4>Q4 2025 (Next)</h4><p>Rev: $1.47B<span class="sep"> | </span><span class="eps-val">EPS: $0.37</span></p></div>
-                    <div class="eb"><h4>FY 2025 (Proj)</h4><p>Rev: $4.16B<span class="sep"> | </span><span class="eps-val">EPS: $0.99</span></p></div>
+                    <div class="eb"><h4>Q1 2026 (Next)</h4><p>Rev: $0.732B<span class="sep"> | </span><span class="eps-val">EPS: $0.10</span></p></div>
+                    <div class="eb"><h4>FY 2026 (Proj)</h4><p>Rev: $3.55B<span class="sep"> | </span><span class="eps-val">EPS: $0.85</span></p></div>
                 </div>
                 <h3 style='color:#00FF00; text-align:center; margin-top: 10px;'>Mr-CRUNK-13 EARNINGS ESTIMATES</h3>
                 <style>
@@ -1972,6 +1972,8 @@ else:
                
                 # Verified Real History Data with Full Years (FY)
                 hist_data = [
+                    {"p": "FY 2025", "ee": 0.77, "ae": 1.15, "er": "4.16B", "ar": "3.63B", "fy": True},
+                    {"p": "Q4 2025", "ee": 0.37, "ae": 0.49, "er": "1.47B", "ar": "1.10B", "fy": False},
                     {"p": "Q3 2025", "ee": 0.20, "ae": 0.24, "er": "893.6M", "ar": "821.0M", "fy": False},
                     {"p": "Q2 2025", "ee": 0.16, "ae": 0.25, "er": "823.2M", "ar": "972.2M", "fy": False},
                     {"p": "Q1 2025", "ee": 0.04, "ae": 0.17, "er": "754.2M", "ar": "732.4M", "fy": False},
