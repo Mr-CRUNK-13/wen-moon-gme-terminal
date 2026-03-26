@@ -1523,7 +1523,7 @@ else:
                     return f"{v:,.0f}"
                 except: return str(val)
 
-            ptab1, ptab2, ptab3 = st.tabs(["🏛️ GME FUNDAMENTALS", "📜 WARRANTS DATA", "📊 NET & OPERATING INCOME"])
+            ptab1, ptab2, ptab3, ptab4 = st.tabs(["🏛️ GME FUNDAMENTALS", "📜 WARRANTS DATA", "📊 NET & OPERATING INCOME", "🟣 DRS"])
             
             with ptab1:
                 html_gme = f"""
@@ -1634,6 +1634,35 @@ else:
                 html_op += "</table></div>"
                 st.markdown(html_op, unsafe_allow_html=True)
 
+            with ptab4:
+                st.markdown("<h3 style='color:#9b51e0; text-align:center;'>DRS SHARE HOLDINGS</h3>", unsafe_allow_html=True)
+                
+                drs_dates = ["Oct 2021", "Jan 2022", "Apr 2022", "Jul 2022", "Oct 2022", "Mar 2023", "Jun 2023", "Aug 2023", "Nov 2023", "Mar 2024", "Jun 2024", "Sep 2024", "Dec 2024", "Mar 2025", "Jun 2025", "Sep 2025", "Dec 2025", "Mar 2026"]
+                drs_values = [20.8, 35.6, 50.8, 71.3, 71.8, 76.0, 76.6, 75.4, 75.4, 75.3, 74.6, 72.8, 71.0, 69.5, 68.1, 66.7, 67.0, 66.2]
+                
+                fig_drs = go.Figure()
+                fig_drs.add_trace(go.Bar(
+                    x=drs_dates, 
+                    y=drs_values,
+                    marker_color='#9b51e0',
+                    text=[f"{v}M" for v in drs_values],
+                    textposition='outside',
+                    textfont=dict(size=16),
+                    cliponaxis=False,
+                    name="DRS Shares (Millions)"
+                ))
+                
+                fig_drs.update_layout(
+                    template='plotly_dark',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    margin=dict(l=20, r=20, t=40, b=20),
+                    height=400,
+                    yaxis=dict(title="Millions of Shares", gridcolor='#333333', range=[0, 85]),
+                    xaxis=dict(tickangle=-45)
+                )
+                st.plotly_chart(fig_drs, use_container_width=True)
+                
         with ph10.container():
             st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>⛓️ OPTIONS CHAIN TERMINAL (ATM CENTERED)</h2>", unsafe_allow_html=True)
             if len(opts) > 0:
