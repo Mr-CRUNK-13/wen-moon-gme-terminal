@@ -1902,8 +1902,8 @@ else:
                     }
                 </style>
                 <div class="est-g">
-                    <div class="eb"><h4>Q1 2026 (Next)</h4><p>Rev: $0.732B<span class="sep"> | </span><span class="eps-val">EPS: $0.10</span></p></div>
-                    <div class="eb"><h4>FY 2026 (Proj)</h4><p>Rev: $3.55B<span class="sep"> | </span><span class="eps-val">EPS: $0.85</span></p></div>
+                    <div class="eb"><h4>Q1 2026 (Next)</h4><p>Rev: $0.767B<span class="sep"> | </span><span class="eps-val">EPS: $0.12</span></p></div>
+                    <div class="eb"><h4>FY 2026 (Proj)</h4><p>Rev: $4.28B<span class="sep"> | </span><span class="eps-val">EPS: $0.81</span></p></div>
                 </div>
                 <h3 style='color:#00FF00; text-align:center; margin-top:20px;'>5-Year Consensus History</h3>
                 """
