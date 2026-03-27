@@ -448,7 +448,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         # --- SECURE CONTAINER TO PREVENT DOM LEAK ---
         with st.container():
 
-            st.markdown("<h4 style='text-align: center; margin-top: 10px; font-family: monospace; animation: neon-text 1.5s infinite; color: #00FF00;'>By Mr-CRUNK-13</h4>", unsafe_allow_html=True)
+            st.markdown("<div style='width: 100%; text-align: center; margin-top: 10px;'><span style='font-family: monospace; font-size: 22px; font-weight: bold; animation: neon-text 1.5s infinite; color: #00FF00;'>By Mr-CRUNK-13</span></div>", unsafe_allow_html=True)
             st.markdown("<br>", unsafe_allow_html=True)
             # --- LIVE PRICE FETCH FOR HOLDINGS ---
             try:
