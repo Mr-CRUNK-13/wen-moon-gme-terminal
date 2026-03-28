@@ -1633,7 +1633,7 @@ else:
                 html_op += "</table></div>"
                 st.markdown(html_op, unsafe_allow_html=True)
 
-                st.markdown("<h3 style='color:#00FF00; text-align:center; margin-top:30px;'>GameStop Store Efficiency (2019-2025)</h3>", unsafe_allow_html=True)
+                st.markdown("<h3 style='color:#00FF00; text-align:center; margin-top:10px;'>GameStop Store Efficiency (2019-2025)</h3>", unsafe_allow_html=True)
                 
                 store_data = [
                     {"Year": "2025", "Rev": 3629.9, "Stores": 2206, "RevPerStore": 1.65},
@@ -1645,7 +1645,7 @@ else:
                     {"Year": "2019", "Rev": 6466.3, "Stores": 5509, "RevPerStore": 1.17}
                 ]
                 
-                html_store = "<div class='table-wrapper' style='margin-bottom: 20px;'><table class='opt-t'><tr><th>Fiscal Year</th><th>Total Revenue</th><th>Store Count</th><th>Revenue per Store</th></tr>"
+                html_store = "<div class='table-wrapper' style='margin-bottom: 40px;'><table class='opt-t' style='font-size: 16px; line-height: 1.4;'><tr><th>Fiscal Year</th><th>Total Revenue</th><th>Store Count</th><th>Revenue per Store</th></tr>"
                 for r in store_data:
                     html_store += f"<tr><td>{r['Year']}</td><td>${r['Rev']:,.1f}M</td><td>{r['Stores']}</td><td style='color:#00FF00; font-weight:bold;'>${r['RevPerStore']:.2f}M</td></tr>"
                 html_store += "</table></div>"
@@ -1680,7 +1680,7 @@ else:
                     height=400,
                     yaxis=dict(title="Rev (M$) & Stores", side='left', showgrid=False, range=[0, 7000]),
                     yaxis2=dict(title="Rev per Store (M$)", side='right', overlaying='y', showgrid=False, range=[0, 2]),
-                    legend=dict(x=0.01, y=1.15, orientation="h", bgcolor='rgba(0,0,0,0)')
+                    legend=dict(x=0.01, y=1.15, orientation="h", bgcolor='rgba(0,0,0,0)', font=dict(size=10))
                 )
                 st.plotly_chart(fig_store, use_container_width=True)               
 
