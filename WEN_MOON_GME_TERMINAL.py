@@ -1680,7 +1680,7 @@ else:
                     height=400,
                     yaxis=dict(title="Rev (M$) & Stores", side='left', showgrid=False, range=[0, 7000]),
                     yaxis2=dict(title="Rev per Store (M$)", side='right', overlaying='y', showgrid=False, range=[0, 2]),
-                    legend=dict(x=0.01, y=1.15, orientation="h", bgcolor='rgba(0,0,0,0)', font=dict(size=10))
+                    legend=dict(x=0.5, xanchor='center', y=1.15, orientation="h", bgcolor='rgba(0,0,0,0)', font=dict(size=10))
                 )
                 st.plotly_chart(fig_store, use_container_width=True)               
 
