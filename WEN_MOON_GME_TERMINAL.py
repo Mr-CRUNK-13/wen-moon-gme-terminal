@@ -1648,7 +1648,7 @@ else:
                 html_store = "<div class='table-wrapper' style='margin-bottom: 90px;'><table class='opt-t' style='font-size: 16px; line-height: 1.4;'><tr><th>Fiscal Year</th><th>Total Revenue</th><th>Store Count</th><th>Revenue per Store</th></tr>"
                 for r in store_data:
                     html_store += f"<tr><td>{r['Year']}</td><td>${r['Rev']:,.1f}M</td><td>{r['Stores']}</td><td style='color:#00FF00; font-weight:bold;'>${r['RevPerStore']:.2f}M</td></tr>"
-                html_store += "</table></div><div style='height: 50px;'></div>"
+                html_store += "</table></div><div style='height: 20px;'></div>"
                 st.markdown(html_store, unsafe_allow_html=True)
 
                 fig_store = go.Figure()
