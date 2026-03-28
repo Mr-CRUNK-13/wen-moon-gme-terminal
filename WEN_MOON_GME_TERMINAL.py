@@ -1951,11 +1951,46 @@ else:
                         .sep { display: none; }
                         .eps-val { display: block; margin-top: 5px; }
                     }
+                    /* --- 2026 ESTIMATES TABLE CSS --- */
+                    .est-t { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 16px; text-align: center; margin-bottom: 0px !important; }
+                    .est-t th { background: #001f3f; color: #00FF00; padding: 12px 6px; border-bottom: 2px solid #00FF00; white-space: nowrap; }
+                    .est-t td { background: #0f172a; padding: 12px 6px; border-bottom: 1px solid #1e293b; color: white; white-space: nowrap; }
                 </style>
                 <div class="est-g">
                     <div class="eb"><h4>Q1 2026 (Next)</h4><p>Rev: $0.767B<span class="sep"> | </span><span class="eps-val">EPS: $0.12</span></p></div>
                     <div class="eb"><h4>FY 2026 (Proj)</h4><p>Rev: $4.28B<span class="sep"> | </span><span class="eps-val">EPS: $0.81</span></p></div>
                 </div>
+                
+                <h3 style='color:#00FF00; text-align:center; margin-top:10px; margin-bottom:15px;'>2026 Consensus Estimates</h3>
+                <div class='table-wrapper' style='margin-bottom: 30px;'>
+                    <table class='est-t'>
+                        <tr>
+                            <th style='text-align: left; padding-left: 10px;'>Metric</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+                            <th>FY 2026</th>
+                        </tr>
+                        <tr>
+                            <td style='text-align: left; padding-left: 10px; font-weight: bold; color: #00FF00;'>Est. Revenue</td>
+                            <td>$0.767B</td>
+                            <td>$1.07B</td>
+                            <td>$1.04B</td>
+                            <td>$1.40B</td>
+                            <td style='color:#00FF00; font-weight:bold; background-color: rgba(0, 255, 0, 0.1);'>$4.28B</td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: left; padding-left: 10px; font-weight: bold; color: #00FF00;'>Est. EPS</td>
+                            <td>$0.12</td>
+                            <td>$0.18</td>
+                            <td>$0.18</td>
+                            <td>$0.32</td>
+                            <td style='color:#00FF00; font-weight:bold; background-color: rgba(0, 255, 0, 0.1);'>$0.81</td>
+                        </tr>
+                    </table>
+                </div>
+
                 <h3 style='color:#00FF00; text-align:center; margin-top:20px;'>5-Year Consensus History</h3>
                 """
                
