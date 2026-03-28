@@ -1952,11 +1952,46 @@ else:
                         .sep { display: none; }
                         .eps-val { display: block; margin-top: 5px; }
                     }
+                    /* --- 2026 CONSENSUS CSS --- */
+                    .est-t { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 16px; text-align: center; margin-bottom: 0px !important; }
+                    .est-t th { background: #001f3f; color: #00FF00; padding: 12px 6px; border-bottom: 2px solid #00FF00; white-space: nowrap; }
+                    .est-t td { background: #0f172a; padding: 12px 6px; border-bottom: 1px solid #1e293b; color: white; white-space: nowrap; }
                 </style>
                 <div class="est-g">
                     <div class="eb"><h4>Q1 2026 (Next)</h4><p>Rev: $0.767B<span class="sep"> | </span><span class="eps-val">EPS: $0.12</span></p></div>
                     <div class="eb"><h4>FY 2026 (Proj)</h4><p>Rev: $4.28B<span class="sep"> | </span><span class="eps-val">EPS: $0.81</span></p></div>
                 </div>
+                
+                <h3 style='color:#00FF00; text-align:center; margin-top:10px; margin-bottom:15px;'>2026 Consensus Estimates</h3>
+                <div class='table-wrapper' style='margin-bottom: 30px;'>
+                    <table class='est-t'>
+                        <tr>
+                            <th style='text-align: left; padding-left: 10px;'>Metric</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+                            <th>FY 2026</th>
+                        </tr>
+                        <tr>
+                            <td style='text-align: left; padding-left: 10px; font-weight: bold; color: #00FF00;'>Est. Revenue</td>
+                            <td>$0.767B</td>
+                            <td>$1.07B</td>
+                            <td>$1.04B</td>
+                            <td>$1.40B</td>
+                            <td style='color:#00FF00; font-weight:bold; background-color: rgba(0, 255, 0, 0.1);'>$4.28B</td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: left; padding-left: 10px; font-weight: bold; color: #00FF00;'>Est. EPS</td>
+                            <td>$0.12</td>
+                            <td>$0.18</td>
+                            <td>$0.18</td>
+                            <td>$0.32</td>
+                            <td style='color:#00FF00; font-weight:bold; background-color: rgba(0, 255, 0, 0.1);'>$0.81</td>
+                        </tr>
+                    </table>
+                </div>
+
                 <h3 style='color:#00FF00; text-align:center; margin-top: 10px;'>Mr-CRUNK-13 EARNINGS ESTIMATES</h3>
                 <style>
                 .crunk-wrapper {
@@ -1991,6 +2026,7 @@ else:
                     border-right: 1px solid #000000;
                     font-weight: bold;
                     white-space: nowrap;
+                    height: 28px;
                 }
                 .crunk-table th:last-child, .crunk-table td:last-child { border-right: none; }
                 .crunk-table tr:last-child td { border-bottom: none; }
@@ -1998,23 +2034,24 @@ else:
                 .crunk-table td.bg-pos { background-color: #00FF00 !important; color: #000000 !important; font-size: 15px !important; padding: 2px 3px !important; }
                 .crunk-table td.bg-neg { background-color: #FF3333 !important; color: #000000 !important; font-size: 15px !important; padding: 2px 3px !important; }
                 .crunk-table td.bg-dark { background-color: #0f172a !important; color: #FFFFFF !important; }
+                .crunk-blue { background-color: rgba(2, 89, 199, 0.4) !important; color: transparent !important; }
                 </style>
                 
                 <div class="crunk-wrapper">
                     <table class="crunk-table">
-                        <tr><th>2025</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>FY 2025</th><th>% of revenue</th></tr>
-                        <tr><td class="bg-dark">Hardware and accessories</td><td class="bg-pos">$345M</td><td class="bg-pos">$592M</td><td class="bg-pos">$367M</td><td class="bg-pos">$620M</td><td class="bg-pos">$1,924M</td><td class="bg-pos">51,12</td></tr>
-                        <tr><td class="bg-dark">Software revenue</td><td class="bg-pos">$175M</td><td class="bg-pos">$152M</td><td class="bg-pos">$198M</td><td class="bg-pos">$220M</td><td class="bg-pos">$745M</td><td class="bg-pos">19,79</td></tr>
-                        <tr><td class="bg-dark">Collectibles revenue</td><td class="bg-pos">$211M</td><td class="bg-pos">$228M</td><td class="bg-pos">$256M</td><td class="bg-pos">$400M</td><td class="bg-pos">$1,095M</td><td class="bg-pos">29,09</td></tr>
-                        <tr><td class="bg-dark">Total Revenue</td><td class="bg-pos">$731M</td><td class="bg-pos">$972M</td><td class="bg-pos">$821M</td><td class="bg-pos">$1,240M</td><td class="bg-pos">$3,764M</td><td class="bg-pos">100</td></tr>
-                        <tr><td class="bg-dark">Cost of sales</td><td class="bg-neg">($479.6M)</td><td class="bg-neg">($689.1M)</td><td class="bg-neg">($547.6M)</td><td class="bg-neg">($845M)</td><td class="bg-neg">($2,561.3M)</td><td class="bg-neg">(68,05)</td></tr>
-                        <tr><td class="bg-dark">Operating costs</td><td class="bg-neg">($228.1M)</td><td class="bg-neg">($218.8M)</td><td class="bg-neg">($221.4M)</td><td class="bg-neg">($260M)</td><td class="bg-neg">($928.3M)</td><td class="bg-neg">(24,66)</td></tr>
-                        <tr><td class="bg-dark">Operating income (losses)</td><td class="bg-neg">($10.8M)</td><td class="bg-pos">$66.4M</td><td class="bg-pos">$41.3M</td><td class="bg-pos">$115M</td><td class="bg-pos">$211.9M</td><td class="bg-pos">5,63</td></tr>
-                        <tr><td class="bg-dark">Interest income</td><td class="bg-pos">$56.9M</td><td class="bg-pos">$79.6M</td><td class="bg-pos">$49.0M</td><td class="bg-pos">$85M</td><td class="bg-pos">$270.5M</td><td class="bg-pos">7,19</td></tr>
-                        <tr><td class="bg-dark">Unreal. gains (losses) BTC</td><td class="bg-dark"></td><td class="bg-pos">$28.6M</td><td class="bg-neg">($9.2M)</td><td class="bg-neg">($150M)</td><td class="bg-neg">($130.6M)</td><td class="bg-neg">(3,47)</td></tr>
-                        <tr><td class="bg-dark">Net income</td><td class="bg-pos">$44.8M</td><td class="bg-pos">$168.6M</td><td class="bg-pos">$77.1M</td><td class="bg-pos">$50M</td><td class="bg-pos">$340.5M</td><td class="bg-pos">9,05</td></tr>
-                        <tr><td class="bg-dark">Total cash</td><td class="bg-pos">$6,400.0M</td><td class="bg-pos">$8,700.0M</td><td class="bg-pos">$8,800.0M</td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td></tr>
-                        <tr><td class="bg-dark">Total debt</td><td class="bg-neg">($1,315.0M)</td><td class="bg-neg">($4,160.0M)</td><td class="bg-neg">($4,400.0M)</td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td></tr>
+                        <tr><th>2026</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>FY 2026</th><th>% of revenue</th></tr>
+                        <tr><td class="bg-dark">Hardware and accessories</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td></tr>
+                        <tr><td class="bg-dark">Software revenue</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td></tr>
+                        <tr><td class="bg-dark">Collectibles revenue</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td></tr>
+                        <tr><td class="bg-dark">Total Revenue</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td></tr>
+                        <tr><td class="bg-dark">Cost of sales</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td></tr>
+                        <tr><td class="bg-dark">Operating costs</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td></tr>
+                        <tr><td class="bg-dark">Operating income (losses)</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td></tr>
+                        <tr><td class="bg-dark">Interest income</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td></tr>
+                        <tr><td class="bg-dark">Unreal. gains (losses) BTC</td><td class="bg-dark"></td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td></tr>
+                        <tr><td class="bg-dark">Net income</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td></tr>
+                        <tr><td class="bg-dark">Total cash</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td></tr>
+                        <tr><td class="bg-dark">Total debt</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="crunk-blue">&nbsp;</td><td class="bg-dark"></td><td class="bg-dark"></td><td class="bg-dark"></td></tr>
                     </table>
                 </div>
 
