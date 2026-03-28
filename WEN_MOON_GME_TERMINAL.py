@@ -1676,7 +1676,7 @@ else:
                     template='plotly_dark',
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
-                    margin=dict(l=20, r=20, t=80, b=20),
+                    margin=dict(l=20, r=20, t=70, b=20),
                     height=400,
                     yaxis=dict(title="Rev (M$) & Stores", side='left', showgrid=False, range=[0, 7000]),
                     yaxis2=dict(title="Rev per Store (M$)", side='right', overlaying='y', showgrid=False, range=[0, 2]),
