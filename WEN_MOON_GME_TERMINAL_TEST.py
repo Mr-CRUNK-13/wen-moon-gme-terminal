@@ -1634,6 +1634,57 @@ else:
                 html_op += "</table></div>"
                 st.markdown(html_op, unsafe_allow_html=True)
 
+                st.markdown("<h3 style='color:#00FF00; text-align:center; margin-top:10px;'>GameStop Store Efficiency (2019-2025)</h3>", unsafe_allow_html=True)
+                
+                store_data = [
+                    {"Year": "2025", "Rev": 3629.9, "Stores": 2206, "RevPerStore": 1.65},
+                    {"Year": "2024", "Rev": 3823.0, "Stores": 3203, "RevPerStore": 1.19},
+                    {"Year": "2023", "Rev": 5272.8, "Stores": 4169, "RevPerStore": 1.26},
+                    {"Year": "2022", "Rev": 5927.1, "Stores": 4413, "RevPerStore": 1.34},
+                    {"Year": "2021", "Rev": 6010.7, "Stores": 4573, "RevPerStore": 1.31},
+                    {"Year": "2020", "Rev": 5089.8, "Stores": 4816, "RevPerStore": 1.06},
+                    {"Year": "2019", "Rev": 6466.3, "Stores": 5509, "RevPerStore": 1.17}
+                ]
+                
+                html_store = "<div class='table-wrapper' style='margin-bottom: 90px;'><table class='opt-t' style='font-size: 20px; line-height: 1.6;'><tr><th>Fiscal Year</th><th>Total Revenue</th><th>Store Count</th><th>Revenue per Store</th></tr>"
+                for r in store_data:
+                    html_store += f"<tr><td>{r['Year']}</td><td>${r['Rev']:,.1f}M</td><td>{r['Stores']}</td><td style='color:#00FF00; font-weight:bold;'>${r['RevPerStore']:.2f}M</td></tr>"
+                html_store += "</table></div><div style='height: 20px;'></div>"
+                st.markdown(html_store, unsafe_allow_html=True)
+
+                fig_store = go.Figure()
+                x_years = ['2019', '2020', '2021', '2022', '2023', '2024', '2025']
+                y_rev = [6466.3, 5089.8, 6010.7, 5927.1, 5272.8, 3823.0, 3629.9]
+                y_stores = [5509, 4816, 4573, 4413, 4169, 3203, 2206]
+                y_rev_per_store = [1.17, 1.06, 1.31, 1.34, 1.26, 1.19, 1.65]
+
+                fig_store.add_trace(go.Bar(
+                    x=x_years, y=y_rev, name="Total Revenue (M$)",
+                    marker_color='rgba(2, 89, 199, 0.4)', yaxis='y1'
+                ))
+                fig_store.add_trace(go.Scatter(
+                    x=x_years, y=y_stores, name="Store Count",
+                    mode='lines+markers', line=dict(color='#FF3333', width=3),
+                    yaxis='y1'
+                ))
+                fig_store.add_trace(go.Scatter(
+                    x=x_years, y=y_rev_per_store, name="Revenue / Store (M$)",
+                    mode='lines+markers', line=dict(color='#00FF00', width=4),
+                    yaxis='y2'
+                ))
+
+                fig_store.update_layout(
+                    template='plotly_dark',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    margin=dict(l=20, r=20, t=70, b=20),
+                    height=400,
+                    yaxis=dict(title="Rev (M$) & Stores", side='left', showgrid=False, range=[0, 7000]),
+                    yaxis2=dict(title="Rev per Store (M$)", side='right', overlaying='y', showgrid=False, range=[0, 2]),
+                    legend=dict(x=0.5, xanchor='center', y=1.15, orientation="h", bgcolor='rgba(0,0,0,0)', font=dict(size=10))
+                )
+                st.plotly_chart(fig_store, use_container_width=True)
+
             with ptab4:
                 st.markdown("<h3 style='color:#9b51e0; text-align:center;'>DRS SHARE HOLDINGS</h3>", unsafe_allow_html=True)
                 
