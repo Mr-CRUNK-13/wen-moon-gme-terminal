@@ -2076,7 +2076,7 @@ else:
                     </table>
                 </div>
 
-                <h3 style='color:#00FF00; text-align:center; margin-top:20px;'>5-Year Consensus History</h3>
+                <h3 style='color:#00FF00; text-align:center; margin-top:20px;'>Consensus History</h3>
                 """
                
                 # Verified Real History Data with Full Years (FY)
