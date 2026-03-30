@@ -2046,7 +2046,8 @@ else:
                     {"p": "Q4 2020", "ee": 0.34, "ae": 0.34, "er": "2.21B",  "ar": "2.12B",  "fy": False},
                     {"p": "Q3 2020", "ee": -0.21, "ae": -0.13, "er": "1.09B",  "ar": "1.01B",  "fy": False},
                     {"p": "Q2 2020", "ee": -0.28, "ae": -0.35, "er": "1.02B",  "ar": "942.0M", "fy": False},
-                    {"p": "Q1 2020", "ee": -0.30, "ae": -0.40, "er": "1.09B",  "ar": "1.02B",  "fy": False}
+                    {"p": "Q1 2020", "ee": -0.30, "ae": -0.40, "er": "1.09B",  "ar": "1.02B",  "fy": False},
+                    {"p": "FY 2019", "ee": -0.01, "ae": 0.06, "er": "6.51B",  "ar": "6.47B",  "fy": True}
                 ]
                 
                 html_hist = "<div class='table-wrapper' style='max-height:400px; overflow-y:auto; overflow-x:auto;'><table class='hist-t'><tr><th>Period</th><th>Est EPS</th><th>Act EPS</th><th>EPS Surp</th><th>Est Rev</th><th>Act Rev</th><th>Rev Surp</th></tr>"
