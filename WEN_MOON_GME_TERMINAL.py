@@ -2084,7 +2084,7 @@ else:
                     html_hist += f"<tr class='{row_cls}'><td>{r['p']}</td><td>${ee:.2f}</td><td class='{ae_cls}'>${ae:.2f}</td><td class='{eps_surp_cls}'>{eps_surp_str}</td><td>${er_str}</td><td class='{ar_cls}'>${ar_str}</td><td class='{rev_surp_cls}'>{rev_surp_str}</td></tr>"
                     
                 html_hist += "</table></div>"
-                html_hist += "<p style='color:gray; font-size:11px; text-align:center; margin-top:15px; font-style:italic;'>Note: ​Data uses split-adjusted Non-GAAP EPS. Consensus estimates provided by TradingView (Refinitiv I/B/E/S). Wall Street models often fail to accurately capture GME's performance.</p>"
+                html_hist += "<p style='color:gray; font-size:11px; text-align:center; margin-top:15px; font-style:italic;'>Note: Data uses split-adjusted Non-GAAP EPS. Consensus estimates provided by TradingView (Refinitiv I/B/E/S). Wall Street models often fail to accurately capture GME's performance.</p>"
                 
                 st.markdown(html_est + html_hist, unsafe_allow_html=True)
                     
