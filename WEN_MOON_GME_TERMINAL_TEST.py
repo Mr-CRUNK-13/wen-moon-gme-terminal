@@ -2212,12 +2212,145 @@ else:
                 st.markdown(df_to_html(fin, "Income Statement"), unsafe_allow_html=True)
                 st.markdown(df_to_html(bs, "Balance Sheet"), unsafe_allow_html=True)
 
+        # --- START OF ROBUST INSIDER & FTD MODULE ---
+        import os
+        import time
+        import requests
+
+        # 1. ROBUST INSIDER LOGIC (24h update, 7-day fallback)
+        @st.cache_data(ttl=86400)
+        def fetch_and_backup_insiders(ticker="GME"):
+            try:
+                tk = yf.Ticker(ticker)
+                df = tk.insider_transactions
+                if df is not None and not df.empty:
+                    df.to_csv(f"backup_insiders_{ticker}.csv", index=False)
+                    return df
+            except Exception:
+                pass
+            return pd.DataFrame()
+
+        def get_robust_insiders(ticker="GME"):
+            df = fetch_and_backup_insiders(ticker)
+            if df.empty and os.path.exists(f"backup_insiders_{ticker}.csv"):
+                if (time.time() - os.path.getmtime(f"backup_insiders_{ticker}.csv")) < 604800:
+                    return pd.read_csv(f"backup_insiders_{ticker}.csv")
+            return df
+
+        # 2. ROBUST FTD LOGIC (24h update, 7-day fallback)
+        @st.cache_data(ttl=86400)
+        def fetch_and_backup_ftd(ticker="GME"):
+            try:
+                url = f"https://stocksera.pythonanywhere.com/api/ftd/?ticker={ticker}"
+                headers = {'User-Agent': 'Mozilla/5.0'}
+                response = requests.get(url, headers=headers, timeout=10)
+                if response.status_code == 200:
+                    data = response.json()
+                    df = pd.DataFrame(data.get('ftd', data))
+                    df.columns = [c.capitalize() for c in df.columns]
+                    if 'Date' in df.columns and 'Ftd' in df.columns:
+                        df.rename(columns={'Ftd': 'FTD', 'Price': 'Price'}, inplace=True)
+                        df['Date'] = pd.to_datetime(df['Date'])
+                        df['FTD'] = pd.to_numeric(df['FTD'], errors='coerce').fillna(0)
+                        if 'Price' in df.columns:
+                            df['Price'] = pd.to_numeric(df['Price'], errors='coerce').fillna(0)
+                        df = df.sort_values('Date').tail(90)
+                        df.to_csv(f"backup_ftd_{ticker}.csv", index=False)
+                        return df
+            except Exception:
+                pass
+            return pd.DataFrame()
+
+        def get_robust_ftd(ticker="GME"):
+            df = fetch_and_backup_ftd(ticker)
+            if df.empty and os.path.exists(f"backup_ftd_{ticker}.csv"):
+                if (time.time() - os.path.getmtime(f"backup_ftd_{ticker}.csv")) < 604800:
+                    df = pd.read_csv(f"backup_ftd_{ticker}.csv")
+                    df['Date'] = pd.to_datetime(df['Date'])
+                    return df
+            return df
+
+        ins = get_robust_insiders("GME")
+        df_ftd = get_robust_ftd("GME")
+
         with ph12.container():
+            # --- INSIDER UI ---
             st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🕵️ INSIDER TRACKER</h2>", unsafe_allow_html=True)
             if not ins.empty:
                 st.dataframe(ins.astype(str), use_container_width=True)
             else:
-                st.info("No recent insider transactions detected.")
+                st.warning("⚠️ Insider data is temporarily unavailable and no backup is present. Retrying on next cache cycle.")
+
+            # --- FTD UI ---
+            st.markdown("<br><hr style='border:1px solid #333; margin-top:20px; margin-bottom:20px;'><br>", unsafe_allow_html=True)
+            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>⚖️ MARKET REGULATION</h2>", unsafe_allow_html=True)
+            st.markdown("<h3 style='text-align:center; color:#FFD700; margin-bottom:20px;'>🚨 Fails-To-Deliver (FTD) & T+35 Settlement Tracker</h3>", unsafe_allow_html=True)
+            
+            if df_ftd.empty:
+                st.warning("⚠️ Live FTD Data is currently unavailable and no backup is present. Please try again later.")
+            else:
+                fig_ftd = go.Figure()
+                fig_ftd.add_trace(go.Bar(
+                    x=df_ftd['Date'], 
+                    y=df_ftd['FTD'], 
+                    name="Real FTD Volume", 
+                    marker_color='rgba(255, 0, 0, 0.7)'
+                ))
+                
+                if 'Price' in df_ftd.columns and not df_ftd['Price'].isnull().all():
+                    fig_ftd.add_trace(go.Scatter(
+                        x=df_ftd['Date'], 
+                        y=df_ftd['Price'], 
+                        name="Historical Price", 
+                        yaxis="y2", 
+                        mode='lines', 
+                        line=dict(color='#00FF00', width=2)
+                    ))
+                
+                fig_ftd.update_layout(
+                    template='plotly_dark',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    margin=dict(l=0, r=0, t=30, b=0),
+                    height=400,
+                    yaxis=dict(title="FTD Volume", showgrid=False),
+                    yaxis2=dict(title="Stock Price ($)", overlaying="y", side="right", showgrid=False),
+                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                )
+                st.plotly_chart(fig_ftd, use_container_width=True)
+                
+                st.markdown("<h4 style='color:#00FF00; text-align:center; margin-top:20px;'>⏳ Upcoming T+35 Mandatory Settlement Dates</h4>", unsafe_allow_html=True)
+                
+                spikes = df_ftd[df_ftd['FTD'] > 500000].copy()
+                html_t35 = "<div class='table-wrapper' style='margin-bottom: 30px;'><table class='opt-t'><tr><th>Spike Date</th><th>FTD Volume</th><th>T+35 Deadline</th><th>Status</th></tr>"
+                
+                if not spikes.empty:
+                    current_date = pd.Timestamp(datetime.now().date())
+                    for _, r in spikes.iterrows():
+                        spike_date = r['Date']
+                        t35_date = spike_date + pd.Timedelta(days=35)
+                        days_left = (t35_date - current_date).days
+                        
+                        if days_left < 0: 
+                            status = "<span style='color:gray;'>⚪ CLEARED</span>"
+                        elif days_left <= 5: 
+                            status = "<span style='color:#FF0000; font-weight:bold; text-shadow: 0 0 5px red;'>🔴 CRITICAL (T-5)</span>"
+                        else: 
+                            status = "🟡 PENDING"
+                            
+                        html_t35 += f"<tr><td>{spike_date.strftime('%Y-%m-%d')}</td><td style='color:rgba(255,0,0,0.8); font-weight:bold;'>{int(r['FTD']):,}</td><td style='color:#00FF00; font-weight:bold;'>{t35_date.strftime('%Y-%m-%d')}</td><td>{status}</td></tr>"
+                else:
+                    html_t35 += "<tr><td colspan='4' style='text-align:center;'>No FTD spikes (>500k shares) recorded in the recent SEC data.</td></tr>"
+                    
+                html_t35 += "</table></div>"
+                st.markdown(html_t35, unsafe_allow_html=True)
+                
+                st.markdown("""
+                <p style="font-size:12px; color:#888; text-align:center; margin-top:10px;">
+                  Note: Data uses a daily fetch engine with an active 7-day fallback cache. T+35 dates are calculated via calendar days (SEC Rule 204).
+                </p>
+                """, unsafe_allow_html=True)
+        # --- END OF ROBUST INSIDER & FTD MODULE ---
 
     # --- ENGINE LAUNCH (Closes the application) ---
     render_content()
