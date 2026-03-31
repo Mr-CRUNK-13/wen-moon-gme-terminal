@@ -1637,12 +1637,12 @@ else:
                 st.markdown("<h3 style='color:#00FF00; text-align:center; margin-top:10px;'>GameStop Non-GAAP EPS per Fiscal Quarter ($)</h3>", unsafe_allow_html=True)
                 eps_data = [
                     {"Year": "2025", "Q1": 0.17, "Q2": 0.25, "Q3": 0.24, "Q4": 0.49, "Total": 1.18},
-                    {"Year": "2024", "Q1": -0.12, "Q2": 0.01, "Q3": 0.06, "Q4": 0.30, "Total": 0.25},
-                    {"Year": "2023", "Q1": -0.14, "Q2": -0.03, "Q3": 0.01, "Q4": 0.28, "Total": 0.11},
+                    {"Year": "2024", "Q1": -0.12, "Q2": 0.01, "Q3": 0.06, "Q4": 0.30, "Total": 0.33},
+                    {"Year": "2023", "Q1": -0.14, "Q2": -0.03, "Q3": 0.01, "Q4": 0.28, "Total": 0.06},
                     {"Year": "2022", "Q1": -0.52, "Q2": -0.35, "Q3": -0.31, "Q4": 0.16, "Total": -1.02},
-                    {"Year": "2021", "Q1": -0.11, "Q2": -0.19, "Q3": -0.35, "Q4": -0.47, "Total": -1.11},
+                    {"Year": "2021", "Q1": -0.11, "Q2": -0.19, "Q3": -0.35, "Q4": -0.47, "Total": -1.14},
                     {"Year": "2020", "Q1": -0.40, "Q2": -0.35, "Q3": -0.13, "Q4": 0.34, "Total": -0.54},
-                    {"Year": "2019", "Q1": 0.02, "Q2": -0.08, "Q3": -0.12, "Q4": 0.32, "Total": 0.05}
+                    {"Year": "2019", "Q1": 0.02, "Q2": -0.08, "Q3": -0.12, "Q4": 0.32, "Total": 0.06}
                 ]
                 html_eps = "<div class='table-wrapper' style='margin-bottom: 30px;'><table class='opt-t'><tr><th>Fiscal Year</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Total FY</th></tr>"
                 for r in eps_data:
@@ -1654,6 +1654,34 @@ else:
                     html_eps += "</tr>"
                 html_eps += "</table></div>"
                 st.markdown(html_eps, unsafe_allow_html=True)
+
+                st.markdown("<h3 style='color:#00FF00; text-align:center; margin-top:20px;'>GameStop Basic EPS per Fiscal Quarter ($)</h3>", unsafe_allow_html=True)
+                eps_basic_data = [
+                    {"Year": "2025", "Q1": 0.10, "Q2": 0.38, "Q3": 0.17, "Q4": 0.29, "Total": 0.93},
+                    {"Year": "2024", "Q1": -0.11, "Q2": 0.04, "Q3": 0.04, "Q4": 0.29, "Total": 0.33},
+                    {"Year": "2023", "Q1": -0.17, "Q2": -0.01, "Q3": -0.01, "Q4": 0.21, "Total": 0.02},
+                    {"Year": "2022", "Q1": -0.52, "Q2": -0.36, "Q3": -0.31, "Q4": 0.16, "Total": -1.03},
+                    {"Year": "2021", "Q1": -0.23, "Q2": -0.21, "Q3": -0.35, "Q4": -0.49, "Total": -1.31},
+                    {"Year": "2020", "Q1": -0.64, "Q2": -0.43, "Q3": -0.07, "Q4": 0.31, "Total": -0.83},
+                    {"Year": "2019", "Q1": 0.02, "Q2": -1.04, "Q3": -0.26, "Q4": 0.08, "Total": -1.35}
+                ]
+                html_basic_eps = "<div class='table-wrapper' style='margin-bottom: 30px;'><table class='opt-t'><tr><th>Fiscal Year</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Total FY</th></tr>"
+                for r in eps_basic_data:
+                    html_basic_eps += f"<tr><td>{r['Year']}</td>"
+                    for q in ["Q1", "Q2", "Q3", "Q4", "Total"]:
+                        val = r[q]
+                        c = "rgba(0, 255, 0, 0.25)" if val > 0 else "rgba(255, 0, 0, 0.25)" if val < 0 else "transparent"
+                        html_basic_eps += f"<td style='background-color:{c}; color:white; font-size:20px; font-weight:bold;'>{'+' if val > 0 else '-' if val < 0 else ''}${abs(val):.2f}</td>"
+                    html_basic_eps += "</tr>"
+                html_basic_eps += "</table></div>"
+                
+                st.markdown(html_basic_eps, unsafe_allow_html=True)
+                
+                st.markdown("""
+                <p style="font-size:12px; color:#888; text-align:center; margin-top:10px;">
+                  Data uses split-adjusted Basic EPS. True GAAP accounting standard based on weighted average shares outstanding.
+                </p>
+                """, unsafe_allow_html=True)                
 
                 st.markdown("<h3 style='color:#00FF00; text-align:center; margin-top:10px;'>GameStop Store Efficiency (2019-2025)</h3>", unsafe_allow_html=True)
                 
