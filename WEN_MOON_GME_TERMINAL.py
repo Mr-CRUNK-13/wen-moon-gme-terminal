@@ -2148,43 +2148,82 @@ else:
                 st.markdown(df_to_html(fin, "Income Statement"), unsafe_allow_html=True)
                 st.markdown(df_to_html(bs, "Balance Sheet"), unsafe_allow_html=True)
 
+        # --- START OF ROBUST INSIDER & FTD MODULE ---
+        import os
+        import time
+        import requests
+
+        # 1. ROBUST INSIDER LOGIC (24h update, 7-day fallback)
+        @st.cache_data(ttl=86400)
+        def fetch_and_backup_insiders(ticker="GME"):
+            try:
+                tk = yf.Ticker(ticker)
+                df = tk.insider_transactions
+                if df is not None and not df.empty:
+                    df.to_csv(f"backup_insiders_{ticker}.csv", index=False)
+                    return df
+            except Exception:
+                pass
+            return pd.DataFrame()
+
+        def get_robust_insiders(ticker="GME"):
+            df = fetch_and_backup_insiders(ticker)
+            if df.empty and os.path.exists(f"backup_insiders_{ticker}.csv"):
+                if (time.time() - os.path.getmtime(f"backup_insiders_{ticker}.csv")) < 604800:
+                    return pd.read_csv(f"backup_insiders_{ticker}.csv")
+            return df
+
+        # 2. ROBUST FTD LOGIC (24h update, 7-day fallback)
+        @st.cache_data(ttl=86400)
+        def fetch_and_backup_ftd(ticker="GME"):
+            try:
+                url = f"https://stocksera.pythonanywhere.com/api/ftd/?ticker={ticker}"
+                headers = {'User-Agent': 'Mozilla/5.0'}
+                response = requests.get(url, headers=headers, timeout=10)
+                if response.status_code == 200:
+                    data = response.json()
+                    df = pd.DataFrame(data.get('ftd', data))
+                    df.columns = [c.capitalize() for c in df.columns]
+                    if 'Date' in df.columns and 'Ftd' in df.columns:
+                        df.rename(columns={'Ftd': 'FTD', 'Price': 'Price'}, inplace=True)
+                        df['Date'] = pd.to_datetime(df['Date'])
+                        df['FTD'] = pd.to_numeric(df['FTD'], errors='coerce').fillna(0)
+                        if 'Price' in df.columns:
+                            df['Price'] = pd.to_numeric(df['Price'], errors='coerce').fillna(0)
+                        df = df.sort_values('Date').tail(90)
+                        df.to_csv(f"backup_ftd_{ticker}.csv", index=False)
+                        return df
+            except Exception:
+                pass
+            return pd.DataFrame()
+
+        def get_robust_ftd(ticker="GME"):
+            df = fetch_and_backup_ftd(ticker)
+            if df.empty and os.path.exists(f"backup_ftd_{ticker}.csv"):
+                if (time.time() - os.path.getmtime(f"backup_ftd_{ticker}.csv")) < 604800:
+                    df = pd.read_csv(f"backup_ftd_{ticker}.csv")
+                    df['Date'] = pd.to_datetime(df['Date'])
+                    return df
+            return df
+
+        ins = get_robust_insiders("GME")
+        df_ftd = get_robust_ftd("GME")
+
         with ph12.container():
+            # --- INSIDER UI ---
             st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🕵️ INSIDER TRACKER</h2>", unsafe_allow_html=True)
             if not ins.empty:
                 st.dataframe(ins.astype(str), use_container_width=True)
             else:
-                st.info("No recent insider transactions detected.")
-            # --- START OF REAL AUTOMATED FTD & T+35 MODULE ---
+                st.warning("⚠️ Insider data is temporarily unavailable and no backup is present. Retrying on next cache cycle.")
+
+            # --- FTD UI ---
             st.markdown("<br><hr style='border:1px solid #333; margin-top:20px; margin-bottom:20px;'><br>", unsafe_allow_html=True)
             st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>⚖️ MARKET REGULATION</h2>", unsafe_allow_html=True)
             st.markdown("<h3 style='text-align:center; color:#FFD700; margin-bottom:20px;'>🚨 Fails-To-Deliver (FTD) & T+35 Settlement Tracker</h3>", unsafe_allow_html=True)
             
-            @st.cache_data(ttl=86400)
-            def fetch_real_ftd_data(ticker="GME"):
-                import requests
-                url = f"https://stocksera.pythonanywhere.com/api/ftd/?ticker={ticker}"
-                headers = {'User-Agent': 'Mozilla/5.0'}
-                try:
-                    response = requests.get(url, headers=headers, timeout=10)
-                    if response.status_code == 200:
-                        data = response.json()
-                        df = pd.DataFrame(data['ftd'] if isinstance(data, dict) and 'ftd' in data else data)
-                        df.columns = [c.capitalize() for c in df.columns]
-                        if 'Date' in df.columns and 'Ftd' in df.columns:
-                            df.rename(columns={'Ftd': 'FTD', 'Price': 'Price'}, inplace=True)
-                            df['Date'] = pd.to_datetime(df['Date'])
-                            df['FTD'] = pd.to_numeric(df['FTD'], errors='coerce').fillna(0)
-                            if 'Price' in df.columns:
-                                df['Price'] = pd.to_numeric(df['Price'], errors='coerce').fillna(0)
-                            return df.sort_values('Date').tail(90)
-                except Exception:
-                    pass
-                return pd.DataFrame()
-                
-            df_ftd = fetch_real_ftd_data("GME")
-            
             if df_ftd.empty:
-                st.warning("⚠️ Live FTD Data is currently unavailable from the API. The SEC publishes FTD data with a 15-day delay. Please try again later.")
+                st.warning("⚠️ Live FTD Data is currently unavailable and no backup is present. Please try again later.")
             else:
                 fig_ftd = go.Figure()
                 fig_ftd.add_trace(go.Bar(
@@ -2231,7 +2270,7 @@ else:
                         if days_left < 0: 
                             status = "<span style='color:gray;'>⚪ CLEARED</span>"
                         elif days_left <= 5: 
-                            status = "<span style='color:#FF0000; font-weight:bold;'>🔴 CRITICAL (T-5)</span>"
+                            status = "<span style='color:#FF0000; font-weight:bold; text-shadow: 0 0 5px red;'>🔴 CRITICAL (T-5)</span>"
                         else: 
                             status = "🟡 PENDING"
                             
@@ -2244,10 +2283,10 @@ else:
                 
                 st.markdown("""
                 <p style="font-size:12px; color:#888; text-align:center; margin-top:10px;">
-                  Note: Data is automatically fetched via external SEC data aggregator API. The SEC strictly delays FTD reporting by half a month. T+35 dates are calculated via calendar days (Rule 204).
+                  Note: Data uses a daily fetch engine with an active 7-day fallback cache. T+35 dates are calculated via calendar days (SEC Rule 204).
                 </p>
                 """, unsafe_allow_html=True)
-            # --- END OF REAL AUTOMATED FTD & T+35 MODULE ---
+        # --- END OF ROBUST INSIDER & FTD MODULE ---
 
     # --- ENGINE LAUNCH (Closes the application) ---
     render_content()
