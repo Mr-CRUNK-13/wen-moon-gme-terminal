@@ -1824,7 +1824,7 @@ else:
                         paper_bgcolor='rgba(0,0,0,0)',
                         plot_bgcolor='rgba(0,0,0,0)',
                         height=300,
-                        margin=dict(l=20, r=20, t=50, b=20),
+                        margin=dict(l=20, r=20, t=80, b=20),
                         yaxis=dict(showgrid=False, tickprefix="$", tickformat=".2s")
                     )
                     st.plotly_chart(fig_int, use_container_width=True)
