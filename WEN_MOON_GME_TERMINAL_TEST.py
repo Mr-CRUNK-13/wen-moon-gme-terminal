@@ -807,16 +807,47 @@ else:
             return p_n, p_w, prev_n, prev_w, vol_n, vol_w, data['GME'], data['GME-WT']
         except: return 24.50, 4.30, 24.0, 4.0, 0, 0, pd.Series(), pd.Series()
 
+    # --- START OF ROBUST FUNDAMENTALS ---
+    import json
+    import os
+    import time
+    
+    @st.cache_data(ttl=86400)
+    def fetch_and_backup_fundamentals(ticker="GME"):
+        try:
+            tk = yf.Ticker(ticker)
+            info = tk.info
+            if info and isinstance(info, dict) and "symbol" in info:
+                with open(f"backup_fundamentals_{ticker}.json", "w") as f:
+                    json.dump(info, f)
+                return info
+        except Exception:
+            pass
+        return {}
+
+    def get_robust_fundamentals(ticker="GME"):
+        info = fetch_and_backup_fundamentals(ticker)
+        if not info and os.path.exists(f"backup_fundamentals_{ticker}.json"):
+            if (time.time() - os.path.getmtime(f"backup_fundamentals_{ticker}.json")) < 604800:
+                try:
+                    with open(f"backup_fundamentals_{ticker}.json", "r") as f:
+                        return json.load(f)
+                except Exception:
+                    pass
+        return info
+
     @st.cache_data(ttl=300)
     def fetch_advanced_pro_data():
-        gme, wt = yf.Ticker("GME"), yf.Ticker("GME-WT")
-        try: info_dict = dict(gme.info)
-        except: info_dict = {}
+        info_dict = get_robust_fundamentals("GME")
+        
+        wt = yf.Ticker("GME-WT")
         try: wt_info_dict = dict(wt.fast_info) if hasattr(wt, 'fast_info') else dict(wt.info)
         except: wt_info_dict = {}
-        try: news_data = gme.news[:5] if gme.news else []
-        except: news_data = []
+        
+        news_data = []
+        
         return info_dict, wt_info_dict, news_data
+    # --- END OF ROBUST FUNDAMENTALS ---
 
     @st.cache_data(ttl=300)
     def fetch_financials_and_options():
