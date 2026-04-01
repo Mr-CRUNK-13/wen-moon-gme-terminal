@@ -1796,22 +1796,22 @@ else:
             with c1:
                 fig_cash = go.Figure(go.Indicator(
                     mode="number+gauge",
-                    value=tc,
-                    number={'prefix': "$", 'valueformat': ".3s", 'font': {'color': '#00FF00', 'family': 'monospace'}},
+                    value=tc / 1e9,
+                    number={'prefix': "$", 'suffix': "B", 'valueformat': ".2f", 'font': {'color': '#00FF00', 'family': 'monospace'}},
                     title={'text': "TOTAL CASH", 'font': {'color': '#FFD700', 'family': 'monospace'}},
                     gauge={
-                        'axis': {'range': [0, gauge_max], 'tickcolor': "white"},
+                        'axis': {'range': [0, gauge_max / 1e9], 'tickcolor': "white", 'ticksuffix': "B"},
                         'bar': {'color': "#00FF00"},
                         'bgcolor': "rgba(0,0,0,0)",
                         'borderwidth': 2,
                         'bordercolor': "#333",
-                        'steps': [{'range': [0, td], 'color': "rgba(255,0,0,0.6)"}]
+                        'steps': [{'range': [0, td / 1e9], 'color': "rgba(255,0,0,0.6)"}]
                     }
                 ))
-                fig_cash.update_layout(template='plotly_dark', paper_bgcolor='rgba(0,0,0,0)', height=300, margin=dict(l=20, r=20, t=50, b=20))
+                fig_cash.update_layout(template='plotly_dark', paper_bgcolor='rgba(0,0,0,0)', height=300, margin=dict(l=20, r=40, t=50, b=20))
                 st.plotly_chart(fig_cash, use_container_width=True)
                 st.markdown(f"<p style='text-align:center; font-family:monospace; color:#FFF;'>Total Debt: <span style='color:#FF0000;'>${td:,.0f}</span></p>", unsafe_allow_html=True)
-                
+
             with c2:
                 int_inc = fetch_real_interest_income("GME")
                 if not int_inc.empty:
