@@ -1553,7 +1553,7 @@ else:
                     return f"{v:,.0f}"
                 except: return str(val)
 
-        Ptab1, ptab2, ptab3, ptab_holding, ptab4 = st.tabs(["🏛️ GME FUNDAMENTALS", "📜 WARRANTS DATA", "📊 NET & OPERATING INCOME", "💰 HOLDING CO.", "🟣 DRS"])
+            Ptab1, ptab2, ptab3, ptab_holding, ptab4 = st.tabs(["🏛️ GME FUNDAMENTALS", "📜 WARRANTS DATA", "📊 NET & OPERATING INCOME", "💰 HOLDING CO.", "🟣 DRS"])
 
             with ptab1:
                 html_gme = f"""
