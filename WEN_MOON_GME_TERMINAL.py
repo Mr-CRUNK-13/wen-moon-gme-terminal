@@ -766,41 +766,37 @@ else:
     import os
     import time
     
-    @st.cache_data(ttl=86400)
-    def fetch_and_backup_fundamentals(ticker="GME"):
+    def get_smart_fundamentals(ticker="GME"):
+        f_path = f"backup_fundamentals_{ticker}.json"
+        now = time.time()
+        
+        if os.path.exists(f_path) and (now - os.path.getmtime(f_path)) < 86400:
+            try:
+                with open(f_path, "r") as f: return json.load(f)
+            except: pass
+            
         try:
-            tk = yf.Ticker(ticker)
-            info = tk.info
+            info = yf.Ticker(ticker).info
             if info and isinstance(info, dict) and "symbol" in info:
-                with open(f"backup_fundamentals_{ticker}.json", "w") as f:
-                    json.dump(info, f)
+                with open(f_path, "w") as f: json.dump(info, f)
                 return info
-        except Exception:
-            pass
+        except: pass
+        
+        if os.path.exists(f_path) and (now - os.path.getmtime(f_path)) < 604800:
+            try:
+                with open(f_path, "r") as f: return json.load(f)
+            except: pass
         return {}
-
-    def get_robust_fundamentals(ticker="GME"):
-        info = fetch_and_backup_fundamentals(ticker)
-        if not info and os.path.exists(f"backup_fundamentals_{ticker}.json"):
-            if (time.time() - os.path.getmtime(f"backup_fundamentals_{ticker}.json")) < 604800:
-                try:
-                    with open(f"backup_fundamentals_{ticker}.json", "r") as f:
-                        return json.load(f)
-                except Exception:
-                    pass
-        return info
 
     @st.cache_data(ttl=300)
     def fetch_advanced_pro_data():
-        info_dict = get_robust_fundamentals("GME")
+        info_dict = get_smart_fundamentals("GME")
         
         wt = yf.Ticker("GME-WT")
         try: wt_info_dict = dict(wt.fast_info) if hasattr(wt, 'fast_info') else dict(wt.info)
         except: wt_info_dict = {}
         
-        news_data = []
-        
-        return info_dict, wt_info_dict, news_data
+        return info_dict, wt_info_dict, []
     # --- END OF ROBUST FUNDAMENTALS ---
 
     @st.cache_data(ttl=300)
@@ -2271,33 +2267,40 @@ else:
         import time
         import requests
 
-        # 1. ROBUST INSIDER LOGIC (24h update, 7-day fallback)
-        @st.cache_data(ttl=86400)
-        def fetch_and_backup_insiders(ticker="GME"):
+        def get_smart_insiders(ticker="GME"):
+            f_path = f"backup_insiders_{ticker}.csv"
+            now = time.time()
+            
+            if os.path.exists(f_path) and (now - os.path.getmtime(f_path)) < 86400:
+                try: return pd.read_csv(f_path)
+                except: pass
+                
             try:
-                tk = yf.Ticker(ticker)
-                df = tk.insider_transactions
+                df = yf.Ticker(ticker).insider_transactions
                 if df is not None and not df.empty:
-                    df.to_csv(f"backup_insiders_{ticker}.csv", index=False)
+                    df.to_csv(f_path, index=False)
                     return df
-            except Exception:
-                pass
+            except: pass
+            
+            if os.path.exists(f_path) and (now - os.path.getmtime(f_path)) < 604800:
+                try: return pd.read_csv(f_path)
+                except: pass
             return pd.DataFrame()
 
-        def get_robust_insiders(ticker="GME"):
-            df = fetch_and_backup_insiders(ticker)
-            if df.empty and os.path.exists(f"backup_insiders_{ticker}.csv"):
-                if (time.time() - os.path.getmtime(f"backup_insiders_{ticker}.csv")) < 604800:
-                    return pd.read_csv(f"backup_insiders_{ticker}.csv")
-            return df
-
-        # 2. ROBUST FTD LOGIC (24h update, 7-day fallback)
-        @st.cache_data(ttl=86400)
-        def fetch_and_backup_ftd(ticker="GME"):
+        def get_smart_ftd(ticker="GME"):
+            f_path = f"backup_ftd_{ticker}.csv"
+            now = time.time()
+            
+            if os.path.exists(f_path) and (now - os.path.getmtime(f_path)) < 86400:
+                try:
+                    df = pd.read_csv(f_path)
+                    df['Date'] = pd.to_datetime(df['Date'])
+                    return df
+                except: pass
+                
             try:
                 url = f"https://stocksera.pythonanywhere.com/api/ftd/?ticker={ticker}"
-                headers = {'User-Agent': 'Mozilla/5.0'}
-                response = requests.get(url, headers=headers, timeout=10)
+                response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=10)
                 if response.status_code == 200:
                     data = response.json()
                     df = pd.DataFrame(data.get('ftd', data))
@@ -2309,23 +2312,20 @@ else:
                         if 'Price' in df.columns:
                             df['Price'] = pd.to_numeric(df['Price'], errors='coerce').fillna(0)
                         df = df.sort_values('Date').tail(90)
-                        df.to_csv(f"backup_ftd_{ticker}.csv", index=False)
+                        df.to_csv(f_path, index=False)
                         return df
-            except Exception:
-                pass
-            return pd.DataFrame()
-
-        def get_robust_ftd(ticker="GME"):
-            df = fetch_and_backup_ftd(ticker)
-            if df.empty and os.path.exists(f"backup_ftd_{ticker}.csv"):
-                if (time.time() - os.path.getmtime(f"backup_ftd_{ticker}.csv")) < 604800:
-                    df = pd.read_csv(f"backup_ftd_{ticker}.csv")
+            except: pass
+            
+            if os.path.exists(f_path) and (now - os.path.getmtime(f_path)) < 604800:
+                try:
+                    df = pd.read_csv(f_path)
                     df['Date'] = pd.to_datetime(df['Date'])
                     return df
-            return df
+                except: pass
+            return pd.DataFrame()
 
-        ins = get_robust_insiders("GME")
-        df_ftd = get_robust_ftd("GME")
+        ins = get_smart_insiders("GME")
+        df_ftd = get_smart_ftd("GME")
 
         with ph12.container():
             # --- INSIDER UI ---
