@@ -1817,6 +1817,70 @@ else:
                 st.plotly_chart(fig_drs, use_container_width=True)
 
         with ph10.container():
+                    # --- START OF OPTIONS FLOW RADAR ---
+            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>🎯 OPTIONS FLOW RADAR</h2>", unsafe_allow_html=True)
+            
+            @st.cache_data(ttl=3600)
+            def fetch_options_flow(ticker="GME"):
+                try:
+                    tk = yf.Ticker(ticker)
+                    exp_dates = tk.options
+                    if not exp_dates:
+                        return pd.DataFrame(), pd.DataFrame(), [], 0
+                    
+                    current_price = tk.fast_info['lastPrice'] if hasattr(tk, 'fast_info') else tk.info.get('regularMarketPrice', 25)
+                    return pd.DataFrame(), pd.DataFrame(), list(exp_dates), current_price
+                except Exception:
+                    return pd.DataFrame(), pd.DataFrame(), [], 0
+
+            _, _, exp_dates, current_price = fetch_options_flow("GME")
+
+            if exp_dates:
+                c_opt1, c_opt2 = st.columns([1, 3])
+                with c_opt1:
+                    selected_exp = st.selectbox("EXPIRATION:", exp_dates, index=0, key="opt_radar_exp")
+                
+                @st.cache_data(ttl=900)
+                def fetch_specific_chain(ticker, date):
+                    try:
+                        tk = yf.Ticker(ticker)
+                        opt = tk.option_chain(date)
+                        return opt.calls, opt.puts
+                    except Exception:
+                        return pd.DataFrame(), pd.DataFrame()
+                
+                calls, puts = fetch_specific_chain("GME", selected_exp)
+                
+                if not calls.empty and not puts.empty:
+                    lower_bound = current_price * 0.5
+                    upper_bound = current_price * 1.5
+                    
+                    calls_f = calls[(calls['strike'] >= lower_bound) & (calls['strike'] <= upper_bound)]
+                    puts_f = puts[(puts['strike'] >= lower_bound) & (puts['strike'] <= upper_bound)]
+                    
+                    fig_oi = go.Figure()
+                    fig_oi.add_trace(go.Bar(x=calls_f['strike'], y=calls_f['openInterest'], name='Call OI (Bullish)', marker_color='rgba(0, 255, 0, 0.7)'))
+                    fig_oi.add_trace(go.Bar(x=puts_f['strike'], y=puts_f['openInterest'], name='Put OI (Bearish)', marker_color='rgba(255, 0, 0, 0.7)'))
+                    
+                    fig_oi.add_vline(x=current_price, line_dash="dash", line_color="#FFD700", annotation_text="Spot Price", annotation_position="top right")
+                    
+                    fig_oi.update_layout(
+                        title={'text': f"OPEN INTEREST WALLS", 'font': {'color': '#FFF', 'family': 'monospace'}, 'x': 0.5},
+                        barmode='group',
+                        template='plotly_dark',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        margin=dict(l=20, r=20, t=80, b=20),
+                        xaxis_title="Strike Price ($)",
+                        yaxis_title="Open Interest",
+                        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                    )
+                    st.plotly_chart(fig_oi, use_container_width=True)
+                    st.markdown("<hr style='border:1px solid #333; margin-top:10px; margin-bottom:20px;'>", unsafe_allow_html=True)
+            else:
+                st.warning("⚠️ Options flow data currently unavailable from API.")
+            # --- END OF OPTIONS FLOW RADAR ---
+
             st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>⛓️ OPTIONS CHAIN TERMINAL (ATM CENTERED)</h2>", unsafe_allow_html=True)
             if len(opts) > 0:
                 selected_expiry = st.selectbox("📅 SELECT EXPIRATION DATE:", opts, key="opt_exp_selector")
