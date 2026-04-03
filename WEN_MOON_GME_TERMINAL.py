@@ -864,8 +864,8 @@ else:
               </script>
             </div>"""
             
-        with t_chart1: components.html(tv_widget("NYSE:GME", "tv_gme"), height=720)
-        with t_chart2: components.html(tv_widget("NYSE:GME/W", "tv_gmewt"), height=720)
+        with t_chart1: components.html(tv_widget("NYSE:GME", "tv_gme"), height=800)
+        with t_chart2: components.html(tv_widget("NYSE:GME/W", "tv_gmewt"), height=800)
 
     # --- TAB 14 : WEB PORTALS (Static) ---
     with tab14:
