@@ -838,8 +838,8 @@ else:
     # --- TAB 13 : PRO CHARTS (Static) ---
     with tab13:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>📈 ADVANCED CHARTS TERMINAL</h2>", unsafe_allow_html=True)
-        t_chart1, t_chart2 = st.tabs(["🇺🇸 GME (TradingView Pro)", "📜 GME-WT (TradingView Pro)"])
-        
+        t_chart1, t_chart2, t_chart_spy, t_chart_xrt = st.tabs(["🇺🇸 GME (TradingView Pro)", "📜 GME-WT (TradingView Pro)", "📉 SPY CORRELATION", "🧺 XRT CORRELATION"])
+
         def tv_widget(symbol, cid):
             return f"""
             <style>
@@ -874,6 +874,62 @@ else:
         with t_chart1: components.html(tv_widget("NYSE:GME", "tv_gme"), height=850)
         with t_chart2: components.html(tv_widget("NYSE:GME/W", "tv_gmewt"), height=850)
         # --- END OF DYNAMIC CHARTS SIZING ---
+        # --- START OF TRADINGVIEW SPY MODULE ---
+        with t_chart_spy:
+            try:
+                b_val = info_dict.get("beta", "N/A")
+                b_color = "#00FF00" if float(b_val) < 0 else "#FF3333"
+            except:
+                b_val = "N/A"
+                b_color = "#FFFFFF"
+                
+            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>Macro Tracking: GME vs S&P 500</h2>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='text-align:center; color:{b_color}; font-family:monospace;'>DYNAMIC BETA: {b_val}</h3>", unsafe_allow_html=True)
+            
+            tv_spy = """
+            <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
+              <div id="tv_spy_chart" style="height: 100%; width: 100%;"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+              <script type="text/javascript">
+              new TradingView.widget({
+                "autosize": true, "symbol": "NYSE:GME", "interval": "D", "timezone": "Etc/UTC",
+                "theme": "dark", "style": "2", "locale": "en", "enable_publishing": false,
+                "backgroundColor": "#050505", "gridColor": "#1f2937", "hide_top_toolbar": false,
+                "hide_legend": false, "save_image": false, "container_id": "tv_spy_chart",
+                "toolbar_bg": "#0f172a",
+                "studies": [
+                  "Compare@tv-basicstudies"
+                ]
+              });
+              </script>
+            </div>
+            """
+            components.html(tv_spy, height=850)
+        # --- END OF TRADINGVIEW SPY MODULE ---
+
+        # --- START OF TRADINGVIEW XRT MODULE ---
+        with t_chart_xrt:
+            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>Algorithmic Tracking: GME vs XRT (Retail ETF)</h2>", unsafe_allow_html=True)
+            tv_xrt = """
+            <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
+              <div id="tv_xrt_chart" style="height: 100%; width: 100%;"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+              <script type="text/javascript">
+              new TradingView.widget({
+                "autosize": true, "symbol": "NYSE:GME", "interval": "D", "timezone": "Etc/UTC",
+                "theme": "dark", "style": "2", "locale": "en", "enable_publishing": false,
+                "backgroundColor": "#050505", "gridColor": "#1f2937", "hide_top_toolbar": false,
+                "hide_legend": false, "save_image": false, "container_id": "tv_xrt_chart",
+                "toolbar_bg": "#0f172a",
+                "studies": [
+                  "Compare@tv-basicstudies"
+                ]
+              });
+              </script>
+            </div>
+            """
+            components.html(tv_xrt, height=850)
+        # --- END OF TRADINGVIEW XRT MODULE ---
 
     # --- TAB 14 : WEB PORTALS (Static) ---
     with tab14:
