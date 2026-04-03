@@ -887,6 +887,9 @@ else:
             st.markdown(f"<h3 style='text-align:center; color:{b_color}; font-family:monospace;'>DYNAMIC BETA: {b_val}</h3>", unsafe_allow_html=True)
             
             tv_spy = """
+            <style>
+                html, body { margin: 0 !important; padding: 0 !important; background-color: #050505; height: 100%; }
+            </style>
             <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
               <div id="tv_spy_chart" style="height: 100%; width: 100%;"></div>
               <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -911,6 +914,9 @@ else:
         with t_chart_xrt:
             st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>Algorithmic Tracking: GME vs XRT (Retail ETF)</h2>", unsafe_allow_html=True)
             tv_xrt = """
+            <style>
+                html, body { margin: 0 !important; padding: 0 !important; background-color: #050505; height: 100%; }
+            </style>
             <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
               <div id="tv_xrt_chart" style="height: 100%; width: 100%;"></div>
               <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
