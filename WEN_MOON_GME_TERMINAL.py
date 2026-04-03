@@ -840,33 +840,29 @@ else:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>📈 ADVANCED CHARTS TERMINAL</h2>", unsafe_allow_html=True)
         t_chart1, t_chart2 = st.tabs(["🇺🇸 GME (TradingView Pro)", "📜 GME-WT (TradingView Pro)"])
         
-        def tv_widget(symbol, container_id):
+        def tv_widget(symbol, cid):
             return f"""
             <style>
-                body {{ margin: 0 !important; padding: 0 !important; background-color: rgba(0, 0, 0, 1); }}
+                @media screen and (orientation: landscape) {{
+                    #{cid}_box {{ height: 400px !important; }}
+                }}
+                @media screen and (orientation: portrait) {{
+                    html, body {{ margin: 0 !important; padding: 0 !important; background-color: #050505; }}
+                }}
             </style>
-            <div class="tradingview-widget-container" style="height:100%; width:100%;">
-              <div id="{container_id}" style="height:100%; width:100%;"></div>
+            <div id="{cid}_box" class="tradingview-widget-container" style="height: 700px; width: 100%;">
+              <div id="{cid}" style="height: 100%; width: 100%;"></div>
               <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
               <script type="text/javascript">
               new TradingView.widget({{
-                "autosize": true,
-                "symbol": "{symbol}",
-                "interval": "D",
-                "timezone": "Etc/UTC",
-                "theme": "dark",
-                "style": "1",
-                "locale": "en",
-                "enable_publishing": false,
-                "backgroundColor": "rgba(0, 0, 0, 1)",
-                "hide_top_toolbar": false,
-                "hide_legend": false,
-                "save_image": false,
-                "container_id": "{container_id}"
+                "autosize": true, "symbol": "{symbol}", "interval": "D", "timezone": "Etc/UTC",
+                "theme": "dark", "style": "1", "locale": "en", "enable_publishing": false,
+                "backgroundColor": "#050505", "gridColor": "#1f2937", "hide_top_toolbar": false,
+                "hide_legend": false, "save_image": false, "container_id": "{cid}",
+                "toolbar_bg": "#0f172a"
               }});
               </script>
-            </div>
-            """
+            </div>"""
             
         with t_chart1: components.html(tv_widget("NYSE:GME", "tv_gme"), height=720)
         with t_chart2: components.html(tv_widget("NYSE:GME/W", "tv_gmewt"), height=720)
