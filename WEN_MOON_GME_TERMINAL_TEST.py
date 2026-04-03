@@ -1816,7 +1816,7 @@ else:
                         go.Bar(x=int_inc.index.strftime('%Y-%m'), y=int_inc.values, marker_color='#FFD700')
                     ])
                     fig_int.update_layout(
-                        title={'text': "QUARTERLY INTEREST INCOME", 'x': 0.5, 'font': {'color': '#00FF00', 'family': 'monospace'}},
+                        title={'text': "INTEREST INCOME", 'x': 0.5, 'font': {'color': '#00FF00', 'family': 'monospace'}},
                         template='plotly_dark',
                         paper_bgcolor='rgba(0,0,0,0)',
                         plot_bgcolor='rgba(0,0,0,0)',
