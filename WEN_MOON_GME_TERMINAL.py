@@ -874,6 +874,7 @@ else:
         with t_chart1: components.html(tv_widget("NYSE:GME", "tv_gme"), height=850)
         with t_chart2: components.html(tv_widget("NYSE:GME/W", "tv_gmewt"), height=850)
         # --- END OF DYNAMIC CHARTS SIZING ---
+        
         # --- START OF TRADINGVIEW SPY MODULE ---
         with t_chart_spy:
             try:
@@ -891,19 +892,41 @@ else:
                 html, body { margin: 0 !important; padding: 0 !important; background-color: #050505; height: 100%; }
             </style>
             <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
-              <div id="tv_spy_chart" style="height: 100%; width: 100%;"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-              <script type="text/javascript">
-              new TradingView.widget({
-                "autosize": true, "symbol": "NYSE:GME", "interval": "D", "timezone": "Etc/UTC",
-                "theme": "dark", "style": "2", "locale": "en", "enable_publishing": false,
-                "backgroundColor": "#050505", "gridColor": "#1f2937", "hide_top_toolbar": false,
-                "hide_legend": false, "save_image": false, "container_id": "tv_spy_chart",
-                "toolbar_bg": "#0f172a",
-                "studies": [
-                  "Compare@tv-basicstudies"
-                ]
-              });
+              <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+              {
+                "symbols": [
+                  [
+                    "GameStop",
+                    "NYSE:GME|1D"
+                  ],
+                  [
+                    "S&P 500",
+                    "AMEX:SPY|1D"
+                  ]
+                ],
+                "chartOnly": false,
+                "width": "100%",
+                "height": "100%",
+                "locale": "en",
+                "colorTheme": "dark",
+                "autosize": true,
+                "showVolume": false,
+                "showMA": false,
+                "hideDateRanges": false,
+                "hideMarketStatus": false,
+                "hideSymbolLogo": false,
+                "scalePosition": "right",
+                "scaleMode": "Percentage",
+                "fontFamily": "monospace",
+                "fontSize": "10",
+                "noTimeScale": false,
+                "valuesTracking": "1",
+                "changeMode": "price-and-percent",
+                "chartType": "line",
+                "lineWidth": 2,
+                "lineColor": "#00FF00"
+              }
               </script>
             </div>
             """
@@ -918,19 +941,41 @@ else:
                 html, body { margin: 0 !important; padding: 0 !important; background-color: #050505; height: 100%; }
             </style>
             <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
-              <div id="tv_xrt_chart" style="height: 100%; width: 100%;"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-              <script type="text/javascript">
-              new TradingView.widget({
-                "autosize": true, "symbol": "NYSE:GME", "interval": "D", "timezone": "Etc/UTC",
-                "theme": "dark", "style": "2", "locale": "en", "enable_publishing": false,
-                "backgroundColor": "#050505", "gridColor": "#1f2937", "hide_top_toolbar": false,
-                "hide_legend": false, "save_image": false, "container_id": "tv_xrt_chart",
-                "toolbar_bg": "#0f172a",
-                "studies": [
-                  "Compare@tv-basicstudies"
-                ]
-              });
+              <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+              {
+                "symbols": [
+                  [
+                    "GameStop",
+                    "NYSE:GME|1D"
+                  ],
+                  [
+                    "XRT ETF",
+                    "AMEX:XRT|1D"
+                  ]
+                ],
+                "chartOnly": false,
+                "width": "100%",
+                "height": "100%",
+                "locale": "en",
+                "colorTheme": "dark",
+                "autosize": true,
+                "showVolume": false,
+                "showMA": false,
+                "hideDateRanges": false,
+                "hideMarketStatus": false,
+                "hideSymbolLogo": false,
+                "scalePosition": "right",
+                "scaleMode": "Percentage",
+                "fontFamily": "monospace",
+                "fontSize": "10",
+                "noTimeScale": false,
+                "valuesTracking": "1",
+                "changeMode": "price-and-percent",
+                "chartType": "line",
+                "lineWidth": 2,
+                "lineColor": "#00FF00"
+              }
               </script>
             </div>
             """
