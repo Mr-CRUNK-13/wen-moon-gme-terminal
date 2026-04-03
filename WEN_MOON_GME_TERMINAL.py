@@ -866,7 +866,7 @@ else:
                 iframe { height: 850px !important; }
             }
             @media screen and (orientation: landscape) {
-                iframe { height: 720px !important; }
+                iframe { height: 400px !important; }
             }
         </style>
         """, unsafe_allow_html=True)
