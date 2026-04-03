@@ -850,7 +850,7 @@ else:
                     html, body {{ margin: 0 !important; padding: 0 !important; background-color: #050505; }}
                 }}
             </style>
-            <div id="{cid}_box" class="tradingview-widget-container" style="height: 700px; width: 100%;">
+            <div id="{cid}_box" class="tradingview-widget-container" style="height: 100vh; width: 100%;">
               <div id="{cid}" style="height: 100%; width: 100%;"></div>
               <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
               <script type="text/javascript">
