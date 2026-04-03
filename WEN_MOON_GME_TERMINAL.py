@@ -843,14 +843,9 @@ else:
         def tv_widget(symbol, cid):
             return f"""
             <style>
-                @media screen and (orientation: landscape) {{
-                    #{cid}_box {{ height: 400px !important; }}
-                }}
-                @media screen and (orientation: portrait) {{
-                    html, body {{ margin: 0 !important; padding: 0 !important; background-color: #050505; }}
-                }}
+                html, body {{ margin: 0 !important; padding: 0 !important; background-color: #050505; height: 100%; }}
             </style>
-            <div id="{cid}_box" class="tradingview-widget-container" style="height: 100vh; width: 100%;">
+            <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
               <div id="{cid}" style="height: 100%; width: 100%;"></div>
               <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
               <script type="text/javascript">
@@ -864,8 +859,21 @@ else:
               </script>
             </div>"""
             
+        # --- START OF DYNAMIC CHARTS SIZING ---
+        st.markdown("""
+        <style>
+            @media screen and (orientation: portrait) {
+                iframe { height: 850px !important; }
+            }
+            @media screen and (orientation: landscape) {
+                iframe { height: 720px !important; }
+            }
+        </style>
+        """, unsafe_allow_html=True)
+        
         with t_chart1: components.html(tv_widget("NYSE:GME", "tv_gme"), height=850)
         with t_chart2: components.html(tv_widget("NYSE:GME/W", "tv_gmewt"), height=850)
+        # --- END OF DYNAMIC CHARTS SIZING ---
 
     # --- TAB 14 : WEB PORTALS (Static) ---
     with tab14:
