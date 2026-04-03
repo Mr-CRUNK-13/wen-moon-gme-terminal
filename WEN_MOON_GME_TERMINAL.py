@@ -843,27 +843,10 @@ else:
         def tv_widget(symbol, container_id):
             return f"""
             <style>
-                html, body {{
-                    margin: 0 !important;
-                    padding: 0 !important;
-                    overflow: hidden !important;
-                    background-color: #050505;
-                    height: 100%;
-                    width: 100%;
-                }}
-                #tv_container_{container_id} {{
-                    height: 100vh !important;
-                    width: 100vw !important;
-                }}
-                @media screen and (orientation: landscape) {{
-                    #tv_container_{container_id} {{
-                        height: 100% !important;
-                        width: 100% !important;
-                    }}
-                }}
+                body {{ margin: 0 !important; padding: 0 !important; background-color: rgba(0, 0, 0, 1); }}
             </style>
-            <div id="tv_container_{container_id}" class="tradingview-widget-container">
-              <div id="{container_id}" style="height: 100%; width: 100%;"></div>
+            <div class="tradingview-widget-container" style="height:100%; width:100%;">
+              <div id="{container_id}" style="height:100%; width:100%;"></div>
               <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
               <script type="text/javascript">
               new TradingView.widget({{
@@ -875,13 +858,11 @@ else:
                 "style": "1",
                 "locale": "en",
                 "enable_publishing": false,
-                "backgroundColor": "#050505",
-                "gridColor": "#1f2937",
+                "backgroundColor": "rgba(0, 0, 0, 1)",
                 "hide_top_toolbar": false,
                 "hide_legend": false,
                 "save_image": false,
-                "container_id": "{container_id}",
-                "toolbar_bg": "#0f172a"
+                "container_id": "{container_id}"
               }});
               </script>
             </div>
