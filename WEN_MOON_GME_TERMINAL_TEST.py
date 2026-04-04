@@ -884,8 +884,9 @@ else:
     # --- TAB 13 : PRO CHARTS (Static) ---
     with tab13:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>📈 ADVANCED CHARTS TERMINAL</h2>", unsafe_allow_html=True)
-        t_chart1, t_chart2 = st.tabs(["🇺🇸 GME (TradingView Pro)", "📜 GME-WT (TradingView Pro)"])
         
+        t_chart1, t_chart2, t_chart_spy, t_chart_xrt, t_chart_btc = st.tabs(["🇺🇸 GME", "📜 GME-WT", "📉 SPY", "🧺 XRT", "₿ BTC"])
+
         def tv_widget(symbol, cid):
             return f"""
             <style>
@@ -919,6 +920,9 @@ else:
         
         with t_chart1: components.html(tv_widget("NYSE:GME", "tv_gme"), height=850)
         with t_chart2: components.html(tv_widget("NYSE:GME/W", "tv_gmewt"), height=850)
+        with t_chart_spy: components.html(tv_widget("AMEX:SPY", "tv_spy"), height=850)
+        with t_chart_xrt: components.html(tv_widget("AMEX:XRT", "tv_xrt"), height=850)
+        with t_chart_btc: components.html(tv_widget("BITSTAMP:BTCUSD", "tv_btc"), height=850)
         # --- END OF DYNAMIC CHARTS SIZING ---
 
     # --- TAB 14 : WEB PORTALS (Static) ---
