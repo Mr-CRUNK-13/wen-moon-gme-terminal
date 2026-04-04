@@ -838,7 +838,8 @@ else:
     # --- TAB 13 : PRO CHARTS (Static) ---
     with tab13:
         st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>📈 ADVANCED CHARTS TERMINAL</h2>", unsafe_allow_html=True)
-        t_chart1, t_chart2, t_chart_spy, t_chart_xrt = st.tabs(["🇺🇸 GME (TradingView Pro)", "📜 GME-WT (TradingView Pro)", "📉 SPY CORRELATION", "🧺 XRT CORRELATION"])
+        
+        t_chart1, t_chart2, t_chart_spy, t_chart_xrt, t_chart_btc = st.tabs(["🇺🇸 GME", "📜 GME-WT", "📉 SPY", "🧺 XRT", "₿ BTC"])
 
         def tv_widget(symbol, cid):
             return f"""
@@ -873,114 +874,10 @@ else:
         
         with t_chart1: components.html(tv_widget("NYSE:GME", "tv_gme"), height=850)
         with t_chart2: components.html(tv_widget("NYSE:GME/W", "tv_gmewt"), height=850)
+        with t_chart_spy: components.html(tv_widget("AMEX:SPY", "tv_spy"), height=850)
+        with t_chart_xrt: components.html(tv_widget("AMEX:XRT", "tv_xrt"), height=850)
+        with t_chart_btc: components.html(tv_widget("BITSTAMP:BTCUSD", "tv_btc"), height=850)
         # --- END OF DYNAMIC CHARTS SIZING ---
-        
-        # --- START OF TRADINGVIEW SPY MODULE ---
-        with t_chart_spy:
-            try:
-                b_val = info_dict.get("beta", "N/A")
-                b_color = "#00FF00" if float(b_val) < 0 else "#FF3333"
-            except:
-                b_val = "N/A"
-                b_color = "#FFFFFF"
-                
-            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>Macro Tracking: GME vs S&P 500</h2>", unsafe_allow_html=True)
-            st.markdown(f"<h3 style='text-align:center; color:{b_color}; font-family:monospace;'>DYNAMIC BETA: {b_val}</h3>", unsafe_allow_html=True)
-            
-            tv_spy = """
-            <style>
-                html, body { margin: 0 !important; padding: 0 !important; background-color: #050505; height: 100%; }
-            </style>
-            <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
-              <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
-              {
-                "symbols": [
-                  [
-                    "GameStop",
-                    "NYSE:GME|1D"
-                  ],
-                  [
-                    "S&P 500",
-                    "AMEX:SPY|1D"
-                  ]
-                ],
-                "chartOnly": false,
-                "width": "100%",
-                "height": "100%",
-                "locale": "en",
-                "colorTheme": "dark",
-                "autosize": true,
-                "showVolume": false,
-                "showMA": false,
-                "hideDateRanges": false,
-                "hideMarketStatus": false,
-                "hideSymbolLogo": false,
-                "scalePosition": "right",
-                "scaleMode": "Percentage",
-                "fontFamily": "monospace",
-                "fontSize": "10",
-                "noTimeScale": false,
-                "valuesTracking": "1",
-                "changeMode": "price-and-percent",
-                "chartType": "line",
-                "lineWidth": 2,
-                "lineColor": "#00FF00"
-              }
-              </script>
-            </div>
-            """
-            components.html(tv_spy, height=850)
-        # --- END OF TRADINGVIEW SPY MODULE ---
-
-        # --- START OF TRADINGVIEW XRT MODULE ---
-        with t_chart_xrt:
-            st.markdown("<h2 style='text-align:center; color:#00FF00; font-family:monospace;'>Algorithmic Tracking: GME vs XRT (Retail ETF)</h2>", unsafe_allow_html=True)
-            tv_xrt = """
-            <style>
-                html, body { margin: 0 !important; padding: 0 !important; background-color: #050505; height: 100%; }
-            </style>
-            <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
-              <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
-              {
-                "symbols": [
-                  [
-                    "GameStop",
-                    "NYSE:GME|1D"
-                  ],
-                  [
-                    "XRT ETF",
-                    "AMEX:XRT|1D"
-                  ]
-                ],
-                "chartOnly": false,
-                "width": "100%",
-                "height": "100%",
-                "locale": "en",
-                "colorTheme": "dark",
-                "autosize": true,
-                "showVolume": false,
-                "showMA": false,
-                "hideDateRanges": false,
-                "hideMarketStatus": false,
-                "hideSymbolLogo": false,
-                "scalePosition": "right",
-                "scaleMode": "Percentage",
-                "fontFamily": "monospace",
-                "fontSize": "10",
-                "noTimeScale": false,
-                "valuesTracking": "1",
-                "changeMode": "price-and-percent",
-                "chartType": "line",
-                "lineWidth": 2,
-                "lineColor": "#00FF00"
-              }
-              </script>
-            </div>
-            """
-            components.html(tv_xrt, height=850)
-        # --- END OF TRADINGVIEW XRT MODULE ---
 
     # --- TAB 14 : WEB PORTALS (Static) ---
     with tab14:
