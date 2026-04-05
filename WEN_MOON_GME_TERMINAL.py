@@ -604,6 +604,17 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         st.plotly_chart(fig_drs_p, use_container_width=True)
 
         # --- START OF INSTITUTIONAL TEAR SHEET MODULE ---
+        st.markdown("""
+        <style>
+        div[data-testid="stDownloadButton"] {
+            margin-top: 60px !important;
+        }
+        div[data-testid="stDownloadButton"] button {
+            animation: none !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
         @st.cache_data(ttl=3600)
         def create_pdf_report():
             try:
@@ -630,13 +641,13 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 
                 try:
                     if os.path.exists("logo_gamestop.png"):
-                        pdf.image("logo_gamestop.png", x=15, y=10, w=80)
+                        pdf.image("logo_gamestop.png", x=15, y=10, w=120)
                     if os.path.exists("Screenshot_20260216_163106_Discord.jpg"):
-                        pdf.image("Screenshot_20260216_163106_Discord.jpg", x=165, y=10, w=25)
+                        pdf.image("Screenshot_20260216_163106_Discord.jpg", x=145, y=10, w=50)
                 except: 
                     pass
                 
-                pdf.set_y(60)
+                pdf.set_y(75)
                 pdf.set_font("Arial", "B", 22)
                 pdf.cell(0, 10, "GAMESTOP (GME) TEAR SHEET", ln=1, align="C")
                 ny_time = datetime.now(pytz.timezone('America/New_York')).strftime('%I:%M:%S %p EST')
@@ -677,24 +688,25 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf.set_font("Arial", "B", 12)
                 pdf.cell(0, 8, " EPS MATRIX (2019-2025)", ln=1, fill=True)
                 pdf.set_font("Arial", "B", 10)
-                h2 = ["Year", "Consensus EPS", "Actual EPS", "Non-GAAP EPS", "Basic EPS"]
-                w2 = [30, 37, 37, 38, 38]
-                for i in range(5): pdf.cell(w2[i], 8, h2[i], border=1, align="C")
+                h2 = ["Year", "Consensus EPS", "Actual EPS", "Non-GAAP EPS"]
+                w2 = [30, 50, 50, 50]
+                for i in range(4): pdf.cell(w2[i], 8, h2[i], border=1, align="C")
                 pdf.ln()
                 pdf.set_font("Arial", "", 10)
                 eps_data = [
-                    ["2025", "$0.84", "$1.18", "$1.21", "$1.18"],
-                    ["2024", "$0.07", "$0.33", "$0.35", "$0.33"],
-                    ["2023", "$0.13", "$0.06", "$0.08", "$0.06"],
-                    ["2022", "-$0.34", "-$0.95", "-$0.88", "-$0.95"],
-                    ["2021", "-$0.53", "-$1.07", "-$0.85", "-$1.07"],
-                    ["2020", "-$0.73", "-$3.10", "-$0.55", "-$3.10"],
-                    ["2019", "$0.35", "$0.34", "$0.34", "$0.34"]
+                    ["2025", "$0.84", "$1.18", "$1.21"],
+                    ["2024", "$0.07", "$0.33", "$0.35"],
+                    ["2023", "$0.13", "$0.06", "$0.08"],
+                    ["2022", "-$0.34", "-$0.95", "-$0.88"],
+                    ["2021", "-$0.53", "-$1.07", "-$0.85"],
+                    ["2020", "-$0.73", "-$3.10", "-$0.55"],
+                    ["2019", "$0.35", "$0.34", "$0.34"]
                 ]
                 for r in eps_data:
-                    for i in range(5): pdf.cell(w2[i], 8, r[i], border=1, align="C")
+                    for i in range(4): pdf.cell(w2[i], 8, r[i], border=1, align="C")
                     pdf.ln()
-                pdf.ln(5)
+                
+                pdf.add_page()
 
                 pdf.set_font("Arial", "B", 12)
                 pdf.cell(0, 8, " STORE EFFICIENCY (2019-2025)", ln=1, fill=True)
@@ -721,35 +733,35 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf.set_font("Arial", "B", 12)
                 pdf.cell(0, 8, " ALL INSIDER PURCHASES ONLY (2019-2026)", ln=1, fill=True)
                 pdf.set_font("Arial", "B", 10)
-                h4 = ["Date", "Insider Name", "Type", "Shares"]
-                w4 = [45, 65, 35, 35]
-                for i in range(4): pdf.cell(w4[i], 8, h4[i], border=1, align="C")
+                h4 = ["Date", "Insider Name", "Shares"]
+                w4 = [50, 80, 50]
+                for i in range(3): pdf.cell(w4[i], 8, h4[i], border=1, align="C")
                 pdf.ln()
                 pdf.set_font("Arial", "", 10)
                 ins_data = [
-                    ["2026-01-23", "Lawrence Cheng", "Buy", "5,000"],
-                    ["2026-01-21", "Ryan Cohen", "Buy", "1,000,000"],
-                    ["2026-01-21", "Alain Attal", "Buy", "12,000"],
-                    ["2026-01-20", "Ryan Cohen", "Buy", "500,000"],
-                    ["2026-01-20", "Alain Attal", "Buy", "12,000"],
-                    ["2025-06-30", "James Grube", "Buy", "10,000"],
-                    ["2025-04-10", "Alain Attal", "Buy", "10,000"],
-                    ["2025-04-03", "Ryan Cohen", "Buy", "500,000"],
-                    ["2025-04-03", "Lawrence Cheng", "Buy", "5,000"],
-                    ["2024-07-08", "Lawrence Cheng", "Buy", "4,140"],
-                    ["2024-04-08", "Lawrence Cheng", "Buy", "10,000"],
-                    ["2023-09-08", "Alain Attal", "Buy", "10,000"],
-                    ["2023-09-08", "Lawrence Cheng", "Buy", "6,000"],
-                    ["2023-06-09", "Ryan Cohen", "Buy", "443,842"],
-                    ["2022-03-24", "James Grube", "Buy", "4,000"],
-                    ["2022-03-24", "Alain Attal", "Buy", "1,500"],
-                    ["2022-03-24", "Lawrence Cheng", "Buy", "4,000"],
-                    ["2022-03-22", "Ryan Cohen", "Buy", "100,000"],
-                    ["2020-12-18", "Ryan Cohen", "Buy", "9,001,000"],
-                    ["2019-06-07", "James Grube", "Buy", "2,000"]
+                    ["2026-01-23", "Lawrence Cheng", "5,000"],
+                    ["2026-01-21", "Ryan Cohen", "1,000,000"],
+                    ["2026-01-21", "Alain Attal", "12,000"],
+                    ["2026-01-20", "Ryan Cohen", "500,000"],
+                    ["2026-01-20", "Alain Attal", "12,000"],
+                    ["2025-06-30", "James Grube", "10,000"],
+                    ["2025-04-10", "Alain Attal", "10,000"],
+                    ["2025-04-03", "Ryan Cohen", "500,000"],
+                    ["2025-04-03", "Lawrence Cheng", "5,000"],
+                    ["2024-07-08", "Lawrence Cheng", "4,140"],
+                    ["2024-04-08", "Lawrence Cheng", "10,000"],
+                    ["2023-09-08", "Alain Attal", "10,000"],
+                    ["2023-09-08", "Lawrence Cheng", "6,000"],
+                    ["2023-06-09", "Ryan Cohen", "443,842"],
+                    ["2022-03-24", "James Grube", "4,000"],
+                    ["2022-03-24", "Alain Attal", "1,500"],
+                    ["2022-03-24", "Lawrence Cheng", "4,000"],
+                    ["2022-03-22", "Ryan Cohen", "100,000"],
+                    ["2020-12-18", "Ryan Cohen", "9,001,000"],
+                    ["2019-06-07", "James Grube", "2,000"]
                 ]
                 for r in ins_data:
-                    for i in range(4): pdf.cell(w4[i], 8, r[i], border=1, align="C")
+                    for i in range(3): pdf.cell(w4[i], 8, r[i], border=1, align="C")
                     pdf.ln()
                 pdf.ln(10)
 
