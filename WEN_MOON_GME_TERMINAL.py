@@ -609,13 +609,16 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
         div[data-testid="stDownloadButton"] {
             margin-top: 60px !important;
         }
-        div[data-testid="stDownloadButton"] button {
+        div[data-testid="stDownloadButton"] button, 
+        div[data-testid="stDownloadButton"] button:after,
+        div[data-testid="stDownloadButton"] button:before {
             animation: none !important;
+            transition: none !important;
         }
         </style>
         """, unsafe_allow_html=True)
 
-        @st.cache_data(ttl=3600)
+        @st.cache_data(ttl=60)
         def create_pdf_report():
             try:
                 from fpdf import FPDF
@@ -629,7 +632,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             try:
                 tk = yf.Ticker("GME")
                 info = tk.info
-                p = info.get("previousClose", 25.0)
+                current_p = info.get("currentPrice") or info.get("ask") or info.get("previousClose", 25.0)
                 mc = info.get("marketCap", 10000000000)
                 tc = info.get("totalCash", 9013000000)
                 td = info.get("totalDebt", 4164000000)
@@ -637,7 +640,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf = FPDF()
                 pdf.add_page()
                 pdf.set_margins(15, 15, 15)
-                pdf.set_auto_page_break(auto=True, margin=15)
+                pdf.set_auto_page_break(auto=True, margin=10)
                 
                 try:
                     if os.path.exists("logo_gamestop.png"):
@@ -659,7 +662,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf.set_fill_color(200, 220, 255)
                 pdf.cell(0, 8, " HERO METRICS", ln=1, fill=True)
                 pdf.set_font("Arial", "", 11)
-                pdf.cell(90, 8, f" Price: ${p:,.2f}  |  Market Cap: ${mc/1e9:,.2f}B", border=1)
+                pdf.cell(90, 8, f" Price: ${current_p:,.2f}  |  Market Cap: ${mc/1e9:,.2f}B", border=1)
                 pdf.cell(90, 8, f" Cash: ${tc/1e9:,.2f}B  |  Debt: ${td/1e9:,.2f}B", border=1, ln=1)
                 pdf.ln(5)
 
@@ -681,7 +684,12 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                     ["2019", "$5.20B", "$34.5M", "$42.1M"]
                 ]
                 for r in hist_data:
-                    for i in range(4): pdf.cell(w1[i], 8, r[i], border=1, align="C")
+                    pdf.cell(w1[0], 8, r[0], border=1, align="C")
+                    pdf.cell(w1[1], 8, r[1], border=1, align="C")
+                    for i in range(2, 4):
+                        if "-" in r[i]: pdf.set_fill_color(255, 200, 200)
+                        else: pdf.set_fill_color(200, 255, 200)
+                        pdf.cell(w1[i], 8, r[i], border=1, align="C", fill=True)
                     pdf.ln()
                 pdf.ln(5)
 
@@ -703,11 +711,14 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                     ["2019", "$0.35", "$0.34", "$0.34"]
                 ]
                 for r in eps_data:
-                    for i in range(4): pdf.cell(w2[i], 8, r[i], border=1, align="C")
+                    pdf.cell(w2[0], 8, r[0], border=1, align="C")
+                    for i in range(1, 4):
+                        if "-" in r[i]: pdf.set_fill_color(255, 200, 200)
+                        else: pdf.set_fill_color(200, 255, 200)
+                        pdf.cell(w2[i], 8, r[i], border=1, align="C", fill=True)
                     pdf.ln()
                 
                 pdf.add_page()
-
                 pdf.set_font("Arial", "B", 12)
                 pdf.cell(0, 8, " STORE EFFICIENCY (2019-2025)", ln=1, fill=True)
                 pdf.set_font("Arial", "B", 10)
@@ -717,18 +728,13 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf.ln()
                 pdf.set_font("Arial", "", 10)
                 store_data = [
-                    ["2025", "2,206", "$1.65M"],
-                    ["2024", "3,203", "$1.19M"],
-                    ["2023", "4,169", "$1.26M"],
-                    ["2022", "4,573", "$1.13M"],
-                    ["2021", "4,816", "$0.89M"],
-                    ["2020", "5,509", "$0.86M"],
-                    ["2019", "5,830", "$0.90M"]
+                    ["2025", "2,206", "$1.65M"], ["2024", "3,203", "$1.19M"], ["2023", "4,169", "$1.26M"],
+                    ["2022", "4,573", "$1.13M"], ["2021", "4,816", "$0.89M"], ["2020", "5,509", "$0.86M"], ["2019", "5,830", "$0.90M"]
                 ]
                 for r in store_data:
                     for i in range(3): pdf.cell(w3[i], 8, r[i], border=1, align="C")
                     pdf.ln()
-                pdf.ln(5)
+                pdf.ln(4)
 
                 pdf.set_font("Arial", "B", 12)
                 pdf.cell(0, 8, " ALL INSIDER PURCHASES ONLY (2019-2026)", ln=1, fill=True)
@@ -739,43 +745,30 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf.ln()
                 pdf.set_font("Arial", "", 10)
                 ins_data = [
-                    ["2026-01-23", "Lawrence Cheng", "5,000"],
-                    ["2026-01-21", "Ryan Cohen", "1,000,000"],
-                    ["2026-01-21", "Alain Attal", "12,000"],
-                    ["2026-01-20", "Ryan Cohen", "500,000"],
-                    ["2026-01-20", "Alain Attal", "12,000"],
-                    ["2025-06-30", "James Grube", "10,000"],
-                    ["2025-04-10", "Alain Attal", "10,000"],
-                    ["2025-04-03", "Ryan Cohen", "500,000"],
-                    ["2025-04-03", "Lawrence Cheng", "5,000"],
-                    ["2024-07-08", "Lawrence Cheng", "4,140"],
-                    ["2024-04-08", "Lawrence Cheng", "10,000"],
-                    ["2023-09-08", "Alain Attal", "10,000"],
-                    ["2023-09-08", "Lawrence Cheng", "6,000"],
-                    ["2023-06-09", "Ryan Cohen", "443,842"],
-                    ["2022-03-24", "James Grube", "4,000"],
-                    ["2022-03-24", "Alain Attal", "1,500"],
-                    ["2022-03-24", "Lawrence Cheng", "4,000"],
-                    ["2022-03-22", "Ryan Cohen", "100,000"],
-                    ["2020-12-18", "Ryan Cohen", "9,001,000"],
-                    ["2019-06-07", "James Grube", "2,000"]
+                    ["2026-01-23", "Lawrence Cheng", "5,000"], ["2026-01-21", "Ryan Cohen", "1,000,000"],
+                    ["2026-01-21", "Alain Attal", "12,000"], ["2026-01-20", "Ryan Cohen", "500,000"],
+                    ["2026-01-20", "Alain Attal", "12,000"], ["2025-06-30", "James Grube", "10,000"],
+                    ["2025-04-10", "Alain Attal", "10,000"], ["2025-04-03", "Ryan Cohen", "500,000"],
+                    ["2025-04-03", "Lawrence Cheng", "5,000"], ["2024-07-08", "Lawrence Cheng", "4,140"],
+                    ["2024-04-08", "Lawrence Cheng", "10,000"], ["2023-09-08", "Alain Attal", "10,000"],
+                    ["2023-09-08", "Lawrence Cheng", "6,000"], ["2023-06-09", "Ryan Cohen", "443,842"],
+                    ["2022-03-24", "James Grube", "4,000"], ["2022-03-24", "Alain Attal", "1,500"],
+                    ["2022-03-24", "Lawrence Cheng", "4,000"], ["2022-03-22", "Ryan Cohen", "100,000"],
+                    ["2020-12-18", "Ryan Cohen", "9,001,000"], ["2019-06-07", "James Grube", "2,000"]
                 ]
                 for r in ins_data:
                     for i in range(3): pdf.cell(w4[i], 8, r[i], border=1, align="C")
                     pdf.ln()
-                pdf.ln(10)
+                pdf.ln(2)
 
                 pdf.set_font("Arial", "I", 8)
                 pdf.set_text_color(100, 100, 100)
                 txt = "DISCLAIMER: This report is generated for informational purposes only (Fair Use). Not financial advice. Data may be subject to delays or inaccuracies. Not affiliated with GameStop Corp. Power to the Players."
                 pdf.multi_cell(0, 4, txt, align="C")
                 
-                try: 
-                    return pdf.output(dest='S').encode('latin-1')
-                except: 
-                    return bytes(pdf.output())
-            except Exception as e: 
-                return None
+                try: return pdf.output(dest='S').encode('latin-1')
+                except: return bytes(pdf.output())
+            except Exception as e: return None
 
         pdf_bytes = create_pdf_report()
         
