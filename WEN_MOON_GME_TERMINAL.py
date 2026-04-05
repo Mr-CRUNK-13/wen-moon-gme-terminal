@@ -616,7 +616,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             transition: none !important;
         }
         div[data-testid="stDownloadButton"] button {
-            background-color: transparent !important;
+            background-color: rgba(0, 255, 0, 0.15) !important;
             color: #00FF00 !important;
             border: 2px solid #00FF00 !important;
             box-shadow: 0 0 10px #00FF00 !important;
@@ -624,7 +624,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
             text-transform: uppercase !important;
         }
         div[data-testid="stDownloadButton"] button:hover {
-            background-color: rgba(0, 255, 0, 0.1) !important;
+            background-color: rgba(0, 255, 0, 0.30) !important;
             border: 2px solid #00FF00 !important;
         }
         </style>
@@ -658,14 +658,15 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 drs = 74600000
                 tr = info.get("totalRevenue", 3630000000)
                 ni = info.get("netIncomeToCommon", 418400000)
+                oi = info.get("operatingIncome", 232100000)
                 rev_ps = info.get("revenuePerShare", 8.20)
                 ni_ps = info.get("trailingEps", 0.94)
                 h52 = info.get("fiftyTwoWeekHigh", 64.83)
                 l52 = info.get("fiftyTwoWeekLow", 9.95)
                 
-                wp = st.session_state.get("warrant_price", 1.15)
-                wh = st.session_state.get("warrant_high", 2.10)
-                wl = st.session_state.get("warrant_low", 0.85)
+                wp = st.session_state.get("warrant_price", 0.00)
+                wh = st.session_state.get("warrant_high", 0.00)
+                wl = st.session_state.get("warrant_low", 0.00)
 
                 pdf = FPDF()
                 pdf.add_page()
@@ -691,100 +692,99 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf.set_font("Arial", "B", 16)
                 pdf.set_fill_color(200, 220, 255)
                 pdf.cell(0, 12, " HERO METRICS", ln=1, fill=True)
-                pdf.set_font("Arial", "B", 14)
                 pdf.cell(90, 12, f" Price: ${current_p:,.2f}  |  Market Cap: ${mc/1e9:,.2f}B", border=1)
                 pdf.cell(90, 12, f" Cash: ${tc/1e9:,.2f}B  |  Debt: ${td/1e9:,.2f}B", border=1, ln=1)
                 
-                pdf.set_font("Arial", "", 10)
+                pdf.set_font("Arial", "", 12)
                 ext_metrics = [
-                    [f"Shares Outstanding: {so/1e6:,.1f}M", f"Float Shares: {fl/1e6:,.1f}M"],
-                    [f"% Short of Float: {sp:.2f}%", f"Days to Cover: {dtc:.2f}"],
-                    [f"Held by Insiders: {hi:.2f}%", f"Held by Institutions: {hinst:.2f}%"],
-                    [f"DRS Shares (Reported): {drs/1e6:,.1f}M", f"Total Revenue: ${tr/1e9:,.2f}B"],
-                    [f"Net Income: ${ni/1e6:,.1f}M", f"Revenue Per Share: ${rev_ps:.2f}"],
-                    [f"Net Income Per Share: ${ni_ps:.2f}", "Exchange: NYSE"],
-                    [f"GME 52 Weeks High: ${h52:.2f}", f"GME 52 Weeks Low: ${l52:.2f}"],
-                    [f"Warrant Price: ${wp:.2f}", f"Warrant 52W High: ${wh:.2f}  /  Low: ${wl:.2f}"]
+                    [f" Shares Outstanding: {so/1e6:,.1f}M", f" Float Shares: {fl/1e6:,.1f}M"],
+                    [f" % Short of Float: {sp:.2f}%", f" Days to Cover: {dtc:.2f}"],
+                    [f" Held by Insiders: {hi:.2f}%", f" Held by Institutions: {hinst:.2f}%"],
+                    [f" DRS Shares (Reported): {drs/1e6:,.1f}M", f" Total Revenue: ${tr/1e9:,.2f}B"],
+                    [f" Net Income: ${ni/1e6:,.1f}M", f" Operating Income: ${oi/1e6:,.1f}M"],
+                    [f" Net Income Per Share: ${ni_ps:.2f}", f" Revenue Per Share: ${rev_ps:.2f}"],
+                    [f" GME 52 Weeks High: ${h52:.2f}", f" GME 52 Weeks Low: ${l52:.2f}"],
+                    [f" Warrant Price: ${wp:.2f}", f" Warrant 52W High: ${wh:.2f}  /  Low: ${wl:.2f}"]
                 ]
                 for row in ext_metrics:
-                    pdf.cell(90, 7, row[0], border=1)
-                    pdf.cell(90, 7, row[1], border=1, ln=1)
+                    pdf.cell(90, 8, row[0], border=1)
+                    pdf.cell(90, 8, row[1], border=1, ln=1)
                 pdf.ln(5)
 
-                pdf.set_font("Arial", "B", 12)
+                pdf.set_font("Arial", "B", 14)
                 pdf.set_fill_color(200, 220, 255)
-                pdf.cell(0, 8, " HISTORICAL FINANCIALS (2019-2025)", ln=1, fill=True)
-                pdf.set_font("Arial", "B", 10)
+                pdf.cell(0, 10, " HISTORICAL FINANCIALS (2019-2025)", ln=1, fill=True)
+                pdf.set_font("Arial", "B", 12)
                 h1 = ["Year", "Total Revenue", "Net Income", "Operating Income"]
                 w1 = [30, 50, 50, 50]
-                for i in range(4): pdf.cell(w1[i], 8, h1[i], border=1, align="C", fill=True)
+                for i in range(4): pdf.cell(w1[i], 10, h1[i], border=1, align="C", fill=True)
                 pdf.ln()
-                pdf.set_font("Arial", "", 10)
+                pdf.set_font("Arial", "", 12)
                 hist_data = [
                     ["2025", "$3.63B", "$418.4M", "$232.1M"], ["2024", "$3.82B", "$131.3M", "-$19.1M"],
                     ["2023", "$5.27B", "$6.7M", "-$28.6M"], ["2022", "$5.15B", "-$315.1M", "-$365.8M"],
                     ["2021", "$4.28B", "-$199.3M", "-$215.1M"], ["2020", "$4.71B", "-$275.3M", "-$279.7M"], ["2019", "$5.20B", "$34.5M", "$42.1M"]
                 ]
                 for r in hist_data:
-                    pdf.cell(w1[0], 8, r[0], border=1, align="C")
-                    pdf.cell(w1[1], 8, r[1], border=1, align="C")
+                    pdf.cell(w1[0], 10, r[0], border=1, align="C")
+                    pdf.cell(w1[1], 10, r[1], border=1, align="C")
                     for i in range(2, 4):
                         if "-" in r[i]: pdf.set_fill_color(255, 200, 200)
                         else: pdf.set_fill_color(200, 255, 200)
-                        pdf.cell(w1[i], 8, r[i], border=1, align="C", fill=True)
+                        pdf.cell(w1[i], 10, r[i], border=1, align="C", fill=True)
                     pdf.ln()
-                pdf.ln(5)
-
-                pdf.set_font("Arial", "B", 12)
+                
+                pdf.add_page()
+                pdf.set_font("Arial", "B", 14)
                 pdf.set_fill_color(200, 220, 255)
-                pdf.cell(0, 8, " EPS MATRIX (2019-2025)", ln=1, fill=True)
-                pdf.set_font("Arial", "B", 10)
+                pdf.cell(0, 10, " EPS MATRIX (2019-2025)", ln=1, fill=True)
+                pdf.set_font("Arial", "B", 12)
                 h2 = ["Year", "Consensus EPS", "Actual EPS", "Non-GAAP EPS"]
                 w2 = [30, 50, 50, 50]
-                for i in range(4): pdf.cell(w2[i], 8, h2[i], border=1, align="C", fill=True)
+                for i in range(4): pdf.cell(w2[i], 10, h2[i], border=1, align="C", fill=True)
                 pdf.ln()
-                pdf.set_font("Arial", "", 10)
+                pdf.set_font("Arial", "", 12)
                 eps_data = [
                     ["2025", "$0.84", "$1.18", "$1.21"], ["2024", "$0.07", "$0.33", "$0.35"],
                     ["2023", "$0.13", "$0.06", "$0.08"], ["2022", "-$0.34", "-$0.95", "-$0.88"],
                     ["2021", "-$0.53", "-$1.07", "-$0.85"], ["2020", "-$0.73", "-$3.10", "-$0.55"], ["2019", "$0.35", "$0.34", "$0.34"]
                 ]
                 for r in eps_data:
-                    pdf.cell(w2[0], 8, r[0], border=1, align="C")
+                    pdf.cell(w2[0], 10, r[0], border=1, align="C")
                     for i in range(1, 4):
                         if "-" in r[i]: pdf.set_fill_color(255, 200, 200)
                         else: pdf.set_fill_color(200, 255, 200)
-                        pdf.cell(w2[i], 8, r[i], border=1, align="C", fill=True)
+                        pdf.cell(w2[i], 10, r[i], border=1, align="C", fill=True)
                     pdf.ln()
+                pdf.ln(5)
                 
-                pdf.add_page()
-                pdf.set_font("Arial", "B", 12)
+                pdf.set_font("Arial", "B", 14)
                 pdf.set_fill_color(200, 220, 255)
-                pdf.cell(0, 8, " STORE EFFICIENCY (2019-2025)", ln=1, fill=True)
-                pdf.set_font("Arial", "B", 10)
+                pdf.cell(0, 10, " STORE EFFICIENCY (2019-2025)", ln=1, fill=True)
+                pdf.set_font("Arial", "B", 12)
                 h3 = ["Year", "Total Stores", "Revenue Per Store"]
                 w3 = [60, 60, 60]
-                for i in range(3): pdf.cell(w3[i], 8, h3[i], border=1, align="C", fill=True)
+                for i in range(3): pdf.cell(w3[i], 10, h3[i], border=1, align="C", fill=True)
                 pdf.ln()
-                pdf.set_font("Arial", "", 10)
+                pdf.set_font("Arial", "", 12)
                 store_data = [
                     ["2025", "2,206", "$1.65M"], ["2024", "3,203", "$1.19M"], ["2023", "4,169", "$1.26M"],
                     ["2022", "4,573", "$1.13M"], ["2021", "4,816", "$0.89M"], ["2020", "5,509", "$0.86M"], ["2019", "5,830", "$0.90M"]
                 ]
                 for r in store_data:
-                    for i in range(3): pdf.cell(w3[i], 8, r[i], border=1, align="C")
+                    for i in range(3): pdf.cell(w3[i], 10, r[i], border=1, align="C")
                     pdf.ln()
-                pdf.ln(4)
-
-                pdf.set_font("Arial", "B", 12)
+                
+                pdf.add_page()
+                pdf.set_font("Arial", "B", 14)
                 pdf.set_fill_color(200, 220, 255)
-                pdf.cell(0, 8, " ALL INSIDER PURCHASES ONLY (2019-2026)", ln=1, fill=True)
-                pdf.set_font("Arial", "B", 10)
+                pdf.cell(0, 10, " ALL INSIDER PURCHASES ONLY (2019-2026)", ln=1, fill=True)
+                pdf.set_font("Arial", "B", 12)
                 h4 = ["Date", "Insider Name", "Shares"]
                 w4 = [50, 80, 50]
-                for i in range(3): pdf.cell(w4[i], 8, h4[i], border=1, align="C", fill=True)
+                for i in range(3): pdf.cell(w4[i], 10, h4[i], border=1, align="C", fill=True)
                 pdf.ln()
-                pdf.set_font("Arial", "", 10)
+                pdf.set_font("Arial", "", 12)
                 ins_data = [
                     ["2026-01-23", "Lawrence Cheng", "5,000"], ["2026-01-21", "Ryan Cohen", "1,000,000"],
                     ["2026-01-21", "Alain Attal", "12,000"], ["2026-01-20", "Ryan Cohen", "500,000"],
@@ -798,27 +798,27 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                     ["2020-12-18", "Ryan Cohen", "9,001,000"], ["2019-06-07", "James Grube", "2,000"]
                 ]
                 for r in ins_data:
-                    for i in range(3): pdf.cell(w4[i], 8, r[i], border=1, align="C")
+                    for i in range(3): pdf.cell(w4[i], 10, r[i], border=1, align="C")
                     pdf.ln()
                 
                 pdf.set_y(-25)
-                pdf.set_font("Arial", "I", 8)
+                pdf.set_font("Arial", "I", 10)
                 pdf.set_text_color(100, 100, 100)
                 txt = "DISCLAIMER: This report is generated for informational purposes only (Fair Use). Not financial advice. Data may be subject to delays or inaccuracies. Not affiliated with GameStop Corp. Power to the Players."
-                pdf.multi_cell(0, 4, txt, align="C")
+                pdf.multi_cell(0, 5, txt, align="C")
                 
                 try: 
                     return pdf.output(dest='S').encode('latin-1')
                 except: 
                     return bytes(pdf.output())
-            except Exception as e: 
+            except Exception: 
                 return None
 
         pdf_bytes = create_pdf_report()
         
         if pdf_bytes:
             st.download_button(
-                label="DOWNLOAD INSTITUTIONAL TEAR SHEET (PDF)",
+                label="📥 DOWNLOAD INSTITUTIONAL TEAR SHEET (PDF)",
                 data=pdf_bytes,
                 file_name="GME_Institutional_Tear_Sheet.pdf",
                 mime="application/pdf",
