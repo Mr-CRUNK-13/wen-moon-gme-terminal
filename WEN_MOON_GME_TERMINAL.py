@@ -655,7 +655,10 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 dtc = info.get("shortRatio", 12.5)
                 hi = info.get("heldPercentInsiders", 0.121) * 100
                 hinst = info.get("heldPercentInstitutions", 0.284) * 100
-                drs = 74600000
+                
+                # Hardcoded DRS Data
+                drs = 66200000
+                
                 tr = info.get("totalRevenue", 3630000000)
                 ni = info.get("netIncomeToCommon", 418400000)
                 oi = info.get("operatingIncome", 232100000)
@@ -716,10 +719,16 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 for i in range(4): pdf.cell(w1[i], 10, h1[i], border=1, align="C", fill=True)
                 pdf.ln()
                 pdf.set_font("Arial", "B", 16)
+                
+                # Hardcoded Financials from app source
                 hist_data = [
-                    ["2025", "$3.63B", "$418.4M", "$232.1M"], ["2024", "$3.82B", "$131.3M", "-$19.1M"],
-                    ["2023", "$5.27B", "$6.7M", "-$28.6M"], ["2022", "$5.15B", "-$315.1M", "-$365.8M"],
-                    ["2021", "$4.28B", "-$199.3M", "-$215.1M"], ["2020", "$4.71B", "-$275.3M", "-$279.7M"], ["2019", "$5.20B", "$34.5M", "$42.1M"]
+                    ["2025", "$3.63B", "$418.4M", "$232.1M"],
+                    ["2024", "$3.82B", "$131.3M", "-$19.1M"],
+                    ["2023", "$5.27B", "$6.7M", "-$28.6M"],
+                    ["2022", "$5.93B", "-$313.1M", "-$308.3M"],
+                    ["2021", "$6.01B", "-$381.3M", "-$361.6M"],
+                    ["2020", "$5.09B", "-$215.3M", "-$253.0M"],
+                    ["2019", "$6.47B", "-$470.9M", "-$399.6M"]
                 ]
                 for r in hist_data:
                     pdf.cell(w1[0], 10, r[0], border=1, align="C")
@@ -735,15 +744,21 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf.set_fill_color(200, 220, 255)
                 pdf.cell(0, 10, " EPS MATRIX (2019-2025)", ln=1, fill=True)
                 pdf.set_font("Arial", "B", 18)
-                h2 = ["Year", "Consensus EPS", "Actual EPS", "Non-GAAP EPS"]
+                h2 = ["Year", "Non-GAAP EPS", "Consensus EPS", "Basic EPS"]
                 w2 = [30, 50, 50, 50]
                 for i in range(4): pdf.cell(w2[i], 10, h2[i], border=1, align="C", fill=True)
                 pdf.ln()
                 pdf.set_font("Arial", "B", 18)
+                
+                # Hardcoded EPS from app source
                 eps_data = [
-                    ["2025", "$0.84", "$1.18", "$1.21"], ["2024", "$0.07", "$0.33", "$0.35"],
-                    ["2023", "$0.13", "$0.06", "$0.08"], ["2022", "-$0.34", "-$0.95", "-$0.88"],
-                    ["2021", "-$0.53", "-$1.07", "-$0.85"], ["2020", "-$0.73", "-$3.10", "-$0.55"], ["2019", "$0.35", "$0.34", "$0.34"]
+                    ["2025", "$1.18", "$0.84", "$0.93"],
+                    ["2024", "$0.33", "$0.07", "$0.33"],
+                    ["2023", "$0.06", "$0.13", "$0.02"],
+                    ["2022", "-$1.02", "-1.31", "-$1.03"],
+                    ["2021", "-$1.14", "-0.42", "-$1.31"],
+                    ["2020", "-$0.54", "-0.54", "-$0.83"],
+                    ["2019", "$0.06", "-0.01", "-$1.35"]
                 ]
                 for r in eps_data:
                     pdf.cell(w2[0], 10, r[0], border=1, align="C")
@@ -763,9 +778,16 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 for i in range(3): pdf.cell(w3[i], 10, h3[i], border=1, align="C", fill=True)
                 pdf.ln()
                 pdf.set_font("Arial", "B", 18)
+                
+                # Hardcoded Store Data from app source
                 store_data = [
-                    ["2025", "2,206", "$1.65M"], ["2024", "3,203", "$1.19M"], ["2023", "4,169", "$1.26M"],
-                    ["2022", "4,573", "$1.13M"], ["2021", "4,816", "$0.89M"], ["2020", "5,509", "$0.86M"], ["2019", "5,830", "$0.90M"]
+                    ["2025", "2,206", "$1.65M"],
+                    ["2024", "3,203", "$1.19M"],
+                    ["2023", "4,169", "$1.26M"],
+                    ["2022", "4,413", "$1.34M"],
+                    ["2021", "4,573", "$1.31M"],
+                    ["2020", "4,816", "$1.06M"],
+                    ["2019", "5,509", "$1.17M"]
                 ]
                 for r in store_data:
                     for i in range(3): pdf.cell(w3[i], 10, r[i], border=1, align="C")
@@ -781,17 +803,29 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 for i in range(3): pdf.cell(w4[i], 10, h4[i], border=1, align="C", fill=True)
                 pdf.ln()
                 pdf.set_font("Arial", "B", 18)
+                
+                # Hardcoded Insider Purchases
                 ins_data = [
-                    ["2026-01-23", "Lawrence Cheng", "5,000"], ["2026-01-21", "Ryan Cohen", "1,000,000"],
-                    ["2026-01-21", "Alain Attal", "12,000"], ["2026-01-20", "Ryan Cohen", "500,000"],
-                    ["2026-01-20", "Alain Attal", "12,000"], ["2025-06-30", "James Grube", "10,000"],
-                    ["2025-04-10", "Alain Attal", "10,000"], ["2025-04-03", "Ryan Cohen", "500,000"],
-                    ["2025-04-03", "Lawrence Cheng", "5,000"], ["2024-07-08", "Lawrence Cheng", "4,140"],
-                    ["2024-04-08", "Lawrence Cheng", "10,000"], ["2023-09-08", "Alain Attal", "10,000"],
-                    ["2023-09-08", "Lawrence Cheng", "6,000"], ["2023-06-09", "Ryan Cohen", "443,842"],
-                    ["2022-03-24", "James Grube", "4,000"], ["2022-03-24", "Alain Attal", "1,500"],
-                    ["2022-03-24", "Lawrence Cheng", "4,000"], ["2022-03-22", "Ryan Cohen", "100,000"],
-                    ["2020-12-18", "Ryan Cohen", "9,001,000"], ["2019-06-07", "James Grube", "2,000"]
+                    ["2026-01-23", "Lawrence Cheng", "5,000"],
+                    ["2026-01-21", "Ryan Cohen", "1,000,000"],
+                    ["2026-01-21", "Alain Attal", "12,000"],
+                    ["2026-01-20", "Ryan Cohen", "500,000"],
+                    ["2026-01-20", "Alain Attal", "12,000"],
+                    ["2025-06-30", "James Grube", "10,000"],
+                    ["2025-04-10", "Alain Attal", "10,000"],
+                    ["2025-04-03", "Ryan Cohen", "500,000"],
+                    ["2025-04-03", "Lawrence Cheng", "5,000"],
+                    ["2024-07-08", "Lawrence Cheng", "4,140"],
+                    ["2024-04-08", "Lawrence Cheng", "10,000"],
+                    ["2023-09-08", "Alain Attal", "10,000"],
+                    ["2023-09-08", "Lawrence Cheng", "6,000"],
+                    ["2023-06-09", "Ryan Cohen", "443,842"],
+                    ["2022-03-24", "James Grube", "4,000"],
+                    ["2022-03-24", "Alain Attal", "1,500"],
+                    ["2022-03-24", "Lawrence Cheng", "4,000"],
+                    ["2022-03-22", "Ryan Cohen", "100,000"],
+                    ["2020-12-18", "Ryan Cohen", "9,001,000"],
+                    ["2019-06-07", "James Grube", "2,000"]
                 ]
                 for r in ins_data:
                     for i in range(3): pdf.cell(w4[i], 10, r[i], border=1, align="C")
@@ -822,7 +856,6 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 type="primary"
             )
         # --- END OF INSTITUTIONAL TEAR SHEET MODULE ---
-
 
 # --- 2.5 LEADERBOARD SCREEN ---
 elif st.session_state.get('show_leaderboard', False):
