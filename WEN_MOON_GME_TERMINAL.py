@@ -688,11 +688,11 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf.set_font("Arial", "B", 16)
                 pdf.set_fill_color(200, 220, 255)
                 pdf.cell(0, 12, " HERO METRICS", ln=1, fill=True)
-                pdf.set_font("Arial", "B", 13)
+                pdf.set_font("Arial", "B", 14)
                 pdf.cell(90, 10, f" Price: ${current_p:,.2f}  |  Market Cap: ${mc/1e9:,.2f}B", border=1)
                 pdf.cell(90, 10, f" Cash: ${tc/1e9:,.2f}B  |  Debt: ${td/1e9:,.2f}B", border=1, ln=1)
                 
-                pdf.set_font("Arial", "", 12)
+                pdf.set_font("Arial", "B", 13)
                 ext_metrics = [
                     [f" Shares Outstanding: {so/1e6:,.1f}M", f" Float Shares: {fl/1e6:,.1f}M"],
                     [f" % Short of Float: {sp:.2f}%", f" Days to Cover: {dtc:.2f}"],
@@ -707,15 +707,15 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                     pdf.cell(90, 8, row[1], border=1, ln=1)
                 pdf.ln(5)
 
-                pdf.set_font("Arial", "B", 16)
+                pdf.set_font("Arial", "B", 18)
                 pdf.set_fill_color(200, 220, 255)
                 pdf.cell(0, 10, " HISTORICAL FINANCIALS (2019-2025)", ln=1, fill=True)
-                pdf.set_font("Arial", "B", 14)
+                pdf.set_font("Arial", "B", 16)
                 h1 = ["Year", "Total Revenue", "Net Income", "Operating Income"]
                 w1 = [30, 50, 50, 50]
                 for i in range(4): pdf.cell(w1[i], 10, h1[i], border=1, align="C", fill=True)
                 pdf.ln()
-                pdf.set_font("Arial", "", 14)
+                pdf.set_font("Arial", "B", 16)
                 hist_data = [
                     ["2025", "$3.63B", "$418.4M", "$232.1M"], ["2024", "$3.82B", "$131.3M", "-$19.1M"],
                     ["2023", "$5.27B", "$6.7M", "-$28.6M"], ["2022", "$5.15B", "-$315.1M", "-$365.8M"],
@@ -731,15 +731,15 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                     pdf.ln()
                 
                 pdf.add_page()
-                pdf.set_font("Arial", "B", 18)
+                pdf.set_font("Arial", "B", 20)
                 pdf.set_fill_color(200, 220, 255)
                 pdf.cell(0, 10, " EPS MATRIX (2019-2025)", ln=1, fill=True)
-                pdf.set_font("Arial", "B", 16)
+                pdf.set_font("Arial", "B", 18)
                 h2 = ["Year", "Consensus EPS", "Actual EPS", "Non-GAAP EPS"]
                 w2 = [30, 50, 50, 50]
                 for i in range(4): pdf.cell(w2[i], 10, h2[i], border=1, align="C", fill=True)
                 pdf.ln()
-                pdf.set_font("Arial", "", 16)
+                pdf.set_font("Arial", "B", 18)
                 eps_data = [
                     ["2025", "$0.84", "$1.18", "$1.21"], ["2024", "$0.07", "$0.33", "$0.35"],
                     ["2023", "$0.13", "$0.06", "$0.08"], ["2022", "-$0.34", "-$0.95", "-$0.88"],
@@ -754,15 +754,15 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                     pdf.ln()
                 pdf.ln(5)
                 
-                pdf.set_font("Arial", "B", 18)
+                pdf.set_font("Arial", "B", 20)
                 pdf.set_fill_color(200, 220, 255)
                 pdf.cell(0, 10, " STORE EFFICIENCY (2019-2025)", ln=1, fill=True)
-                pdf.set_font("Arial", "B", 16)
+                pdf.set_font("Arial", "B", 18)
                 h3 = ["Year", "Total Stores", "Revenue Per Store"]
                 w3 = [60, 60, 60]
                 for i in range(3): pdf.cell(w3[i], 10, h3[i], border=1, align="C", fill=True)
                 pdf.ln()
-                pdf.set_font("Arial", "", 16)
+                pdf.set_font("Arial", "B", 18)
                 store_data = [
                     ["2025", "2,206", "$1.65M"], ["2024", "3,203", "$1.19M"], ["2023", "4,169", "$1.26M"],
                     ["2022", "4,573", "$1.13M"], ["2021", "4,816", "$0.89M"], ["2020", "5,509", "$0.86M"], ["2019", "5,830", "$0.90M"]
@@ -772,15 +772,15 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                     pdf.ln()
                 
                 pdf.add_page()
-                pdf.set_font("Arial", "B", 18)
+                pdf.set_font("Arial", "B", 20)
                 pdf.set_fill_color(200, 220, 255)
                 pdf.cell(0, 10, " ALL INSIDER PURCHASES ONLY (2019-2026)", ln=1, fill=True)
-                pdf.set_font("Arial", "B", 16)
+                pdf.set_font("Arial", "B", 18)
                 h4 = ["Date", "Insider Name", "Shares"]
                 w4 = [50, 80, 50]
                 for i in range(3): pdf.cell(w4[i], 10, h4[i], border=1, align="C", fill=True)
                 pdf.ln()
-                pdf.set_font("Arial", "", 16)
+                pdf.set_font("Arial", "B", 18)
                 ins_data = [
                     ["2026-01-23", "Lawrence Cheng", "5,000"], ["2026-01-21", "Ryan Cohen", "1,000,000"],
                     ["2026-01-21", "Alain Attal", "12,000"], ["2026-01-20", "Ryan Cohen", "500,000"],
