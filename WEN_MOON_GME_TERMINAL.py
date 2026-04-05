@@ -725,8 +725,8 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                     pdf.cell(w1[0], 10, r[0], border=1, align="C")
                     pdf.cell(w1[1], 10, r[1], border=1, align="C")
                     for i in range(2, 4):
-                        if "-" in r[i]: pdf.set_fill_color(255, 200, 200)
-                        else: pdf.set_fill_color(200, 255, 200)
+                        if "-" in r[i]: pdf.set_fill_color(228, 0, 15)
+                        else: pdf.set_fill_color(0, 255, 0)
                         pdf.cell(w1[i], 10, r[i], border=1, align="C", fill=True)
                     pdf.ln()
                 
@@ -748,8 +748,8 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 for r in eps_data:
                     pdf.cell(w2[0], 10, r[0], border=1, align="C")
                     for i in range(1, 4):
-                        if "-" in r[i]: pdf.set_fill_color(255, 200, 200)
-                        else: pdf.set_fill_color(200, 255, 200)
+                        if "-" in r[i]: pdf.set_fill_color(228, 0, 15)
+                        else: pdf.set_fill_color(0, 255, 0)
                         pdf.cell(w2[i], 10, r[i], border=1, align="C", fill=True)
                     pdf.ln()
                 pdf.ln(5)
@@ -822,6 +822,7 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 type="primary"
             )
         # --- END OF INSTITUTIONAL TEAR SHEET MODULE ---
+
 
 # --- 2.5 LEADERBOARD SCREEN ---
 elif st.session_state.get('show_leaderboard', False):
