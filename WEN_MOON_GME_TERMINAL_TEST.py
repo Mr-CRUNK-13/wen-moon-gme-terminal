@@ -1255,7 +1255,7 @@ else:
             st.markdown(x_btn("GameStop", "GameStop", "🎮"), unsafe_allow_html=True)
             st.markdown(x_btn("PowerPacks", "PowerPacks", "🃏"), unsafe_allow_html=True)
             
-    # --- TAB 16 : 📺 GME YouTube ---
+    # --- TAB 16 : 📺 GME YOUTUBE ---
     with tab16:
         st.markdown("<h2 style='text-align:center; color:#FF0000; font-family:monospace; animation: neon-flash-red 1.5s infinite;'>📺 GME YOUTUBE HUB</h2>", unsafe_allow_html=True)
 
@@ -1267,11 +1267,14 @@ else:
                 border-radius: 10px;
                 margin-bottom: 20px;
             }
+            @media screen and (orientation: portrait) {
+                .neon-video { aspect-ratio: 16 / 9 !important; height: auto !important; }
+            }
             @media screen and (orientation: landscape) {
                 .neon-video { height: 400px !important; }
             }
         </style>
-        <iframe class="neon-video" width="100%" height="220" src="https://www.youtube.com/embed/021_zhXd8T0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe class="neon-video" width="100%" src="https://www.youtube.com/embed/021_zhXd8T0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         """, unsafe_allow_html=True)
 
         st.markdown("""<div style='display:flex; justify-content:center; margin-bottom:20px;'><div style='background:#0f172a; padding:15px; border-radius:10px; border:2px solid #FF0000; width:100%; max-width:300px; text-align:center; box-shadow: 0 0 15px #FF0000;'><h4 style='color:#FF0000; margin-top:0;'>🎬 ROARING KITTY - GME MIX</h4><div style='display:flex; gap:10px; justify-content:center; margin-top:15px;'><a href='https://youtube.com/playlist?list=PL8E5BqjEa7V0KYhYAq18oYJ6GVMTFKZyR' target='_blank' style='flex:1; padding:10px; background:rgba(255,0,0,0.1); border:2px solid #FF0000; color:#FF0000; text-decoration:none; font-weight:bold; border-radius:5px; box-shadow: 0 0 15px #FF0000;'>🔴 YT VIDEO</a><a href='https://music.youtube.com/playlist?list=PL8E5BqjEa7V0KYhYAq18oYJ6GVMTFKZyR' target='_blank' style='flex:1; padding:10px; background:rgba(176,38,255,0.1); border:2px solid #b026ff; color:#b026ff; text-decoration:none; font-weight:bold; border-radius:5px; box-shadow: 0 0 15px #b026ff;'>🎵 YT MUSIC</a></div></div></div>""", unsafe_allow_html=True)
