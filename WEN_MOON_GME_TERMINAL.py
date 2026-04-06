@@ -642,30 +642,65 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 return None
 
             try:
-                tk = yf.Ticker("GME")
-                info = tk.info
-                current_p = info.get("currentPrice") or info.get("ask") or info.get("previousClose", 25.0)
-                mc = info.get("marketCap", 10000000000)
-                tc = info.get("totalCash", 9013000000)
-                td = info.get("totalDebt", 4164000000)
+                info = {}
+                try:
+                    tk = yf.Ticker("GME")
+                    info = tk.info or {}
+                except Exception:
+                    pass
+
+                val_p = info.get("currentPrice") or info.get("ask") or info.get("previousClose")
+                str_p = f"${val_p:,.2f}" if val_p is not None else "N/A"
                 
-                so = info.get("sharesOutstanding", 443760000)
-                fl = info.get("floatShares", 367120000)
-                sp = info.get("shortPercentOfFloat", 0.134) * 100
-                dtc = info.get("shortRatio", 12.5)
-                hi = info.get("heldPercentInsiders", 0.121) * 100
-                hinst = info.get("heldPercentInstitutions", 0.284) * 100
+                val_mc = info.get("marketCap")
+                str_mc = f"${val_mc/1e9:,.2f}B" if val_mc is not None else "N/A"
+
+                tc = info.get("totalCash")
+                tc = tc if tc is not None else 9010000000
                 
-                # Hardcoded DRS Data
+                td = info.get("totalDebt")
+                td = td if td is not None else 4360000000
+                
+                so = info.get("sharesOutstanding")
+                so = so if so is not None else 448400000
+                
+                fl = info.get("floatShares")
+                fl = fl if fl is not None else 408200000
+                
+                sp_raw = info.get("shortPercentOfFloat")
+                sp = (sp_raw * 100) if sp_raw is not None else 15.69
+                
+                dtc = info.get("shortRatio")
+                dtc = dtc if dtc is not None else 12.79
+                
+                hi_raw = info.get("heldPercentInsiders")
+                hi = (hi_raw * 100) if hi_raw is not None else 8.88
+                
+                hinst_raw = info.get("heldPercentInstitutions")
+                hinst = (hinst_raw * 100) if hinst_raw is not None else 36.68
+                
                 drs = 66200000
                 
-                tr = info.get("totalRevenue", 3630000000)
-                ni = info.get("netIncomeToCommon", 418400000)
-                oi = info.get("operatingIncome", 232100000)
-                rev_ps = info.get("revenuePerShare", 8.20)
-                ni_ps = info.get("trailingEps", 0.94)
-                h52 = info.get("fiftyTwoWeekHigh", 64.83)
-                l52 = info.get("fiftyTwoWeekLow", 9.95)
+                tr = info.get("totalRevenue")
+                tr = tr if tr is not None else 3630000000
+                
+                ni = info.get("netIncomeToCommon")
+                ni = ni if ni is not None else 418400000
+                
+                oi = info.get("operatingIncome")
+                oi = oi if oi is not None else 232100000
+                
+                rev_ps = info.get("revenuePerShare")
+                rev_ps = rev_ps if rev_ps is not None else 8.11
+                
+                ni_ps = info.get("trailingEps")
+                ni_ps = ni_ps if ni_ps is not None else 0.77
+                
+                h52 = info.get("fiftyTwoWeekHigh")
+                h52 = h52 if h52 is not None else 35.81
+                
+                l52 = info.get("fiftyTwoWeekLow")
+                l52 = l52 if l52 is not None else 19.93
 
                 pdf = FPDF()
                 pdf.add_page()
@@ -692,33 +727,11 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf.set_fill_color(200, 220, 255)
                 pdf.cell(0, 12, " HERO METRICS", ln=1, fill=True)
                 pdf.set_font("Arial", "B", 14)
-                pdf.cell(90, 10, f" Price: ${current_p:,.2f}  |  Market Cap: ${mc/1e9:,.2f}B", border=1)
+                pdf.cell(90, 10, f" Price: {str_p}  |  Market Cap: {str_mc}", border=1)
                 pdf.cell(90, 10, f" Cash: ${tc/1e9:,.2f}B  |  Debt: ${td/1e9:,.2f}B", border=1, ln=1)
                 
                 pdf.set_font("Arial", "B", 13)
                 ext_metrics = [
-                    [f" Shares Outstanding: {so/1e6:,.1f}M", f" Float Shares: {fl/1e6:,.1f}M"],
-                    [f" % Short of Float: {sp:.2f}%", f" Days to Cover: {dtc:.2f}"],
-                    [f" Held by Insiders: {hi:.2f}%", f" Held by Institutions: {hinst:.2f}%"],
-                    [f" DRS Shares (Reported): {drs/1e6:,.1f}M", f" Total Revenue: ${tr/1e9:,.2f}B"],
-                    [f" Net Income: ${ni/1e6:,.1f}M", f" Operating Income: ${oi/1e6:,.1f}M"],
-                    [f" Net Income Per Share: ${ni_ps:.2f}", f" Revenue Per Share: ${rev_ps:.2f}"],
-                    [f" GME 52 Weeks High: ${h52:.2f}", f" GME 52 Weeks Low: ${l52:.2f}"]
-                ]
-                for row in ext_metrics:
-                    pdf.cell(90, 8, row[0], border=1)
-                    pdf.cell(90, 8, row[1], border=1, ln=1)
-                pdf.ln(5)
-
-                pdf.set_font("Arial", "B", 18)
-                pdf.set_fill_color(200, 220, 255)
-                pdf.cell(0, 10, " HISTORICAL FINANCIALS (2019-2025)", ln=1, fill=True)
-                pdf.set_font("Arial", "B", 16)
-                h1 = ["Year", "Total Revenue", "Net Income", "Operating Income"]
-                w1 = [30, 50, 50, 50]
-                for i in range(4): pdf.cell(w1[i], 10, h1[i], border=1, align="C", fill=True)
-                pdf.ln()
-                pdf.set_font("Arial", "B", 16)
                 
                 # Hardcoded Financials from app source
                 hist_data = [
