@@ -731,7 +731,6 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf.cell(90, 10, f" Cash: ${tc/1e9:,.2f}B  |  Debt: ${td/1e9:,.2f}B", border=1, ln=1)
                 
                 pdf.set_font("Arial", "B", 13)
-                ext_metrics = [
                 
                 # Hardcoded Financials from app source
                 hist_data = [
