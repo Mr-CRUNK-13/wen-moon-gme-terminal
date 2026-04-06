@@ -731,6 +731,19 @@ if not st.session_state.launched and not st.session_state.show_leaderboard:
                 pdf.cell(90, 10, f" Cash: ${tc/1e9:,.2f}B  |  Debt: ${td/1e9:,.2f}B", border=1, ln=1)
                 
                 pdf.set_font("Arial", "B", 13)
+                ext_metrics = [
+                    [f" Shares Outstanding: {so/1e6:,.1f}M", f" Float Shares: {fl/1e6:,.1f}M"],
+                    [f" % Short of Float: {sp:.2f}%", f" Days to Cover: {dtc:.2f}"],
+                    [f" Held by Insiders: {hi:.2f}%", f" Held by Institutions: {hinst:.2f}%"],
+                    [f" DRS Shares (Reported): {drs/1e6:,.1f}M", f" Total Revenue: ${tr/1e9:,.2f}B"],
+                    [f" Net Income: ${ni/1e6:,.1f}M", f" Operating Income: ${oi/1e6:,.1f}M"],
+                    [f" Net Income Per Share: ${ni_ps:.2f}", f" Revenue Per Share: ${rev_ps:.2f}"],
+                    [f" GME 52 Weeks High: ${h52:.2f}", f" GME 52 Weeks Low: ${l52:.2f}"]
+                ]
+                for row in ext_metrics:
+                    pdf.cell(90, 8, row[0], border=1)
+                    pdf.cell(90, 8, row[1], border=1, ln=1)
+                pdf.ln(5)
                 
                 # Hardcoded Financials from app source
                 hist_data = [
